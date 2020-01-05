@@ -17,7 +17,7 @@ class SolennController extends AbstractController
     public function testAreaSolenn(Request $request)
     {
         $form = $this->createFormBuilder()
-            ->add('Artiste', TextType::class)
+            ->add('artist', TextType::class, ['label' => 'Entrez le nom de l\'artiste : '])
             ->add('save', SubmitType::class, ['label' => 'Chercher cet artiste'])
             ->getForm();
 
@@ -26,20 +26,21 @@ class SolennController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             // $form->getData() holds the submitted values
             // but, the original `$task` variable has also been updated
-            $task = $form->getData();
-            print_r($task);
+            $data = $form->getData();
+            $artistName = $data['artist'];
 
-            // ... perform some action, such as saving the task to the database
-            // for example, if Task is a Doctrine entity, save it!
-            // $entityManager = $this->getDoctrine()->getManager();
-            // $entityManager->persist($task);
-            // $entityManager->flush();
+            $request    = \App\SpotiImplementation\Request::factory();
+            $answer     = $request->searchForArtist($artistName);
 
-            // return $this->redirectToRoute('task_success');
+            return $this->render('testArea/solenn.html.twig', [
+               'form'    => $form->createView(),
+               'artists' => $answer
+           ]);
         }
 
         return $this->render('testArea/solenn.html.twig', [
-           'form' => $form->createView(),
+           'form'    => $form->createView(),
+           'artists' => null,
        ]);
     }
 

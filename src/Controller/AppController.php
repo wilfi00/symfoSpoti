@@ -6,6 +6,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use App\SpotiImplementation\Auth;
+use App\SolennArea;
 
 class AppController extends AbstractController
 {
@@ -49,13 +50,5 @@ class AppController extends AbstractController
         return $this->render('testArea/base.html.twig', [
             'solennUrl' => $this->generateUrl('solenn'),
         ]);
-    }
-
-    /**
-     * @Route("/testAreaSolenn", name="solenn")
-     */
-    public function testAreaSolenn()
-    {
-        return $this->render('testArea/solenn.html.twig');
     }
 }

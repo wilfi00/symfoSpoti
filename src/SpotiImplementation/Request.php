@@ -11,6 +11,25 @@ class Request
         $this->api = $api;
     }
 
+    public static function factory()
+    {
+        $api = new \App\SpotifyWebAPI\SpotifyWebAPI();
+
+        // Fetch the saved access token from somewhere. A database for example.
+        $api->setSession(\App\SpotiImplementation\Tools::getApiSession());
+        $api->setOptions([
+            'auto_refresh' => true,
+        ]);
+
+        return new self($api);
+    }
+
+    public function searchForArtist($search)
+    {
+        $search = $this->api->search($search, 'artist');
+        return  $search->artists->items;
+    }
+
     public function getSeveralArtists($limit = 5)
     {
         $search = $this->api->search(Tools::generateRandomCharacter() . '%', 'artist', ['limit' => $limit]);

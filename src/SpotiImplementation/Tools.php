@@ -2,18 +2,32 @@
 
 namespace App\SpotiImplementation;
 
+use Symfony\Component\HttpFoundation\Session\Session;
+
 class Tools
 {
-    const SESSION_APISESSION   = 'api_session';
-
-    public static function saveApiSession($session)
-    {
-        $_SESSION[static::SESSION_APISESSION] = serialize($session);
-    }
+    const SESSION_APISESSION = 'api_session';
 
     public static function getApiSession()
     {
+        $session = new Session();
+        return unserialize($session->get(static::SESSION_APISESSION));
+    }
+
+    public static function saveApiSession($sessionValue)
+    {
+        $session = new Session();
+        $session->set(static::SESSION_APISESSION, serialize($sessionValue));
+    }
+
+    public static function getApiSessionDeprecated()
+    {
         return unserialize($_SESSION[static::SESSION_APISESSION]);
+    }
+
+    public static function saveApiSessionDeprecated($session)
+    {
+        $_SESSION[static::SESSION_APISESSION] = serialize($session);
     }
 
     public static function getRequiredFiles()

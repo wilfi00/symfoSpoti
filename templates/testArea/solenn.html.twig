@@ -1,12 +1,15 @@
 {% extends "testArea/base.html.twig" %}
 {% block title %}Solenn area{% endblock %}
 
+{% block sidebarLeft %}
+<div class="sidebarLeft">
+sidebar left
+</div>
+{% endblock %}
 {% block content %}
     <h3>Solenn area</h3>
     {{ form(form) }}
-    <div class="container">
         {{ render(controller(
             'App\\Controller\\Display::displayArtists', {artists: artists }
         )) }}
-    </div>
 {% endblock %}

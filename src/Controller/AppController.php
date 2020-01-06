@@ -6,6 +6,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use App\SpotiImplementation\Auth;
+use App\SolennArea;
 
 class AppController extends AbstractController
 {
@@ -26,11 +27,11 @@ class AppController extends AbstractController
     {
         \App\SpotiImplementation\Auth::spotiCallback();
 
-        return $this->redirect('/testArea', 301);
+        return $this->redirect($this->generateUrl('testArea'), 301);
     }
 
     /**
-     * @Route("/testArea")
+     * @Route("/testArea", name="testArea")
      */
     public function testArea()
     {
@@ -43,23 +44,11 @@ class AppController extends AbstractController
             'auto_refresh' => true,
         ]);
 
-        // It's now possible to request data about the currently authenticated user
-        // var_dump(
-        //     $api->me()
-        // );
+        $request    = new \App\SpotiImplementation\Request($api);
+        $test       = var_export($request->getSeveralArtists(1), true);
 
-        // Getting Spotify catalog data is of course also possible
-        // var_dump(
-        //     $api->getTrack('7EjyzZcbLxW7PaaLua9Ksb')
-        // );
-
-        //$api->changeVolume(['volume_percent' => 40]);
-        // var_dump(Tools::getApiSession());
-        // exit();
-        $request = new \App\SpotiImplementation\Request($api);
-
-        return new Response(
-            '<html><body>' . print_r($request->getTenMetalArtists()) . '</body></html>'
-        );
+        return $this->render('testArea/base.html.twig', [
+            'solennUrl' => $this->generateUrl('solenn'),
+        ]);
     }
 }

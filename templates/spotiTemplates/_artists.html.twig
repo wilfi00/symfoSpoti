@@ -1,0 +1,4 @@
+{% for artist in artists %}
+    {% if artist.images is not empty %} <img src="{{ artist.images[0].url }}" /> {% endif %}
+    {{ artist.name }}
+{% endfor %}

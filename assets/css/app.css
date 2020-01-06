@@ -10,3 +10,6 @@ body {
 .artistBloc img {
 	width: 100px;
 }
+.artistBloc .hiddenArtistId {
+    display: none;
+}

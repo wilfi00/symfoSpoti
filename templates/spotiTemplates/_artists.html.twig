@@ -1,6 +1,9 @@
 {% for artist in artists %}
-	<div class="artistBloc">
+	<a class="artistBloc" data-artist-id="{{ artist.id }}">
 	    {% if artist.images is not empty %} <img src="{{ artist.images[0].url }}" /> <br>{% endif %}
 	    {{ artist.name }}
-    </div>
+    </a>
+    <script>
+        var addArtistUrl = "{{ path('addArtist') }}";
+    </script>
 {% endfor %}

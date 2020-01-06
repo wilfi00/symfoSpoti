@@ -1,0 +1,12 @@
+body {
+    background-color: lightgray;
+}
+.artistBloc {
+	display: inline-block;
+	width: 200px;
+	height: 200px;
+	text-align: center;
+}
+.artistBloc img {
+	width: 100px;
+}

@@ -3,6 +3,8 @@
         "@symfony/webpack-encore": "^0.28.2",
         "core-js": "^3.0.0",
         "regenerator-runtime": "^0.13.2",
+        "vue-loader": "15.0.11",
+        "vue-template-compiler": "^2.6.11",
         "webpack-notifier": "^1.6.0"
     },
     "license": "UNLICENSED",
@@ -17,5 +19,8 @@
     "version": "1.0.0",
     "main": "index.js",
     "repository": "https://github.com/wilfi00/symfoSpoti.git",
-    "author": "Johan Martin <0johan.martin0@gmail.com>"
+    "author": "Johan Martin <0johan.martin0@gmail.com>",
+    "dependencies": {
+        "vue": "^2.6.11"
+    }
 }

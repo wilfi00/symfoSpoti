@@ -33,6 +33,7 @@ class SolennController extends AbstractController
             return $this->render('testArea/solenn.html.twig', [
                'form'       => $form->createView(),
                'artists'    => $answer,
+               'testJojo'   => 'salut johan :)'
            ]);
         }
 
@@ -43,10 +44,12 @@ class SolennController extends AbstractController
     }
 
     /**
-     * @Route("/addArtistToSelection", name="addArtist")
+     * @Route("/addArtistToSelection/{artistId}", name="addArtist")
      */
-    public function addArtistToSelection()
+    public function addArtistToSelection($artistId)
     {
-
+        return new Response(
+            'piou !'
+        );
     }
 }

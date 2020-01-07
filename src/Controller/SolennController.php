@@ -32,8 +32,7 @@ class SolennController extends AbstractController
 
             return $this->render('testArea/solenn.html.twig', [
                'form'       => $form->createView(),
-               'artists'    => $answer,
-               'testJojo'   => 'salut johan :)'
+               'artists'    => $answer
            ]);
         }
 

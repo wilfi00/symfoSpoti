@@ -17,15 +17,13 @@ class SolennController extends AbstractController
     public function testAreaSolenn(Request $request)
     {
         $form = $this->createFormBuilder()
-            ->add('artist', TextType::class, ['label' => 'Entrez le nom de l\'artiste : '])
-            ->add('save', SubmitType::class, ['label' => 'Chercher cet artiste'])
+            ->add('artist', TextType::class,   ['label' => 'Entrez le nom de l\'artiste : '])
+            ->add('save',   SubmitType::class, ['label' => 'Chercher cet artiste'])
             ->getForm();
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // $form->getData() holds the submitted values
-            // but, the original `$task` variable has also been updated
             $data = $form->getData();
             $artistName = $data['artist'];
 
@@ -33,8 +31,8 @@ class SolennController extends AbstractController
             $answer     = $request->searchForArtist($artistName);
 
             return $this->render('testArea/solenn.html.twig', [
-               'form'    => $form->createView(),
-               'artists' => $answer
+               'form'       => $form->createView(),
+               'artists'    => $answer
            ]);
         }
 
@@ -44,4 +42,21 @@ class SolennController extends AbstractController
        ]);
     }
 
+    /**
+     * @Route("/addArtistToSelection/{artistId}", name="addArtist")
+     */
+    public function addArtistToSelection($artistId)
+    {
+        \App\SpotiImplementation\Tools::saveArtistSelectionInSession($artistId);
+
+        return new Response();
+    }
+
+    /**
+     * @Route("/getArtistsSelection", name="getArtists")
+     */
+    public function getArtistsSelection()
+    {
+        return $this->json(\App\SpotiImplementation\Tools::getArtistsSelectionInSession());
+    }
 }

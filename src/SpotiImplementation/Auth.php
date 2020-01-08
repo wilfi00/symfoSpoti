@@ -32,7 +32,6 @@ class Auth
 
     public static function spotiCallback()
     {
-        dump('coucou1');
         $session = new \App\SpotifyWebAPI\Session(
             static::CLIENT_ID,
             static::CLIENT_SECRET,

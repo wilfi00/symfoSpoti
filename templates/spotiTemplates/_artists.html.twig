@@ -1,6 +1,10 @@
 {% for artist in artists %}
-	<a class="artistBloc"  v-on:click="addToSelection('{{ path('addArtist', {artistId: artist.id}) }}', $event)">
-	    {% if artist.images is not empty %} <img src="{{ artist.images[0].url }}" /> <br>{% endif %}
+	<a class="artistBloc"  v-on:click="addToSelection('{{ path('addArtist') }}', {{ artist|json_encode() }}, $event)">
+
+		{% if artist.image is not empty %}
+			<img src="{{ artist.image }}" /> <br>
+		{% endif %}
+
 	    {{ artist.name }}
     </a>
 {% endfor %}

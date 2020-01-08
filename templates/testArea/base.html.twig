@@ -16,7 +16,7 @@
         {% endblock %}
     </head>
     <body>
-        <div id="app">
+        <div id="app" data-init-url="{{ path('getArtists') }}">
             {% block sidebarLeft %}
             {% endblock %}
             <div class="container">

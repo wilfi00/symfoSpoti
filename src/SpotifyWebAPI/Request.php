@@ -172,7 +172,6 @@ class Request
      */
     public function send($method, $url, $parameters = [], $headers = [])
     {
-        dump(function_exists('curl_version'));
         // Reset any old responses
         $this->lastResponse = [];
 

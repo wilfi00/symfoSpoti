@@ -62,15 +62,18 @@ class Tools
         if ($artists === null) {
             $artists = [];
         }
-        dump($artists);
+
         $artists[] = $artistId;
 
         $session->set(static::SESSION_ARTISTSELECTION, $artists);
     }
 
-    public static function getArtistsSelectionInSession()
+    public static function getArtistsSelectionInSession($session = null)
     {
-        $session = new Session();
+        if ($session === null) {
+            $session = new Session();
+        }
+
         return $session->get(static::SESSION_ARTISTSELECTION);
     }
 

@@ -2,7 +2,7 @@
 {% block title %}Solenn area{% endblock %}
 
 {% block sidebarLeft %}
-	<sidebar-artist v-for="artist in artists" v-bind:html="artist" url="{{ path('getArtists') }}"></sidebar-artist>
+	<sidebar-artist v-for="artist in artists" v-bind:html="artist" v-bind:init-url="'{{ path('getArtistsHtml') }}'"></sidebar-artist>
 {% endblock %}
 {% block content %}
     <h3>Solenn area</h3>

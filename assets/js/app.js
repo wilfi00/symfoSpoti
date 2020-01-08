@@ -13,24 +13,26 @@ import axios from "axios";
 // Need jQuery? Install it with "yarn add jquery", then uncomment to require it.
 // const $ = require('jquery');
 
-console.log('Hello Webpack Encore! Edit me in assets/js/app.js');
-
-
 var app = new Vue({
     delimiters: ['${', '}'],
     el: '#app',
       data: {
-        message: ''
+        message: '',
+        artists: ''
     },
+    // props: ['url'],
     beforeMount: function() {
-        this.message = 'salut solenn :)'
+    	console.log(this);
+    	// console.log(this.url);
+        // this.artists = axios.get(urlAddToSelection)
     },
     methods: {
-        addToSelection: function(urlAddToSelection) {
+        addToSelection: function(urlAddToSelection, event) {
             axios.get(urlAddToSelection)
-            alert('coucou :)');
-            console.log('addSelection');
-            console.log(urlAddToSelection);
+            console.log('event : ');
+            console.log(event.currentTarget.innerHTML);
+            // this.artists.push(event.currentTarget.innerHTML);
+            this.artists += event.currentTarget.innerHTML;
         }
     }
 })

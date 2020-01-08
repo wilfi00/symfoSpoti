@@ -6,7 +6,8 @@ use Symfony\Component\HttpFoundation\Session\Session;
 
 class Tools
 {
-    const SESSION_APISESSION = 'api_session';
+    const SESSION_APISESSION      = 'api_session';
+    const SESSION_ARTISTSELECTION = 'artist_selection';
 
     public static function getApiSession()
     {
@@ -51,5 +52,31 @@ class Tools
         $randomIndex = mt_rand(0, $stringLength - 1);
 
         return $string[$randomIndex];
+    }
+
+    public static function saveArtistSelectionInSession($artistId)
+    {
+        $session = new Session();
+
+        $artists = static::getArtistsSelectionInSession();
+        if ($artists === null) {
+            $artists = [];
+        }
+        dump($artists);
+        $artists[] = $artistId;
+
+        $session->set(static::SESSION_ARTISTSELECTION, $artists);
+    }
+
+    public static function getArtistsSelectionInSession()
+    {
+        $session = new Session();
+        return $session->get(static::SESSION_ARTISTSELECTION);
+    }
+
+    public static function emptyArtistSelectionInSession()
+    {
+        $session = new Session();
+        $session->remove(static::SESSION_ARTISTSELECTION);
     }
 }

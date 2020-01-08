@@ -2,11 +2,7 @@
 {% block title %}Solenn area{% endblock %}
 
 {% block sidebarLeft %}
-<div class="sidebarLeft">
-sidebar left
-
-
-</div>
+	<div v-if="artists != ''" v-html="artists" class="artistBloc" data-test="coucou"></div>
 {% endblock %}
 {% block content %}
     <h3>Solenn area</h3>

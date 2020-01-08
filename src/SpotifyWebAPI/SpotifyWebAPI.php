@@ -36,7 +36,6 @@ class SpotifyWebAPI
      */
     protected function authHeaders($headers = [])
     {
-        dump($this->session);
         $accessToken = $this->session ? $this->session->getAccessToken() : $this->accessToken;
 
         if ($accessToken) {

@@ -14,9 +14,9 @@ import axios from "axios";
 // const $ = require('jquery');
 
 Vue.component('sidebar-artist', {
-	props: ['html'],
+	props: ['html', 'initUrl'],
 	template: '<a class="artistBloc" v-html="html"></a>'
-	 // template: '<a class="artistBloc">{{ test }}</a>'
+	 // template: '<a class="artistBloc">{{ initUrl }}</a>'
 })
 
 var app = new Vue({
@@ -25,23 +25,35 @@ var app = new Vue({
     data: {
         message: '',
         artists: [],
-        testvar: ''
     },
+	props: ['initUrl'],
     // props: ['url'],
     beforeMount: function() {
-    	console.log(Routing.generate('getArtists'));
-    	// console.log(this.url);
+		var prout = '';
+		var prout2 = '';
     	this.addArtists('html artiste lol');
-        // this.artists = axios.get(urlAddToSelection)
+
+		axios
+	      .get(this.$el.attributes['data-init-url'].value)
+	      .then(response => {
+			  this.initArtistHtml(response.data);
+		})
     },
     methods: {
-        addToSelection: function(urlAddToSelection, event) {
-            axios.get(urlAddToSelection)
+        addToSelection: function(urlAddToSelection, data, event) {
+            axios.post(urlAddToSelection, {
+				body: data
+			})
             // this.artists.push(event.currentTarget.innerHTML);
             this.addArtists(event.currentTarget.innerHTML);
         },
         addArtists: function(htmlContent) {
         	this.artists.push(htmlContent);
-        }
+        },
+		initArtistHtml: function(artists) {
+			// console.log(artists);
+			// this.addArtists()
+			// console.log(artists);
+		}
     }
 })

@@ -2,7 +2,7 @@
 {% block title %}Solenn area{% endblock %}
 
 {% block sidebarLeft %}
-	<div v-if="artists != ''" v-html="artists" class="artistBloc" data-test="coucou"></div>
+	<sidebar-artist v-for="artist in artists" v-bind:html="artist" url="{{ path('getArtists') }}"></sidebar-artist>
 {% endblock %}
 {% block content %}
     <h3>Solenn area</h3>

@@ -47,8 +47,16 @@ class SolennController extends AbstractController
      */
     public function addArtistToSelection($artistId)
     {
-        return new Response(
-            'piou !'
-        );
+        \App\SpotiImplementation\Tools::saveArtistSelectionInSession($artistId);
+
+        return new Response();
+    }
+
+    /**
+     * @Route("/getArtistsSelection", name="getArtists")
+     */
+    public function getArtistsSelection()
+    {
+        return $this->json(\App\SpotiImplementation\Tools::getArtistsSelectionInSession());
     }
 }

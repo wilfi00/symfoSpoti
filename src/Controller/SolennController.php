@@ -18,15 +18,23 @@ class SolennController extends AbstractController
         $artists          = [];
         $artistsSelection = \App\SpotiImplementation\Tools::getArtistsSelectionInSession($session);
 
+        if (empty($artistsSelection )) {
+            return $artists;
+        }
+
         foreach ($artistsSelection as $artist) {
             $artistsTmp['name'] = $artist['name'];
-            if (!empty($artist['images'])) {
+
+
+            if (isset($artist['image'])) {
+                $artistsTmp['image'] = $artist['image'];
+            } elseif (!empty($artist['images'])) {
                 $artistsTmp['image'] = $artist['images'][0]['url'];
             }
 
             $artists[] = $artistsTmp;
         }
-// var_dump($artists);exit();
+
         return $artists;
     }
 
@@ -35,7 +43,7 @@ class SolennController extends AbstractController
      */
     public function testAreaSolenn(Request $request)
     {
-        $artists = $this->initArtists($request->getSession());
+        $artists = [];
 
         $form = $this->createFormBuilder()
             ->add('artist', TextType::class,   ['label' => 'Entrez le nom de l\'artiste : '])
@@ -48,8 +56,8 @@ class SolennController extends AbstractController
             $data = $form->getData();
             $artistName = $data['artist'];
 
-            $request    = \App\SpotiImplementation\Request::factory();
-            $answer     = $request->searchForArtist($artistName);
+            $requestSpoti    = \App\SpotiImplementation\Request::factory();
+            $answer     = $requestSpoti->searchForArtist($artistName);
 
             foreach ($answer as $artist) {
                 $tmpImg = '';
@@ -66,8 +74,9 @@ class SolennController extends AbstractController
         }
 
         return $this->render('testArea/solenn.html.twig', [
-           'form'    => $form->createView(),
-           'artists' => $artists,
+           'form'          => $form->createView(),
+           'artistsSearch' => $artists,
+           'artistsInit'   => $this->initArtists($request->getSession())
        ]);
     }
 
@@ -84,18 +93,11 @@ class SolennController extends AbstractController
     }
 
     /**
-     * @Route("/getArtistsSelection", name="getArtists")
+     * @Route("/emptyArtistsSelection", name="emptyArtistsSelection")
      */
-    public function getArtistsSelection()
+    public function emptyArtistsSelection()
     {
-        return $this->json(\App\SpotiImplementation\Tools::getArtistsSelectionInSession());
-    }
-
-    /**
-     * @Route("/getArtistsSelection", name="getArtistsHtml")
-     */
-    public function getArtistsSelectionHtml()
-    {
-        return $this->json(\App\SpotiImplementation\Tools::getArtistsSelectionInSession());
+        \App\SpotiImplementation\Tools::emptyArtistSelectionInSession();
+        return new Response();
     }
 }

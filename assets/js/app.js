@@ -11,12 +11,11 @@ import Vue from "vue";
 import axios from "axios";
 
 // Need jQuery? Install it with "yarn add jquery", then uncomment to require it.
-// const $ = require('jquery');
+const $ = require('jquery');
 
 Vue.component('sidebar-artist', {
 	props: ['html', 'initUrl'],
 	template: '<a class="artistBloc" v-html="html"></a>'
-	 // template: '<a class="artistBloc">{{ initUrl }}</a>'
 })
 
 var app = new Vue({
@@ -25,19 +24,6 @@ var app = new Vue({
     data: {
         message: '',
         artists: [],
-    },
-	props: ['initUrl'],
-    // props: ['url'],
-    beforeMount: function() {
-		var prout = '';
-		var prout2 = '';
-    	this.addArtists('html artiste lol');
-
-		axios
-	      .get(this.$el.attributes['data-init-url'].value)
-	      .then(response => {
-			  this.initArtistHtml(response.data);
-		})
     },
     methods: {
         addToSelection: function(urlAddToSelection, data, event) {
@@ -48,12 +34,14 @@ var app = new Vue({
             this.addArtists(event.currentTarget.innerHTML);
         },
         addArtists: function(htmlContent) {
-        	this.artists.push(htmlContent);
+        	this.artists.unshift(htmlContent);
         },
-		initArtistHtml: function(artists) {
-			// console.log(artists);
-			// this.addArtists()
-			// console.log(artists);
+		emptySelection: function(urlEmpty) {
+			this.artists = [];
+			$('.sidebar-left .artistBloc').each(function() {
+				this.remove();
+			});
+			axios.get(urlEmpty);
 		}
     }
 })

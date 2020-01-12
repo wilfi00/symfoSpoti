@@ -24,7 +24,7 @@ class Display extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
-dump($data);
+
             return $this->redirectToRoute('solenn');
         }
 

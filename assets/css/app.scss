@@ -1,0 +1,26 @@
+@import "~bootstrap/scss/bootstrap";
+
+body {
+    background-color: lightgray;
+}
+.artistBloc {
+	display: inline-block;
+	width: 200px;
+	height: 200px;
+	text-align: center;
+
+    img {
+    	width: 100px;
+    }
+    .hiddenArtistId {
+        display: none;
+    }
+}
+
+.sidebar-left {
+    float: left;
+    margin: 40px 20px 0 0;
+}
+.sidebar-left > a {
+    display: block;
+}

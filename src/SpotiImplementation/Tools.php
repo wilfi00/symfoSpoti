@@ -54,7 +54,7 @@ class Tools
         return $string[$randomIndex];
     }
 
-    public static function saveArtistSelectionInSession($artistId)
+    public static function saveArtistSelectionInSession($artist)
     {
         $session = new Session();
 
@@ -62,15 +62,18 @@ class Tools
         if ($artists === null) {
             $artists = [];
         }
-        dump($artists);
-        $artists[] = $artistId;
+
+        array_unshift($artists, $artist);
 
         $session->set(static::SESSION_ARTISTSELECTION, $artists);
     }
 
-    public static function getArtistsSelectionInSession()
+    public static function getArtistsSelectionInSession($session = null)
     {
-        $session = new Session();
+        if ($session === null) {
+            $session = new Session();
+        }
+
         return $session->get(static::SESSION_ARTISTSELECTION);
     }
 
@@ -78,5 +81,10 @@ class Tools
     {
         $session = new Session();
         $session->remove(static::SESSION_ARTISTSELECTION);
+    }
+
+    public static function isCurrentUserOwnerOfPlaylist($userId, $playlist)
+    {
+        return $playlist->owner->id === $userId;
     }
 }

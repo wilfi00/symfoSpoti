@@ -6,17 +6,17 @@
  */
 
 // any CSS you require will output into a single css file (app.css in this case)
-require('../css/app.css');
+require('../css/app.scss');
 import Vue from "vue";
 import axios from "axios";
 
 // Need jQuery? Install it with "yarn add jquery", then uncomment to require it.
-// const $ = require('jquery');
+const $ = require('jquery');
+require('bootstrap');
 
 Vue.component('sidebar-artist', {
-	props: ['html'],
+	props: ['html', 'initUrl'],
 	template: '<a class="artistBloc" v-html="html"></a>'
-	 // template: '<a class="artistBloc">{{ test }}</a>'
 })
 
 var app = new Vue({
@@ -25,23 +25,28 @@ var app = new Vue({
     data: {
         message: '',
         artists: [],
-        testvar: ''
-    },
-    // props: ['url'],
-    beforeMount: function() {
-    	console.log(Routing.generate('getArtists'));
-    	// console.log(this.url);
-    	this.addArtists('html artiste lol');
-        // this.artists = axios.get(urlAddToSelection)
     },
     methods: {
-        addToSelection: function(urlAddToSelection, event) {
-            axios.get(urlAddToSelection)
+        addToSelection: function(urlAddToSelection, data, event) {
+            axios.post(urlAddToSelection, {
+				body: data
+			})
             // this.artists.push(event.currentTarget.innerHTML);
             this.addArtists(event.currentTarget.innerHTML);
         },
         addArtists: function(htmlContent) {
-        	this.artists.push(htmlContent);
-        }
+        	this.artists.unshift(htmlContent);
+        },
+		emptySelection: function(urlEmpty) {
+			this.artists = [];
+			$('.sidebar-left .artistBloc').each(function() {
+				this.remove();
+			});
+			axios.get(urlEmpty);
+		}
     }
 })
+
+$('#modalePlaylists .btn-primary').on('click', function() {
+	$('form[name="playlist_selection"]').submit();
+});

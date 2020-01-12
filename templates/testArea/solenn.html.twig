@@ -2,12 +2,26 @@
 {% block title %}Solenn area{% endblock %}
 
 {% block sidebarLeft %}
-	<sidebar-artist v-for="artist in artists" v-bind:html="artist" url="{{ path('getArtists') }}"></sidebar-artist>
+	<div class="sidebar-left">
+		<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalePlaylists">
+		  Enregistrer
+		</button><br>
+		<button v-on:click="emptySelection('{{ path('emptyArtistsSelection') }}')">Supprimer toute la sélection</button>
+		<sidebar-artist v-for="artist in artists" v-bind:html="artist"></sidebar-artist>
+		{{ render(controller(
+			'App\\Controller\\Display::displayArtists', {artists: artistsInit }
+		)) }}
+	</div>
 {% endblock %}
 {% block content %}
     <h3>Solenn area</h3>
     {{ form(form) }}
-        {{ render(controller(
-            'App\\Controller\\Display::displayArtists', {artists: artists }
+	<div class="search-result">
+	    {{ render(controller(
+            'App\\Controller\\Display::displayArtists', {artists: artistsSearch }
         )) }}
+	</div>
+	{{ render(controller(
+		'App\\Controller\\Display::displayPlaylists'
+	)) }}
 {% endblock %}

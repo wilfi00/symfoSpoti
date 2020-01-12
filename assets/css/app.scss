@@ -1,3 +1,5 @@
+@import "~bootstrap/scss/bootstrap";
+
 body {
     background-color: lightgray;
 }
@@ -6,12 +8,13 @@ body {
 	width: 200px;
 	height: 200px;
 	text-align: center;
-}
-.artistBloc img {
-	width: 100px;
-}
-.artistBloc .hiddenArtistId {
-    display: none;
+
+    img {
+    	width: 100px;
+    }
+    .hiddenArtistId {
+        display: none;
+    }
 }
 
 .sidebar-left {

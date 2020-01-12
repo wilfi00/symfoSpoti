@@ -83,4 +83,38 @@ class Request
 
         $this->api->addPlaylistTracks($playlistId, $tracks);
     }
+
+    public function getUserPlaylistsForModaleSelection()
+    {
+        $currentUserId = $this->api->me()->id;
+
+        $playlists          = [];
+        $playlistsRequest   = [];
+        $tmpPlaylistRequest = [];
+        $maxLimit           = 50;
+        $offset             = 0;
+
+        do {
+            $tmpPlaylistsRequest = $this->api->getMyPlaylists([
+                'limit'  => $maxLimit,
+                'offset' => $offset,
+            ])->items;
+
+            foreach($tmpPlaylistsRequest as $tmpPlaylistRequest) {
+                if (!\App\SpotiImplementation\Tools::isCurrentUserOwnerOfPlaylist($currentUserId, $tmpPlaylistRequest)) {
+                    continue;
+                }
+
+                $name = $tmpPlaylistRequest->name;
+                if (empty($name)) {
+                    $name = 'Aucun nom';
+                }
+                $playlists[$name] = $tmpPlaylistRequest->id;
+            }
+
+            $offset += $maxLimit;
+        } while(sizeof($tmpPlaylistsRequest) >= $maxLimit);
+
+        return $playlists;
+    }
 }

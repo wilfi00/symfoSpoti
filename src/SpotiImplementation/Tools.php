@@ -8,10 +8,13 @@ class Tools
 {
     const SESSION_APISESSION      = 'api_session';
     const SESSION_ARTISTSELECTION = 'artist_selection';
+    const CALLBACK_URL            = 'callback_url';
 
-    public static function getApiSession()
+    public static function getApiSession($session = null)
     {
-        $session = new Session();
+        if ($session === null) {
+            $session = new Session();
+        }
         return unserialize($session->get(static::SESSION_APISESSION));
     }
 
@@ -86,5 +89,38 @@ class Tools
     public static function isCurrentUserOwnerOfPlaylist($userId, $playlist)
     {
         return $playlist->owner->id === $userId;
+    }
+
+    public static function isAuthenticated($session = null)
+    {
+        if ($session === null) {
+            $session = new Session();
+        }
+
+        if (!static::getApiSession($session)) {
+            $session->set(static::CALLBACK_URL, static::getCurrentUrl());
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    public static function getUrlAfterAuthentification($defaultUrl, $session = null)
+    {
+        if ($session === null) {
+            $session = new Session();
+        }
+
+        $previousUrl = $session->remove(static::CALLBACK_URL);
+        if (!empty($previousUrl)) {
+            return $previousUrl;
+        } else {
+            return $defaultUrl;
+        }
+    }
+
+    public static function getCurrentUrl()
+    {
+        return $_SERVER['REQUEST_URI'];
     }
 }

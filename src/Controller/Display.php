@@ -25,6 +25,11 @@ class Display extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
 
+            $requestSpoti = \App\SpotiImplementation\Request::factory();
+            $requestSpoti->addTopTracksToPlaylist($data);
+
+            \App\SpotiImplementation\Tools::emptyArtistSelectionInSession();
+
             return $this->redirectToRoute('solenn');
         }
 

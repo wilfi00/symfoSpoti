@@ -26,7 +26,7 @@ class Request
 
     public function searchForArtist($search)
     {
-        $search = $this->api->search($search, 'artist');
+        $search = $this->api->search($search . '*', 'artist');
         return  $search->artists->items;
     }
 
@@ -116,5 +116,35 @@ class Request
         } while(sizeof($tmpPlaylistsRequest) >= $maxLimit);
 
         return $playlists;
+    }
+
+    protected function getTopTracksFromArtist($id, $nbTracks = 10)
+    {
+        if ($nbTracks < 1 || $nbTracks > 10) {
+            $nbTracks = 10;
+        }
+
+        $tracks   = [];
+        $topTracks = $this->api->getArtistTopTracks($id, 'country=FR')->tracks;
+
+        foreach($topTracks as $track) {
+            $tracks[] = $track->id;
+        }
+
+        return array_slice($tracks, $nbTracks - 10);
+    }
+
+    public function addTopTracksToPlaylist($data)
+    {
+        $nbSongs     = $data['nbSongs'];
+        $playlistId  = $data['playlist'];
+        $artists     = \App\SpotiImplementation\Tools::getArtistsSelectionInSession();
+        $tracksToAdd = [];
+
+        foreach($artists as $artist) {
+            $tracksToAdd = array_merge($tracksToAdd, $this->getTopTracksFromArtist($artist['id'], $nbSongs));
+        }
+
+        $this->api->addPlaylistTracks($playlistId, $tracksToAdd);
     }
 }

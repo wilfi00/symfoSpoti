@@ -11,7 +11,7 @@ use App\SolennArea;
 class AppController extends AbstractController
 {
     /**
-     * @Route("/spotiAuth")
+     * @Route("/spotiAuth", name="init")
      */
     public function spotiAuthentificate()
     {
@@ -27,7 +27,9 @@ class AppController extends AbstractController
     {
         \App\SpotiImplementation\Auth::spotiCallback();
 
-        return $this->redirect($this->generateUrl('testArea'), 301);
+        $defaultUrl = $this->generateUrl('testArea');
+
+        return $this->redirect(\App\SpotiImplementation\Tools::getUrlAfterAuthentification($defaultUrl), 301);
     }
 
     /**

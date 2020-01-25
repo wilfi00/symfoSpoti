@@ -6,15 +6,14 @@
 		<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalePlaylists">
 		  Enregistrer
 		</button><br>
-		<button v-on:click="emptySelection('{{ path('emptyArtistsSelection') }}')">Supprimer toute la sélection</button>
-		<sidebar-artist v-for="artist in artists" v-bind:html="artist"></sidebar-artist>
+		<button>Supprimer toute la sélection</button>
 		{{ render(controller(
 			'App\\Controller\\Display::displayArtists', {artists: artistsInit }
 		)) }}
 	</div>
 {% endblock %}
 {% block content %}
-    <h3>Solenn area</h3>
+    <h3>Top tracks by artists</h3>
     {{ form(form) }}
 	<div class="search-result">
 	    {{ render(controller(
@@ -24,4 +23,7 @@
 	{{ render(controller(
 		'App\\Controller\\Display::displayPlaylists'
 	)) }}
+{% endblock %}
+{% block footer %}
+	<script>artistManager({{ jsConfig|json_encode|raw }});</script>
 {% endblock %}

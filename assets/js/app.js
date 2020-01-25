@@ -7,46 +7,32 @@
 
 // any CSS you require will output into a single css file (app.css in this case)
 require('../css/app.scss');
-import Vue from "vue";
-import axios from "axios";
 
 // Need jQuery? Install it with "yarn add jquery", then uncomment to require it.
 const $ = require('jquery');
 require('bootstrap');
 
-Vue.component('sidebar-artist', {
-	props: ['html', 'initUrl'],
-	template: '<a class="artistBloc" v-html="html"></a>'
-})
+global.artistManager = function(config) {
+	var sidebarSelection = $('.sidebar-left');
+	addEvents();
+	console.log(config.addArtistToSelectionUrl);
+	console.log(config.prout);
 
-var app = new Vue({
-    delimiters: ['${', '}'],
-    el: '#app',
-    data: {
-        message: '',
-        artists: [],
-    },
-    methods: {
-        addToSelection: function(urlAddToSelection, data, event) {
-            axios.post(urlAddToSelection, {
-				body: data
-			})
-            // this.artists.push(event.currentTarget.innerHTML);
-            this.addArtists(event.currentTarget.innerHTML);
-        },
-        addArtists: function(htmlContent) {
-        	this.artists.unshift(htmlContent);
-        },
-		emptySelection: function(urlEmpty) {
-			this.artists = [];
-			$('.sidebar-left .artistBloc').each(function() {
-				this.remove();
+	function addEvents()
+	{
+		$('.search-result .artistBloc').each(function() {
+			$(this).off('click').on('click', function() {
+				addArtistToSelection($(this));
 			});
-			axios.get(urlEmpty);
-		}
-    }
-})
+		})
+	}
 
+	function addArtistToSelection(artist)
+	{
+		artist.clone().appendTo(sidebarSelection);
+		$.post(config.addArtistToSelectionUrl, JSON.stringify(artist.data().information));
+	}
+}
 $('#modalePlaylists .btn-primary').on('click', function() {
 	$('form[name="playlist_selection"]').submit();
 });

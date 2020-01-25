@@ -83,7 +83,10 @@ class SolennController extends AbstractController
         return $this->render('testArea/solenn.html.twig', [
            'form'          => $form->createView(),
            'artistsSearch' => $artists,
-           'artistsInit'   => $this->initArtists($session)
+           'artistsInit'   => $this->initArtists($session),
+           'jsConfig'      => [
+               'addArtistToSelectionUrl' => $this->generateUrl('addArtist'),
+           ]
        ]);
     }
 
@@ -92,8 +95,7 @@ class SolennController extends AbstractController
      */
     public function addArtistToSelection(Request $request)
     {
-        $artist = json_decode($request->getContent(), true);
-        \App\SpotiImplementation\Tools::saveArtistSelectionInSession($artist['body']);
+        \App\SpotiImplementation\Tools::saveArtistSelectionInSession(json_decode($request->getContent(), true));
 
         return new Response();
     }

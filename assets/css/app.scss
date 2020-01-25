@@ -5,6 +5,7 @@ body {
 }
 .artistBloc {
 	display: inline-block;
+    cursor: pointer;
 	width: 200px;
 	height: 200px;
 	text-align: center;
@@ -20,6 +21,10 @@ body {
 .sidebar-left {
     float: left;
     margin: 40px 20px 0 0;
+
+    .artistBloc {
+        cursor: auto;
+    }
 }
 .sidebar-left > a {
     display: block;

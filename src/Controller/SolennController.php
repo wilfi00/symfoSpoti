@@ -23,14 +23,16 @@ class SolennController extends AbstractController
         }
 
         foreach ($artistsSelection as $artist) {
+            // var_dump($artist);exit();
             $artistsTmp['name'] = $artist['name'];
-
 
             if (isset($artist['image'])) {
                 $artistsTmp['image'] = $artist['image'];
             } elseif (!empty($artist['images'])) {
                 $artistsTmp['image'] = $artist['images'][0]['url'];
             }
+
+            $artistsTmp['id'] = $artist['id'];
 
             $artists[] = $artistsTmp;
         }
@@ -85,7 +87,8 @@ class SolennController extends AbstractController
            'artistsSearch' => $artists,
            'artistsInit'   => $this->initArtists($session),
            'jsConfig'      => [
-               'addArtistToSelectionUrl' => $this->generateUrl('addArtist'),
+               'addArtistToSelectionUrl'    => $this->generateUrl('addArtist'),
+               'removeArtistToSelectionUrl' => $this->generateUrl('removeArtist'),
            ]
        ]);
     }
@@ -96,6 +99,16 @@ class SolennController extends AbstractController
     public function addArtistToSelection(Request $request)
     {
         \App\SpotiImplementation\Tools::saveArtistSelectionInSession(json_decode($request->getContent(), true));
+
+        return new Response();
+    }
+
+    /**
+     * @Route("/removeArtistToSelectionUrl", name="removeArtist")
+     */
+    public function removeArtistToSelectionUrl(Request $request)
+    {
+        \App\SpotiImplementation\Tools::deleteArtistSelectionInSession($request->getContent());
 
         return new Response();
     }

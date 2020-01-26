@@ -13,7 +13,7 @@ body {
     img {
     	width: 100px;
     }
-    .hiddenArtistId {
+    .hiddenArtistId, .removeArtist {
         display: none;
     }
 }
@@ -21,6 +21,11 @@ body {
 .sidebar-left {
     float: left;
     margin: 40px 20px 0 0;
+
+    .removeArtist {
+        display: inline-block;
+        cursor: pointer;
+    }
 
     .artistBloc {
         cursor: auto;

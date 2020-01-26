@@ -71,6 +71,23 @@ class Tools
         $session->set(static::SESSION_ARTISTSELECTION, $artists);
     }
 
+    public static function deleteArtistSelectionInSession($artistId)
+    {
+        $selection = static::getArtistsSelectionInSession();
+
+        foreach ($selection as $key => $artist) {
+            if ($artist['id'] === $artistId) {
+                unset($selection[$key]);
+                static::emptyArtistSelectionInSession();
+
+                foreach ($selection as $artist) {
+                    static::saveArtistSelectionInSession($artist);
+                }
+                return;
+            }
+        }
+    }
+
     public static function getArtistsSelectionInSession($session = null)
     {
         if ($session === null) {

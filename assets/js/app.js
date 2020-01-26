@@ -20,17 +20,31 @@ global.artistManager = function(config) {
 
 	function addEvents()
 	{
+		// Ajout d'un artiste à la sélection
 		$('.search-result .artistBloc').each(function() {
 			$(this).off('click').on('click', function() {
 				addArtistToSelection($(this));
 			});
-		})
+		});
+
+		// Suppression de l'artiste de la sélection
+		$('.sidebar-left .removeArtist').each(function() {
+			$(this).off('click').on('click', function() {
+				removeArtistToSelection($(this).parent());
+			});
+		});
 	}
 
 	function addArtistToSelection(artist)
 	{
 		artist.clone().appendTo(sidebarSelection);
 		$.post(config.addArtistToSelectionUrl, JSON.stringify(artist.data().information));
+	}
+
+	function removeArtistToSelection(artist)
+	{
+		artist.remove();
+		$.post(config.removeArtistToSelectionUrl, artist.data().information.id);
 	}
 }
 $('#modalePlaylists .btn-primary').on('click', function() {

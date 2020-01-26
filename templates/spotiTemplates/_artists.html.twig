@@ -1,6 +1,7 @@
 {% for artist in artists %}<a class="artistBloc"  data-information="{{ artist|json_encode() }}">
-		{% if artist.image is not empty %}
-			<img src="{{ artist.image }}" /> <br>
-		{% endif %}
-	    {{ artist.name }}
+	<span class="removeArtist">X</span>
+	{% if artist.image is not empty %}
+		<img src="{{ artist.image }}" /> <br>
+	{% endif %}
+    {{ artist.name }}
 </a>{% endfor %}

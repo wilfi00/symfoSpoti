@@ -6,7 +6,7 @@
 		<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalePlaylists">
 		  Enregistrer
 		</button><br>
-		<button>Supprimer toute la sélection</button>
+		<button class="removeAll">Supprimer toute la sélection</button>
 		{{ render(controller(
 			'App\\Controller\\Display::displayArtists', {artists: artistsInit }
 		)) }}
@@ -15,7 +15,8 @@
 {% block content %}
     <h3>Top tracks by artists</h3>
     {{ form(form) }}
-	<div class="search-result">
+	<div id="loader"></div>
+	<div class="search-result animate-bottom">
 	    {{ render(controller(
             'App\\Controller\\Display::displayArtists', {artists: artistsSearch }
         )) }}

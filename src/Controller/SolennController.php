@@ -53,9 +53,8 @@ class SolennController extends AbstractController
 
         $artists = [];
 
-        $form = $this->createFormBuilder()
+        $form = $this->createFormBuilder(null, ['attr' => ['id' => 'search-form']])
             ->add('artist', TextType::class,   ['label' => 'Entrez le nom de l\'artiste : '])
-            ->add('save',   SubmitType::class, ['label' => 'Chercher cet artiste'])
             ->getForm();
 
         $form->handleRequest($request);
@@ -80,6 +79,10 @@ class SolennController extends AbstractController
                     'id'    => $artist->id
                 ];
             }
+
+            return $this->render('spotiTemplates/_artists.html.twig', [
+                'artists' => $artists,
+           ]);
         }
 
         return $this->render('testArea/solenn.html.twig', [
@@ -89,6 +92,7 @@ class SolennController extends AbstractController
            'jsConfig'      => [
                'addArtistToSelectionUrl'    => $this->generateUrl('addArtist'),
                'removeArtistToSelectionUrl' => $this->generateUrl('removeArtist'),
+               'removeAllSelectionUrl'      => $this->generateUrl('emptyArtistsSelection'),
            ]
        ]);
     }

@@ -15,8 +15,6 @@ require('bootstrap');
 global.artistManager = function(config) {
 	var sidebarSelection = $('.sidebar-left');
 	addEvents();
-	console.log(config.addArtistToSelectionUrl);
-	console.log(config.prout);
 
 	function addEvents()
 	{
@@ -33,11 +31,18 @@ global.artistManager = function(config) {
 				removeArtistToSelection($(this).parent());
 			});
 		});
+
+		// Supprime toute la sélection
+		$('.sidebar-left .removeAll').off('click').on('click', function() {
+			removeAllSelection();
+		});
 	}
 
 	function addArtistToSelection(artist)
 	{
 		artist.clone().appendTo(sidebarSelection);
+		addEvents();
+		artist.css('pointer-events', 'none');
 		$.post(config.addArtistToSelectionUrl, JSON.stringify(artist.data().information));
 	}
 
@@ -46,7 +51,62 @@ global.artistManager = function(config) {
 		artist.remove();
 		$.post(config.removeArtistToSelectionUrl, artist.data().information.id);
 	}
+
+	function removeAllSelection()
+	{
+		$.get(config.removeAllSelectionUrl);
+		$('.sidebar-left .artistBloc').each(function() {
+			$(this).remove();
+		});
+	}
+
+	$('#search-form').submit(function(event) {
+		var result = $('.search-result');
+		result.hide();
+		showLoader();
+		event.preventDefault(); //prevent default action
+		var url           = $(this).attr("action"); //get form action url
+		var requestMethod = $(this).attr("method"); //get form GET/POST method
+		var data          = $(this).serialize(); //Encode form elements for submission
+
+		$.ajax({
+			url : url,
+			type: requestMethod,
+			data : data
+		}).done(function(response) {
+			result.html(response);
+			hideLoader();
+			result.show();
+			addEvents();
+		});
+	});
+
+	var typingTimer; // Timer
+	var doneTypingInterval = 100;  // On laisse une seconde
+	$('#search-form :input').each(function() {
+	    var input = $("#" + this.id);
+	    input.on('keyup', function () {
+	        clearTimeout(typingTimer);
+	        typingTimer = setTimeout(function() {
+				$('#search-form').submit();
+			}, doneTypingInterval);
+	    });
+	    input.on('keydown', function () {
+	            clearTimeout(typingTimer);
+	    });
+	});
 }
+
+
 $('#modalePlaylists .btn-primary').on('click', function() {
 	$('form[name="playlist_selection"]').submit();
 });
+
+function showLoader()
+{
+	$('#loader').show();
+}
+function hideLoader()
+{
+	$('#loader').hide();
+}

@@ -41,7 +41,7 @@ class SolennController extends AbstractController
     }
 
     /**
-     * @Route("/testAreaSolenn", name="solenn")
+     * @Route("/", name="solenn")
      */
     public function testAreaSolenn(Request $request)
     {

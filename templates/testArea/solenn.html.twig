@@ -13,7 +13,8 @@
 	</div>
 {% endblock %}
 {% block content %}
-    <h3>Top tracks by artists</h3>
+    <h3>Ecoutez les meilleurs titres de vos groupes préférés</h3>
+    <p>Faites votre sélection d'artistes puis enregistrez leurs chansons les plus connus dans une playlist</p>
     {{ form(form) }}
 	<div id="loader"></div>
 	<div class="search-result animate-bottom">
@@ -28,3 +29,11 @@
 {% block footer %}
 	<script>artistManager({{ jsConfig|json_encode|raw }});</script>
 {% endblock %}
+<!-- Pour la modale : petit plus à droite du sélecteur de playlist, fait descendre une champ texte en dessous pour remplir le nom de la playlist -->
+<!-- ou alors remplace le sélecteur de playlist par le champ de texte -->
+<!-- ou alors au clique sur le + ça "grise" la sélection d'une playlist existante, il faut valider la création de la playlist puis on rafraichit -->
+<!-- le sélecteur de playlist en mettant en premier la nouvelle playlist crée -->
+<!-- ou faire une tabulation avec un OU avec en haut le sélecteur de playlist et en bas le champ texte -->
+
+<!-- de manière générale : contextualiser, pas de place au doute -->
+<!-- privilégier des verbes / actions -->

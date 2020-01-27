@@ -36,15 +36,15 @@ class Request
         return  $search->artists->items;
     }
 
-    public function getTenMetalArtists()
+    public function getTenArtists($nbArtists = 10, $fromGenre = 'metal')
     {
         $artists = [];
-        while (count($artists) < 1) {
+        while (count($artists) < $nbArtists) {
             $tmpArtists = $this->getSeveralArtists(50);
             foreach ($tmpArtists as $tmpArtist) {
                 $genres = $tmpArtist->genres;
                 foreach ($genres as $genre) {
-                    if (strpos($genre, 'metal') !== false) {
+                    if (strpos($genre, $fromGenre) !== false) {
                         $artists[] = $tmpArtist;
                         break;
                     }
@@ -53,6 +53,16 @@ class Request
         }
 
         return $artists;
+    }
+
+    public function getRandomArtist()
+    {
+        var_dump(Tools::generateRandomCharacter());
+        // $search = $this->api->search('caravan%', 'artist', ['limit' => 50]);
+        $search = $this->api->search(Tools::generateRandomCharacter() . '% genre:electro+swing', 'artist', ['limit' => 50]);
+        // $search = $this->api->search(Tools::generateRandomCharacter() . '% genre:metalcore', 'artist', ['limit' => 50]);
+
+        return  $search->artists->items;
     }
 
     public function getSeveralTracks($metal = false)

@@ -1563,7 +1563,7 @@ class SpotifyWebAPI
         $headers = $this->authHeaders();
 
         $uri = '/v1/search';
-
+        var_dump($options);
         $this->lastResponse = $this->sendRequest('GET', $uri, $options, $headers);
 
         return $this->lastResponse['body'];

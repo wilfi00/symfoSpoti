@@ -92,7 +92,7 @@ global.artistManager = function(config) {
 			}, doneTypingInterval);
 	    });
 	    input.on('keydown', function () {
-	            clearTimeout(typingTimer);
+			clearTimeout(typingTimer);
 	    });
 	});
 }

@@ -1,4 +1,4 @@
-{% for artist in artists %}<a class="artistBloc"  data-information="{{ artist|json_encode() }}">
+{% for artist in artists %}<a class="artistBloc" title="Ajouter à la sélection" data-information="{{ artist|json_encode() }}">
 	<span class="removeArtist">X</span>
 	{% if artist.image is not empty %}
 		<img src="{{ artist.image }}" /> <br>

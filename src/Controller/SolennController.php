@@ -54,7 +54,7 @@ class SolennController extends AbstractController
         $artists = [];
 
         $form = $this->createFormBuilder(null, ['attr' => ['id' => 'search-form']])
-            ->add('artist', TextType::class,   ['label' => 'Entrez le nom de l\'artiste : '])
+            ->add('artist', TextType::class,   ['label' => 'Entrez le nom d\'un groupe : '])
             ->getForm();
 
         $form->handleRequest($request);

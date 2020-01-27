@@ -14,12 +14,12 @@ class PlaylistSelection extends AbstractType
         $playlists     = $requestSpoti->getUserPlaylistsForModaleSelection();
 
         $builder
-            ->add('playlist', ChoiceType::class, [
-                'choices' => $playlists,
-                'label'   => 'Ajouter les titres dans cette playlist : ',])
             ->add('nbSongs', ChoiceType::class,   [
                 'choices' => ['5' => '5', '10' => '10'],
-                'label'   => 'Nombre de chansons par artiste : ',])
+                'label'   => 'Nombre de chansons par groupe : ',])
+            ->add('playlist', ChoiceType::class, [
+                'choices' => $playlists,
+                'label'   => 'Ajouter les chansons dans cette playlist : ',])
         ;
     }
 }

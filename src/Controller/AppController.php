@@ -47,8 +47,8 @@ class AppController extends AbstractController
         ]);
 
         $request    = new \App\SpotiImplementation\Request($api);
-        $test       = var_export($request->getSeveralArtists(1), true);
-
+        $test       = var_export($request->getRandomArtist(), true);
+var_dump($test);
         return $this->render('testArea/base.html.twig', [
             'solennUrl' => $this->generateUrl('solenn'),
         ]);

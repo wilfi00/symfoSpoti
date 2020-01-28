@@ -55,14 +55,39 @@ class Request
         return $artists;
     }
 
-    public function getRandomArtist()
+    public function getRandomArtist2()
     {
-        var_dump(Tools::generateRandomCharacter());
         // $search = $this->api->search('caravan%', 'artist', ['limit' => 50]);
         $search = $this->api->search(Tools::generateRandomCharacter() . '% genre:electro+swing', 'artist', ['limit' => 50]);
         // $search = $this->api->search(Tools::generateRandomCharacter() . '% genre:metalcore', 'artist', ['limit' => 50]);
 
         return  $search->artists->items;
+    }
+
+    public function getRandomArtistsFromGenre($nbArtists = 10, $genre = 'metal', $strict = true)
+    {
+        $artists = [];
+
+        while (count($artists) < $nbArtists) {
+            $search = $this->api->search(Tools::generateRandomCharacter() . '% genre:' . $genre, 'artist', ['limit' => 50]);
+            $searchArtists = $search->artists->items;
+            shuffle($searchArtists);
+            foreach ($searchArtists as $artist) {
+                if ($strict) {
+                    foreach ($artist->genres as $g) {
+                        if ($g === $genre) {
+                            $artists[] = $artist->id;
+                        }
+                    };
+                }
+
+                if (count($artists) === $nbArtists) {
+                    break;
+                }
+            }
+        }
+
+        return  $artists;
     }
 
     public function getSeveralTracks($metal = false)
@@ -85,12 +110,8 @@ class Request
         return $tracks;
     }
 
-    public function addSeveralTracksToPlaylist()
+    public function addTracksToPlaylist($tracks, $playlistId)
     {
-        $playlistRequest = $this->api->getMyPlaylists('limit=1');
-        $playlistId      = $playlistRequest->items[0]->id;
-        $tracks          = ApiTools::convertApiObjectsToIds($this->getSeveralTracks(true));
-
         $this->api->addPlaylistTracks($playlistId, $tracks);
     }
 
@@ -128,6 +149,17 @@ class Request
         return $playlists;
     }
 
+    public function getTopsTracksFromArtists($artists, $nbTracks)
+    {
+        $tracks = [];
+
+        foreach ($artists as $artist) {
+            $tracks = array_merge($tracks, $this->getTopTracksFromArtist($artist, $nbTracks));
+        }
+
+        return $tracks;
+    }
+
     protected function getTopTracksFromArtist($id, $nbTracks = 10)
     {
         if ($nbTracks < 1 || $nbTracks > 10) {
@@ -141,7 +173,7 @@ class Request
             $tracks[] = $track->id;
         }
 
-        return array_slice($tracks, $nbTracks - 10);
+        return array_slice($tracks, 0, $nbTracks);
     }
 
     public function addTopTracksToPlaylist($data)
@@ -155,6 +187,6 @@ class Request
             $tracksToAdd = array_merge($tracksToAdd, $this->getTopTracksFromArtist($artist['id'], $nbSongs));
         }
 
-        $this->api->addPlaylistTracks($playlistId, $tracksToAdd);
+        $this->addTracksToPlaylist($tracksToAdd, $playlistId);
     }
 }

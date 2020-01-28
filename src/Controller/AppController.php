@@ -46,11 +46,34 @@ class AppController extends AbstractController
             'auto_refresh' => true,
         ]);
 
-        $request    = new \App\SpotiImplementation\Request($api);
-        $test       = var_export($request->getRandomArtist(), true);
-var_dump($test);
+//         $request    = new \App\SpotiImplementation\Request($api);
+//         $test       = var_export($request->getRandomArtist(), true);
+// var_dump($test);
+
         return $this->render('testArea/base.html.twig', [
             'solennUrl' => $this->generateUrl('solenn'),
         ]);
+    }
+
+    /**
+     * @Route("/generateMetalcore", name="generateMetalcore")
+     */
+    public function generateHundredMetalCoreSongs()
+    {
+        $api     = new \App\SpotifyWebAPI\SpotifyWebAPI();
+        $api->setSession(\App\SpotiImplementation\Tools::getApiSession());
+        $api->setOptions([
+            'auto_refresh' => true,
+        ]);
+
+        $request = new \App\SpotiImplementation\Request($api);
+        $artistsId = $request->getRandomArtistsFromGenre(50, 'metalcore');
+        $tracks = $request->getTopsTracksFromArtists($artistsId, 2);
+        shuffle($tracks);
+
+        // spotify:playlist:74GkpvpZYcQ0fgpX9SQsWV
+        $playlist = '74GkpvpZYcQ0fgpX9SQsWV';
+        $request->addTracksToPlaylist($tracks, $playlist);
+        var_dump('done !');exit();
     }
 }

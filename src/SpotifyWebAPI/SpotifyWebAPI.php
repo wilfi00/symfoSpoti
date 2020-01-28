@@ -71,6 +71,7 @@ class SpotifyWebAPI
         ]);
 
         try {
+            dump('requestApiSpoti, uri : ' . $uri . ' parameters : ' . var_export($parameters, true));
             return $this->request->api($method, $uri, $parameters, $headers);
         } catch (SpotifyWebAPIException $e) {
             if ($this->options['auto_refresh'] && $e->hasExpiredToken()) {
@@ -1563,7 +1564,6 @@ class SpotifyWebAPI
         $headers = $this->authHeaders();
 
         $uri = '/v1/search';
-        var_dump($options);
         $this->lastResponse = $this->sendRequest('GET', $uri, $options, $headers);
 
         return $this->lastResponse['body'];

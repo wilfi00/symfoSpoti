@@ -95,8 +95,52 @@ global.artistManager = function(config) {
 			clearTimeout(typingTimer);
 	    });
 	});
-}
+};
 
+global.genreManager = function(config) {
+	console.log(config.searchGenreUrl);
+	addInputSearchEvent();
+
+
+
+	function addInputSearchEvent()
+	{
+		var typingTimer; // Timer
+		var doneTypingInterval = 100;  // On laisse une seconde
+		var input = $('.inputSearchGenre');
+
+	    input.on('keyup', function () {
+	        clearTimeout(typingTimer);
+	        typingTimer = setTimeout(function() {
+				$.post(config.searchGenreUrl, JSON.stringify(input.val().split(' ')), function(jsonGenres) {
+					console.log(jsonGenres);
+					displayResult(jsonGenres);
+				});
+			}, doneTypingInterval);
+	    });
+	    input.on('keydown', function () {
+			clearTimeout(typingTimer);
+	    });
+	}
+
+	function displayResult(genres)
+	{
+		cleanResults();
+		var htmlResult = $('.result');
+		genres.forEach(function(genre) {
+			htmlResult.append('<span class="genre">' + genre.name + '</span>');
+		});
+			// htmlResult.append('<span class="genre">' + genre.name + '</span>');
+		// }
+	}
+
+	function cleanResults()
+	{
+		$('.result .genre').each(function() {
+			$(this).remove();
+		});
+	}
+};
 
 $('#modalePlaylists .btn-primary').on('click', function() {
 	$('form[name="playlist_selection"]').submit();

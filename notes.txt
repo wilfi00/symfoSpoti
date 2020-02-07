@@ -1,0 +1,11 @@
+Structure DB
+
+table genres
+
+id primary uniq increment
+name varchar 255 NOT NULL
+
+php bin/console make:migration
+=> met à jour la DB par rapport aux entity
+ php bin/console doctrine:migrations:migrate
+ => applique la mise à jour

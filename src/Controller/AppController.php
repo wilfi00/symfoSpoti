@@ -7,6 +7,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use App\SpotiImplementation\Auth;
 use App\SolennArea;
+use App\Repository\GenreRepository;
 
 class AppController extends AbstractController
 {
@@ -35,24 +36,12 @@ class AppController extends AbstractController
     /**
      * @Route("/testArea", name="testArea")
      */
-    public function testArea()
+    public function testArea(GenreRepository $genreRepository)
     {
-        $api = new \App\SpotifyWebAPI\SpotifyWebAPI();
+        $genres = $genreRepository->findByGenres(['metal']);
+        // var_dump($genres);exit();
 
-        // Fetch the saved access token from somewhere. A database for example.
-        //$api->setAccessToken(Tools::getCurrentToken());
-        $api->setSession(\App\SpotiImplementation\Tools::getApiSession());
-        $api->setOptions([
-            'auto_refresh' => true,
-        ]);
-
-//         $request    = new \App\SpotiImplementation\Request($api);
-//         $test       = var_export($request->getRandomArtist(), true);
-// var_dump($test);
-
-        return $this->render('testArea/base.html.twig', [
-            'solennUrl' => $this->generateUrl('solenn'),
-        ]);
+        return $this->render('testArea/discover.html.twig');
     }
 
     /**

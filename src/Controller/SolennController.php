@@ -23,7 +23,6 @@ class SolennController extends AbstractController
         }
 
         foreach ($artistsSelection as $artist) {
-            // var_dump($artist);exit();
             $artistsTmp['name'] = $artist['name'];
 
             if (isset($artist['image'])) {

@@ -189,4 +189,9 @@ class Request
 
         $this->addTracksToPlaylist($tracksToAdd, $playlistId);
     }
+
+    public function getTracks($tacks)
+    {
+        return $this->api->getArtistTopTracks($id, 'country=FR')->tracks;
+    }
 }

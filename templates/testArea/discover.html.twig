@@ -1,9 +1,17 @@
 {% extends "testArea/base.html.twig" %}
 {% block title %}Discover{% endblock %}
+{% block sidebarLeft %}
+	<div class="sidebar-left">
+		<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalePlaylists">
+		  Enregistrer
+		</button><br>
+		<div class="selection"></div>
+	</div>
+{% endblock %}
 {% block content %}
     <h3>Test de recherche de genre</h3>
     <input type="text" class="inputSearchGenre">
-    <div class="result"></div>
+    <div class="result"><ul></ul></div>
 {% endblock %}
 {% block footer %}
 	<script>genreManager({{ jsConfig|json_encode|raw }});</script>

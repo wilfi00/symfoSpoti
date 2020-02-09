@@ -9,3 +9,12 @@ php bin/console make:migration
 => met à jour la DB par rapport aux entity
  php bin/console doctrine:migrations:migrate
  => applique la mise à jour
+
+
+1/ Améliorer les perfs en récupérant d'un coup tous les genres de musique et seulement ensuite en JS ça fait la recherche
+
+2/ A la génération de la playlist, vérifier que le genre n'a pas été trafiqué en en les matchant avec la DB
+
+3/ Mettre en place la sécurité sur le nombre de requêtes API pour une "opération"
+
+4/ Pouvoir afficher une liste de chansons comme une playlist

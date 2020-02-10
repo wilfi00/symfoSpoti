@@ -1,0 +1,7 @@
+test{% for track in tracks %}<div class="trackBlock">
+	{% if track.image is not empty %}
+		<img src="{{ track.image }}" /> <br>
+	{% endif %}
+    <span class="name">{{ track.name }}</span>
+    <span class="artistName">{{ track.artistName}}</span>
+</div>{% endfor %}

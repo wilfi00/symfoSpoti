@@ -192,6 +192,6 @@ class Request
 
     public function getTracks($tacks)
     {
-        return $this->api->getArtistTopTracks($id, 'country=FR')->tracks;
+        return $this->api->getTracks($tacks)->tracks;
     }
 }

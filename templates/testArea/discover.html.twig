@@ -12,6 +12,9 @@
     <h3>Test de recherche de genre</h3>
     <input type="text" class="inputSearchGenre">
     <div class="result"><ul></ul></div>
+    {{ render(controller(
+		'App\\Controller\\Display::displayTracks', {tracks: tracks }
+	)) }}
 {% endblock %}
 {% block footer %}
 	<script>genreManager({{ jsConfig|json_encode|raw }});</script>

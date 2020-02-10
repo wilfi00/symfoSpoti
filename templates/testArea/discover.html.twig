@@ -10,7 +10,7 @@
 {% endblock %}
 {% block content %}
     <h3>Test de recherche de genre</h3>
-    <input type="text" class="inputSearchGenre">
+    <input type="text" class="inputSearchGenre"><button class="btn btn-primary">Générer</button>
     <div class="result"><ul></ul></div>
     {{ render(controller(
 		'App\\Controller\\Display::displayTracks', {tracks: tracks }

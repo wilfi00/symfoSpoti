@@ -1,8 +1,5 @@
 @import "~bootstrap/scss/bootstrap";
 
-body {
-    background-color: lightgray;
-}
 .artistBloc {
 	display: inline-block;
     cursor: pointer;
@@ -81,9 +78,24 @@ body {
     cursor: pointer;
 }
 
-.trackBlocks {
+.trackBlock {
+    display: flex;
+
     img {
-        width: 60px;
+        width: 70px;
     }
 
+    .names {
+        display: inline-flex;
+        flex-direction: column;
+        justify-content: space-around;
+        margin-left: 20px;
+    }
 }
+
+hr {
+    background: linear-gradient(90deg, rgba(255,94,98,1) 0%, rgba(255,153,102,1) 35%);
+}
+.container hr:last-child { display: none; }
+
+/* #ff512f → #dd2476 */

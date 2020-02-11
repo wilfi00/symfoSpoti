@@ -107,7 +107,7 @@ global.genreManager = function(config) {
 		addInputSearchEvent();
 
 		// Sélection d'un genre
-		$('.result ul .genre').each(function() {
+		$('.genreResult .genre').each(function() {
 			$(this).off('click').on('click', function() {
 				addGenreToSelection($(this));
 			});
@@ -125,7 +125,7 @@ global.genreManager = function(config) {
 		var doneTypingInterval = 100;  // On laisse une seconde
 		var input = $('.inputSearchGenre');
 
-	    input.on('keyup', function () {
+	    input.off('keyup').on('keyup', function () {
 	        clearTimeout(typingTimer);
 	        typingTimer = setTimeout(function() {
 				$.post(config.searchGenreUrl, JSON.stringify(input.val().split(' ')), function(jsonGenres) {
@@ -133,7 +133,7 @@ global.genreManager = function(config) {
 				});
 			}, doneTypingInterval);
 	    });
-	    input.on('keydown', function () {
+	    input.off('keydown').on('keydown', function () {
 			clearTimeout(typingTimer);
 	    });
 	}
@@ -141,16 +141,16 @@ global.genreManager = function(config) {
 	function displayResultGenres(genres)
 	{
 		cleanResults();
-		var htmlResult = $('.result ul');
+		var htmlResult = $('.genreResult');
 		genres.forEach(function(genre) {
-			$('<li class="genre">' + genre.name + '</li>').appendTo(htmlResult)
+			$('<li class="genre" data-name="' + genre.name + '">' + genre.name + '</li>').appendTo(htmlResult)
 		});
 		addEvents();
 	}
 
 	function cleanResults()
 	{
-		$('.result ul .genre').each(function() {
+		$('.genreResult .genre').each(function() {
 			$(this).remove();
 		});
 	}
@@ -168,13 +168,23 @@ global.genreManager = function(config) {
 		$.ajax({
 			url : config.generatePlaylistUrl,
 			type: 'POST',
-			data : JSON.stringify(['metalcore'])
+			data : JSON.stringify(getSelectedGenres())
 		}).done(function(response) {
 			result.html(response);
 			hideLoader();
 			result.show();
 			// addEvents();
 		});
+	}
+
+	function getSelectedGenres()
+	{
+		var genres = [];
+		$('.selection .genre').each(function() {
+		  genres.push($(this).data('name'));
+		});
+
+		return genres;
 	}
 };
 
@@ -190,4 +200,3 @@ function hideLoader()
 {
 	$('#loader').hide();
 }
-

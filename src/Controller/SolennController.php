@@ -59,7 +59,7 @@ class SolennController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $data = $form->getData();
+            $data       = $form->getData();
             $artistName = $data['artist'];
 
             $requestSpoti = \App\SpotiImplementation\Request::factory();

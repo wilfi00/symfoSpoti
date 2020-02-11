@@ -44,7 +44,7 @@ class DiscoverController extends AbstractController
             'auto_refresh' => true,
         ]);
         $request       = new \App\SpotiImplementation\Request($api);
-        $artistsId     = $request->getRandomArtistsFromGenre(50, $genre);
+        $artistsId     = $request->getRandomArtistsFromGenre(50, $genre, false);
         $tracksRequest = $request->getTopsTracksFromArtists($artistsId, 2);
         shuffle($tracksRequest);
 

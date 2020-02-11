@@ -64,11 +64,14 @@ class Request
         return  $search->artists->items;
     }
 
-    public function getRandomArtistsFromGenre($nbArtists = 10, $genre = 'metal', $strict = true)
+    public function getRandomArtistsFromGenre($nbArtists = 10, $genre = 'metal', $strict = true, $maxTry = 20)
     {
+        $cpt     = 0;
         $artists = [];
+        $genre   = Tools::formatStringForSpotify($genre);
 
-        while (count($artists) < $nbArtists) {
+        while ((count($artists) < $nbArtists) && ($cpt <= $maxTry)) {
+            $cpt++;
             $search = $this->api->search(Tools::generateRandomCharacter() . '% genre:' . $genre, 'artist', ['limit' => 50]);
             $searchArtists = $search->artists->items;
             shuffle($searchArtists);
@@ -79,6 +82,8 @@ class Request
                             $artists[] = $artist->id;
                         }
                     };
+                } else {
+                    $artists[] = $artist->id;
                 }
 
                 if (count($artists) === $nbArtists) {
@@ -86,7 +91,7 @@ class Request
                 }
             }
         }
-
+var_dump($cpt);
         return  $artists;
     }
 

@@ -190,8 +190,17 @@ class Request
         $this->addTracksToPlaylist($tracksToAdd, $playlistId);
     }
 
-    public function getTracks($tacks)
+    public function getTracks($tracks)
     {
-        return $this->api->getTracks($tacks)->tracks;
+        $tracksToReturn = [];
+
+        // Spotify ne peut traiter que 50 tracks max
+        $multipleArraysTracks = array_chunk($tracks, 50);
+
+        foreach($multipleArraysTracks as $tracks) {
+            $tracksToReturn = array_merge($tracksToReturn, $this->api->getTracks($tracks)->tracks);
+        }
+
+        return $tracksToReturn;
     }
 }

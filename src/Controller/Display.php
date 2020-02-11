@@ -40,6 +40,8 @@ class Display extends AbstractController
 
     /**
      * @Route("/displayTracks", name="displayTracks")
+     *
+     * @deprecated
      */
     public function displayTracks()
     {

@@ -112,6 +112,11 @@ global.genreManager = function(config) {
 				addGenreToSelection($(this));
 			});
 		});
+
+		// Bouton de génération de la playlist
+		$('.generate').off('click').on('click', function() {
+			generatePlaylist();
+		});
 	}
 
 	function addInputSearchEvent()
@@ -124,7 +129,7 @@ global.genreManager = function(config) {
 	        clearTimeout(typingTimer);
 	        typingTimer = setTimeout(function() {
 				$.post(config.searchGenreUrl, JSON.stringify(input.val().split(' ')), function(jsonGenres) {
-					displayResult(jsonGenres);
+					displayResultGenres(jsonGenres);
 				});
 			}, doneTypingInterval);
 	    });
@@ -133,7 +138,7 @@ global.genreManager = function(config) {
 	    });
 	}
 
-	function displayResult(genres)
+	function displayResultGenres(genres)
 	{
 		cleanResults();
 		var htmlResult = $('.result ul');
@@ -154,6 +159,23 @@ global.genreManager = function(config) {
 	{
 		genre.clone().appendTo($('.selection'));
 	}
+
+	function generatePlaylist()
+	{
+		var result = $('.playlistResult');
+		result.hide();
+		showLoader();
+		$.ajax({
+			url : config.generatePlaylistUrl,
+			type: 'POST',
+			data : JSON.stringify(['metalcore'])
+		}).done(function(response) {
+			result.html(response);
+			hideLoader();
+			result.show();
+			// addEvents();
+		});
+	}
 };
 
 $('#modalePlaylists .btn-primary').on('click', function() {
@@ -168,3 +190,4 @@ function hideLoader()
 {
 	$('#loader').hide();
 }
+

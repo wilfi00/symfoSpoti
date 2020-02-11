@@ -18,3 +18,7 @@ php bin/console make:migration
 3/ Mettre en place la sécurité sur le nombre de requêtes API pour une "opération"
 
 4/ Pouvoir afficher une liste de chansons comme une playlist
+
+5/ Pour pouvoir déterminer si le genre est connu, faire une cron qui va, pour chaque genre, essayer de générer 5 playlist
+si il n'y arrive jamais => foutu
+si il y arrive on marque le nombre de try (si en une fois ça sera < 50 si en plusieurs ça sera > 50)

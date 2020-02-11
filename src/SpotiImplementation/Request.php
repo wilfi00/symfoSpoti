@@ -64,7 +64,7 @@ class Request
         return  $search->artists->items;
     }
 
-    public function getRandomArtistsFromGenre($nbArtists = 10, $genre = 'metal', $strict = true, $maxTry = 20)
+    public function getRandomArtistsFromGenre($nbArtists = 10, $genre = 'metal', $strict = true, $maxTry = 50)
     {
         $cpt     = 0;
         $artists = [];
@@ -74,6 +74,7 @@ class Request
             $cpt++;
             $search = $this->api->search(Tools::generateRandomCharacter() . '% genre:' . $genre, 'artist', ['limit' => 50]);
             $searchArtists = $search->artists->items;
+            var_dump(count($searchArtists));
             shuffle($searchArtists);
             foreach ($searchArtists as $artist) {
                 if ($strict) {

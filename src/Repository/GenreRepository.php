@@ -37,6 +37,15 @@ class GenreRepository extends ServiceEntityRepository
         ;
     }
 
+    public function updateProgressOfPopularityGenres($currentGenre, $try)
+    {
+        $conn = $this->getEntityManager()->getConnection();
+        $sql = 'INSERT INTO progress_popularity_genres (genre, try) VALUES ("' . $currentGenre . '", "' . $try . '")';
+        $conn->query($sql);
+        // $stmt = $conn->prepare($sql);
+        // $stmt->execute();
+    }
+
     // /**
     //  * @return Genre[] Returns an array of Genre objects
     //  */

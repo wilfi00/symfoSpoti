@@ -2,6 +2,8 @@
 
 namespace App\SpotiImplementation;
 
+use App\Repository\GenreRepository;
+
 class Request
 {
     protected $api;
@@ -66,9 +68,10 @@ class Request
 
     public function getRandomArtistsFromGenre($nbArtists = 10, $genre = 'metal', $strict = true, $maxTry = 50)
     {
-        $cpt     = 0;
-        $artists = [];
-        $genre   = Tools::formatStringForSpotify($genre);
+        $cpt         = 0;
+        $artists     = [];
+        $genre       = Tools::formatStringForSpotify($genre);
+        $genreEntity = new GenreRepository();
 
         while ((count($artists) < $nbArtists) && ($cpt <= $maxTry)) {
             $cpt++;
@@ -91,8 +94,11 @@ class Request
                     break;
                 }
             }
+
+            // Log
+            $genreEntity->updateProgressOfPopularityGenres($genre, $cpt);
         }
-var_dump($cpt);
+
         return  $artists;
     }
 

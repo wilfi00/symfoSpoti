@@ -95,4 +95,26 @@ class DiscoverController extends AbstractController
         // $request->addTracksToPlaylist($tracks, $playlist);
         // var_dump('done !');exit();
     }
+
+    /**
+     * @Route("/setPopularityGenres", name="setPopularityGenres")
+     */
+    public function setPopularityGenres(GenreRepository $genreRepository)
+    {
+        $api = new \App\SpotifyWebAPI\SpotifyWebAPI();
+        $api->setSession(\App\SpotiImplementation\Tools::getApiSession());
+        $api->setOptions([
+            'auto_refresh' => true,
+        ]);
+        $request = new \App\SpotiImplementation\Request($api);
+        $genres  = $genreRepository->findAll();
+        var_dump($genres);exit();
+
+$genres = ['metalcore'];
+
+        foreach ($genres as $genre) {
+            $request->getRandomArtistsFromGenre(50, $genre);
+            sleep(30);
+        }
+    }
 }

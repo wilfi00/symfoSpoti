@@ -19,6 +19,7 @@ class DiscoverController extends AbstractController
             'jsConfig' => [
                 'searchGenreUrl'      => $this->generateUrl('searchGenre'),
                 'generatePlaylistUrl' => $this->generateUrl('generatePlaylist'),
+                'saveIntoPlaylistUrl' => $this->generateUrl('saveTracksIntoPlaylist'),
             ],
             'tracks' => [],
         ]);
@@ -37,7 +38,9 @@ class DiscoverController extends AbstractController
      */
     public function generatePlaylist(Request $request, GenreRepository $genreRepository)
     {
-        $genre = json_decode($request->getContent(), true)[0];
+        $genre   = json_decode($request->getContent(), true)[0];
+        $genre   = $genreRepository->findByGenre($genre);
+        // var_dump($genre);exit();
         $api     = new \App\SpotifyWebAPI\SpotifyWebAPI();
         $api->setSession(\App\SpotiImplementation\Tools::getApiSession());
         $api->setOptions([
@@ -45,7 +48,7 @@ class DiscoverController extends AbstractController
         ]);
         $request       = new \App\SpotiImplementation\Request($api);
         $request->setGenreRespository($genreRepository);
-        $artistsId     = $request->getRandomArtistsFromGenre(50, $genre, true);
+        $artistsId     = $request->getRandomArtistsFromGenre($genre, 50, true);
         $tracksRequest = $request->getTopsTracksFromArtists($artistsId, 2);
         shuffle($tracksRequest);
 
@@ -70,6 +73,7 @@ class DiscoverController extends AbstractController
             }
 
             $tracks[] = [
+                'id'         => $spotiTrack->id,
                 'name'       => $spotiTrack->name,
                 'artistName' => $spotiTrack->artists[0]->name,
                 'image'      => $tmpImg,
@@ -111,11 +115,29 @@ class DiscoverController extends AbstractController
         $request->setGenreRespository($genreRepository);
         $genres  = $genreRepository->findAll();
 
-$genres = array_slice($genres, 29, 200);
+$genres = array_slice($genres, 200, 400);
 
         foreach ($genres as $genre) {
-            $request->getRandomArtistsFromGenre(50, $genre->getName());
+            $request->getRandomArtistsFromGenre($genre, 50);
             sleep(30);
         }
+    }
+
+    /**
+     * @Route("/saveTracksIntoPlaylist", name="saveTracksIntoPlaylist")
+     */
+    public function saveTracksIntoPlaylist(Request $request)
+    {
+        $playlistName = $request->get('name');
+        $tracks       = $request->get('tracks');
+
+        $api = new \App\SpotifyWebAPI\SpotifyWebAPI();
+        $api->setSession(\App\SpotiImplementation\Tools::getApiSession());
+        $api->setOptions([
+            'auto_refresh' => true,
+        ]);
+        $request = new \App\SpotiImplementation\Request($api);
+        $playlist = $request->createNewPlaylist($playlistName);
+        $request->addTracksToPlaylist($tracks, $playlist->id);
     }
 }

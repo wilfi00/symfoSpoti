@@ -2,8 +2,9 @@
 {% block title %}Discover{% endblock %}
 {% block sidebarLeft %}
 	<div class="sidebar-left">
-		<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalePlaylists">
-		  Enregistrer
+		<input type="text" class="playlistName">
+		<button type="button" class="btn btn-primary saveIntoPlaylist">
+		  Enregistrer dans la playlist
 		</button><br>
 		<div class="selection"></div>
 	</div>
@@ -14,9 +15,6 @@
 	<ul class="genreResult"></ul>
     <div id="loader"></div>
     <div class="playlistResult"></div>
-    <!-- {{ render(controller(
-		'App\\Controller\\Display::displayTracks', {tracks: tracks }
-	)) }} -->
 {% endblock %}
 {% block footer %}
 	<script>genreManager({{ jsConfig|json_encode|raw }});</script>

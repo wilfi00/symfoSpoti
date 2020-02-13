@@ -1,4 +1,4 @@
-{% for track in tracks %}<div class="trackBlock">
+{% for track in tracks %}<div class="trackBlock" data-id="{{ track.id }}">
 	{% if track.image is not empty %}
 		<img src="{{ track.image }}" />
 	{% endif %}

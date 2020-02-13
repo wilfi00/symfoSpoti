@@ -117,6 +117,11 @@ global.genreManager = function(config) {
 		$('.generate').off('click').on('click', function() {
 			generatePlaylist();
 		});
+
+		// Bouton pour sauvegarder les tracks dans une playlistResult
+		$('.saveIntoPlaylist').off('click').on('click', function() {
+			saveIntoPlaylist();
+		});
 	}
 
 	function addInputSearchEvent()
@@ -185,6 +190,19 @@ global.genreManager = function(config) {
 		});
 
 		return genres;
+	}
+
+	function saveIntoPlaylist()
+	{
+		var playlistName = $('.playlistName').val();
+		var tracks = [];
+		$('.playlistResult .trackBlock').each(function() {
+			tracks.push($(this).data('id'));
+		});
+		
+		$.post(config.saveIntoPlaylistUrl, {'name': playlistName, 'tracks': tracks}, function() {
+			// displayResultGenres(jsonGenres);
+		});
 	}
 };
 

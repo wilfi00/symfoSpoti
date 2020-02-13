@@ -37,6 +37,20 @@ class GenreRepository extends ServiceEntityRepository
         ;
     }
 
+    public function findByGenre($genre)
+    {
+        $result = $this->createQueryBuilder('g')
+            ->andWhere('g.name = :val')
+            ->setParameter('val', $genre)
+            ->orderBy('g.ranking', 'ASC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getResult()
+        ;
+        
+        return $result[0];
+    }
+
     public function updateProgressOfPopularityGenres($currentGenre, $try)
     {
         $conn = $this->getEntityManager()->getConnection();

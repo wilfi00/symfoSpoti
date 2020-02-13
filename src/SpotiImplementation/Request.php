@@ -67,23 +67,21 @@ class Request
         return  $search->artists->items;
     }
 
-    // Utiliser entité $genre !
-    public function getRandomArtistsFromGenre($nbArtists = 10, $genre = 'metal', $strict = true, $maxTry = 50)
+    public function getRandomArtistsFromGenre(\App\Entity\Genre $genre, $nbArtists = 10, $strict = true, $maxTry = 50)
     {
         $cpt         = 0;
         $artists     = [];
-        $genre       = Tools::formatStringForSpotify($genre);
+        $genre       = Tools::formatStringForSpotify($genre->getName());
 
         while ((count($artists) < $nbArtists) && ($cpt <= $maxTry)) {
             $cpt++;
             $search = $this->api->search(Tools::generateRandomCharacter() . '% genre:' . $genre, 'artist', ['limit' => 50]);
             $searchArtists = $search->artists->items;
-            var_dump(count($searchArtists));
             shuffle($searchArtists);
             foreach ($searchArtists as $artist) {
                 if ($strict) {
                     foreach ($artist->genres as $g) {
-                        if ($g === $genre) {
+                        if ($g === Tools::formatInverseStringForSpotify($genre)) {
                             $artists[] = $artist->id;
                         }
                     };
@@ -99,7 +97,7 @@ class Request
             // Log
             $genreRepository = $this->getGenreRepository();
             if (!empty($genreRepository)) {
-                $genreRepository->updateProgressOfPopularityGenres($genre, $cpt);
+                $genreRepository->updateProgressOfPopularityGenres(Tools::formatInverseStringForSpotify($genre), $cpt);
             }
         }
 
@@ -230,9 +228,9 @@ class Request
     {
         return $this->genreRepository;
     }
-    
+
     public function createNewPlaylist($name, $isPublic = true)
     {
-        $this->api->createPlaylist([$name, $isPublic]);
+        return $this->api->createPlaylist(['name' => $name]);
     }
 }

@@ -55,7 +55,7 @@ class Display extends AbstractController
         ];
         $requestSpoti = \App\SpotiImplementation\Request::factory();
         $spotiTracks  = $requestSpoti->getTracks($tracksId);
-        // var_dump($answer);exit();
+
         foreach ($spotiTracks as $spotiTrack) {
             $tmpImg      = '';
             $tmpImgArray = $spotiTrack->album->images;
@@ -65,6 +65,7 @@ class Display extends AbstractController
             }
 
             $tracks[] = [
+                'id'         => $spotiTrack->id,
                 'name'       => $spotiTrack->name,
                 'artistName' => $spotiTrack->artists[0]->name,
                 'image'      => $tmpImg,

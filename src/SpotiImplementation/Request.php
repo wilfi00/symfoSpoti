@@ -215,4 +215,9 @@ class Request
 
         return $tracksToReturn;
     }
+
+    public function createNewPlaylist($name, $isPublic = true)
+    {
+        $this->api->createPlaylist([$name, $isPublic]);
+    }
 }

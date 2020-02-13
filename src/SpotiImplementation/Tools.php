@@ -146,4 +146,9 @@ class Tools
         return str_replace(' ', '+', $string);
     }
 
+    public static function formatInverseStringForSpotify($string)
+    {
+        return str_replace('+', ' ', $string);
+    }
+
 }

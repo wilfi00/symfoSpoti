@@ -46,6 +46,13 @@ class GenreRepository extends ServiceEntityRepository
         // $stmt->execute();
     }
 
+    public function updateTries($genre, $tries)
+    {
+        $conn = $this->getEntityManager()->getConnection();
+        $sql = 'UPDATE genre SET tries = ' . $tries . ' WHERE name = "' . $genre . '"';
+        $conn->query($sql);
+    }
+
     // /**
     //  * @return Genre[] Returns an array of Genre objects
     //  */

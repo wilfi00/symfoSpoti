@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20200207193940 extends AbstractMigration
+final class Version20200212190725 extends AbstractMigration
 {
     public function getDescription() : string
     {
@@ -22,7 +22,8 @@ final class Version20200207193940 extends AbstractMigration
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('ALTER TABLE genre ADD ranking INT NOT NULL');
+        $this->addSql('DROP TABLE progress_popularity_genres');
+        $this->addSql('ALTER TABLE genre ADD tries INT DEFAULT NULL');
     }
 
     public function down(Schema $schema) : void
@@ -30,6 +31,7 @@ final class Version20200207193940 extends AbstractMigration
         // this down() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('ALTER TABLE genre DROP ranking');
+        $this->addSql('CREATE TABLE progress_popularity_genres (id INT AUTO_INCREMENT NOT NULL, genre VARCHAR(255) CHARACTER SET utf8 DEFAULT NULL COLLATE `utf8_general_ci` COMMENT \'Le genre courant\', try INT DEFAULT NULL COMMENT \'Le numero de try courant\', date DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE `utf8_unicode_ci` ENGINE = MyISAM COMMENT = \'\' ');
+        $this->addSql('ALTER TABLE genre DROP tries');
     }
 }

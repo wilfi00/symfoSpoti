@@ -1,12 +1,13 @@
 <?php
 
 namespace App\SpotiImplementation;
-
+set_time_limit(0);
 use App\Repository\GenreRepository;
 
 class Request
 {
     protected $api;
+    protected $genreRepository;
 
     function __construct($api)
     {
@@ -66,12 +67,12 @@ class Request
         return  $search->artists->items;
     }
 
+    // Utiliser entité $genre !
     public function getRandomArtistsFromGenre($nbArtists = 10, $genre = 'metal', $strict = true, $maxTry = 50)
     {
         $cpt         = 0;
         $artists     = [];
         $genre       = Tools::formatStringForSpotify($genre);
-        $genreEntity = new GenreRepository();
 
         while ((count($artists) < $nbArtists) && ($cpt <= $maxTry)) {
             $cpt++;
@@ -96,9 +97,13 @@ class Request
             }
 
             // Log
-            $genreEntity->updateProgressOfPopularityGenres($genre, $cpt);
+            $genreRepository = $this->getGenreRepository();
+            if (!empty($genreRepository)) {
+                $genreRepository->updateProgressOfPopularityGenres($genre, $cpt);
+            }
         }
 
+        $genreRepository->updateTries(Tools::formatInverseStringForSpotify($genre), $cpt);
         return  $artists;
     }
 
@@ -214,5 +219,15 @@ class Request
         }
 
         return $tracksToReturn;
+    }
+
+    public function setGenreRespository(GenreRepository $genreRepository)
+    {
+        $this->genreRepository = $genreRepository;
+    }
+
+    protected function getGenreRepository()
+    {
+        return $this->genreRepository;
     }
 }

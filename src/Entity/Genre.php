@@ -26,6 +26,11 @@ class Genre
      */
     private $ranking;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $tries;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -51,6 +56,18 @@ class Genre
     public function setRanking(int $ranking): self
     {
         $this->ranking = $ranking;
+
+        return $this;
+    }
+
+    public function getTries(): ?int
+    {
+        return $this->tries;
+    }
+
+    public function setTries(?int $tries): self
+    {
+        $this->tries = $tries;
 
         return $this;
     }

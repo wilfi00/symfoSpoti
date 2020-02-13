@@ -230,4 +230,9 @@ class Request
     {
         return $this->genreRepository;
     }
+    
+    public function createNewPlaylist($name, $isPublic = true)
+    {
+        $this->api->createPlaylist([$name, $isPublic]);
+    }
 }

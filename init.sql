@@ -2500,3 +2500,13 @@ INSERT INTO `genre` (name) VALUES ("berlin school");
 INSERT INTO `genre` (name) VALUES ("deep german punk");
 
 UPDATE `genre` SET ranking = id;
+
+DROP TABLE IF EXISTS `progress_popularity_genres`;
+CREATE TABLE IF NOT EXISTS `progress_popularity_genres` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `genre` varchar(255) DEFAULT NULL COMMENT 'Le genre courant',
+  `try` int(11) DEFAULT NULL COMMENT 'Le numero de try courant',
+  `date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+COMMIT;

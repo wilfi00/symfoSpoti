@@ -67,6 +67,15 @@ class Request
         return  $search->artists->items;
     }
 
+    public function getRandomArtistsFromGenres($genresEntities, $nbArtists, $strict)
+    {
+        $artists = [];
+        foreach ($genresEntities as $genre) {
+            $artists = array_merge($artists, $this->getRandomArtistsFromGenre($genre, $nbArtists, $strict));
+        }
+        return $artists;
+    }
+
     public function getRandomArtistsFromGenre(\App\Entity\Genre $genre, $nbArtists = 10, $strict = true, $maxTry = 50)
     {
         $cpt         = 0;
@@ -127,7 +136,12 @@ class Request
 
     public function addTracksToPlaylist($tracks, $playlistId)
     {
-        $this->api->addPlaylistTracks($playlistId, $tracks);
+        // Spotify ne peut traiter que 50 tracks max
+        $multipleArraysTracks = array_chunk($tracks, 50);
+
+        foreach($multipleArraysTracks as $tracks) {
+            $this->api->addPlaylistTracks($playlistId, $tracks);
+        }
     }
 
     public function getUserPlaylistsForModaleSelection()
@@ -167,7 +181,6 @@ class Request
     public function getTopsTracksFromArtists($artists, $nbTracks)
     {
         $tracks = [];
-
         foreach ($artists as $artist) {
             $tracks = array_merge($tracks, $this->getTopTracksFromArtist($artist, $nbTracks));
         }

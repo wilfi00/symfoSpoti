@@ -2,7 +2,7 @@
 {% block title %}Discover{% endblock %}
 {% block sidebarLeft %}
 	<div class="sidebar-left">
-		<input type="text" class="playlistName">
+		<input type="text" class="playlistName"><br>
 		<button type="button" class="btn btn-primary saveIntoPlaylist">
 		  Enregistrer dans la playlist
 		</button><br>
@@ -11,7 +11,9 @@
 {% endblock %}
 {% block content %}
     <h3>Test de recherche de genre</h3>
-    <input type="text" class="inputSearchGenre"><button class="btn btn-primary generate">Générer</button>
+	<div class="genreBloc">
+	    <input type="text" class="inputSearchGenre" placeholder="Rechercher un genre..."><button class="btn btn-primary generate">Générer</button>
+	</div>
 	<ul class="genreResult"></ul>
     <div id="loader"></div>
     <div class="playlistResult"></div>

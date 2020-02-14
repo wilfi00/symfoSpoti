@@ -122,6 +122,13 @@ global.genreManager = function(config) {
 		$('.saveIntoPlaylist').off('click').on('click', function() {
 			saveIntoPlaylist();
 		});
+
+		$('.inputSearchGenre').focusin(function() {
+			$('.genreResult').css('height', '220px');
+		});
+		$('.inputSearchGenre').focusout(function() {
+			$('.genreResult').css('height', '0');
+		});
 	}
 
 	function addInputSearchEvent()
@@ -199,7 +206,7 @@ global.genreManager = function(config) {
 		$('.playlistResult .trackBlock').each(function() {
 			tracks.push($(this).data('id'));
 		});
-		
+
 		$.post(config.saveIntoPlaylistUrl, {'name': playlistName, 'tracks': tracks}, function() {
 			// displayResultGenres(jsonGenres);
 		});

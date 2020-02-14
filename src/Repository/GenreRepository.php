@@ -31,7 +31,7 @@ class GenreRepository extends ServiceEntityRepository
 
         return $query
             ->orderBy('g.ranking', 'ASC')
-            ->setMaxResults(5)
+            // ->setMaxResults(5)
             ->getQuery()
             ->getResult()
         ;
@@ -47,7 +47,7 @@ class GenreRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult()
         ;
-        
+
         return $result[0];
     }
 

@@ -1,5 +1,9 @@
 @import "~bootstrap/scss/bootstrap";
 
+html {
+
+}
+
 .artistBloc {
 	display: inline-block;
     cursor: pointer;
@@ -74,10 +78,6 @@
     to{ bottom:0; opacity:1 }
 }
 
-.genreResult .genre {
-    cursor: pointer;
-}
-
 .trackBlock {
     display: flex;
 
@@ -98,4 +98,37 @@ hr {
 }
 .container hr:last-child { display: none; }
 
+.genreBloc { display: flex; }
+.genreResult {
+	height: 0;
+	overflow-y:: scroll;
+	margin: 0;
+	padding: 0;
+	box-shadow: -8px 0 8px -10px rgba(0,0,0,0.75);
+	transition: height 0.3s ease-in-out;
+
+	.genre {
+		padding: 8px 0 8px 44px;
+		cursor: pointer;
+		list-style-type: none;
+
+		&:hover {
+			background-color: lightgoldenrodyellow;
+		}
+	}
+}
+.inputSearchGenre {
+	flex-grow: 5;
+	font-weight: 300;
+	color: #333;
+	border: 1px solid #eee;
+	border-radius: 4px;
+	padding: 16px;
+	cursor: auto;
+	margin-right: 10px;
+}
+.generate {
+	flex-grow: 1;
+	padding: 16px;
+}
 /* #ff512f → #dd2476 */

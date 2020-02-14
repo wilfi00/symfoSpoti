@@ -98,17 +98,18 @@ global.artistManager = function(config) {
 };
 
 global.genreManager = function(config) {
-	console.log(config.searchGenreUrl);
 	addEvents();
 
 	function addEvents()
 	{
+		console.log('addevents');
 		// Champ de recherche
 		addInputSearchEvent();
 
 		// Sélection d'un genre
 		$('.genreResult .genre').each(function() {
 			$(this).off('click').on('click', function() {
+				$('.selection').show();
 				addGenreToSelection($(this));
 			});
 		});
@@ -123,11 +124,13 @@ global.genreManager = function(config) {
 			saveIntoPlaylist();
 		});
 
-		$('.inputSearchGenre').focusin(function() {
+		$('.inputSearchGenre').off('focusin').on('focusin', function() {
 			$('.genreResult').css('height', '220px');
+			// $('.selection').hide();
 		});
-		$('.inputSearchGenre').focusout(function() {
+		$('.inputSearchGenre').off('focusout').on('focusout', function() {
 			$('.genreResult').css('height', '0');
+			$('.selection').show();
 		});
 	}
 
@@ -137,7 +140,7 @@ global.genreManager = function(config) {
 		var doneTypingInterval = 100;  // On laisse une seconde
 		var input = $('.inputSearchGenre');
 
-	    input.off('keyup').on('keyup', function () {
+	    input.off('click').on('click').off('keyup').on('keyup', function () {
 	        clearTimeout(typingTimer);
 	        typingTimer = setTimeout(function() {
 				$.post(config.searchGenreUrl, JSON.stringify(input.val().split(' ')), function(jsonGenres) {
@@ -169,7 +172,16 @@ global.genreManager = function(config) {
 
 	function addGenreToSelection(genre)
 	{
-		genre.clone().appendTo($('.selection'));
+		console.log('addGenreToSelection');
+		var test = '<button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
+		genre.clone().append(test).appendTo($('.selection'));
+
+		$('.selection .genre').each(function() {
+			var genre = $(this);
+			$(this).find('.close').off('click').on('click', function() {
+				genre.remove();
+			});
+		});
 	}
 
 	function generatePlaylist()

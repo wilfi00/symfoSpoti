@@ -98,7 +98,12 @@ hr {
 }
 .container hr:last-child { display: none; }
 
-.genreBloc { display: flex; }
+.content {
+	display: flex;
+	justify-content: space-between;
+}
+.leftColumn { flex: 6 1 auto; padding-right: 20px; }
+.rightColumn { flex: 1 1 auto; }
 .genreResult {
 	height: 0;
 	overflow-y:: scroll;
@@ -118,7 +123,7 @@ hr {
 	}
 }
 .inputSearchGenre {
-	flex-grow: 5;
+	width: 100%;
 	font-weight: 300;
 	color: #333;
 	border: 1px solid #eee;
@@ -128,13 +133,11 @@ hr {
 	margin-right: 10px;
 }
 .generate {
-	flex-grow: 1;
+	width: 200px;
 	padding: 16px;
 }
 /* #ff512f → #dd2476 */
 .selection {
-	display: flex;
-
 	.genre {
 		width: 200px;
 		position: relative;
@@ -148,6 +151,15 @@ hr {
 			margin-right: 0;
 		}
 	}
+}
+.save {
+	border: 1px solid #eee;
+	margin-top: 20px;
+	padding: 10px;
+	text-align: center;
+
+	.playlistName { width: 100%; }
+	.saveIntoPlaylist { margin-top: 20px; }
 }
 
 .close {

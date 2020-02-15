@@ -1,22 +1,25 @@
 {% extends "testArea/base.html.twig" %}
 {% block title %}Discover{% endblock %}
-{% block sidebarLeft %}
-	<div class="sidebar-left">
-		<input type="text" class="playlistName"><br>
-		<button type="button" class="btn btn-primary saveIntoPlaylist">
-		  Enregistrer dans la playlist
-		</button><br>
-	</div>
-{% endblock %}
 {% block content %}
-    <h3>Test de recherche de genre</h3>
-	<div class="genreBloc">
-	    <input type="text" class="inputSearchGenre" placeholder="Rechercher un genre..."><button class="btn btn-primary generate">Générer</button>
+    <h3>Music discovery</h3>
+	<div class="content">
+		<div class="leftColumn">
+			<input type="text" class="inputSearchGenre" placeholder="Rechercher un genre...">
+			<div class="selection"></div>
+			<ul class="genreResult"></ul>
+		    <div id="loader"></div>
+		    <div class="playlistResult"></div>
+		</div>
+		<div class="rightColumn">
+			<button class="btn btn-primary generate">Générer</button>
+						<div class="save">
+				<input type="text" class="playlistName"><br>
+				<button type="button" class="btn btn-primary saveIntoPlaylist">
+				  Enregistrer dans la playlist
+				</button>
+			</div>
+		</div>
 	</div>
-	<div class="selection"></div>
-	<ul class="genreResult"></ul>
-    <div id="loader"></div>
-    <div class="playlistResult"></div>
 {% endblock %}
 {% block footer %}
 	<script>genreManager({{ jsConfig|json_encode|raw }});</script>

@@ -118,7 +118,7 @@ class DiscoverController extends AbstractController
         $request->setGenreRespository($genreRepository);
         $genres  = $genreRepository->findAll();
 
-$genres = array_slice($genres, 282, 500);
+$genres = array_slice($genres, 497, 800);
 
         foreach ($genres as $genre) {
             $request->getRandomArtistsFromGenre($genre, 50);

@@ -81,7 +81,7 @@ class Request
         $cpt         = 0;
         $artists     = [];
         $genre       = Tools::formatStringForSpotify($genre->getName());
-
+$nbArtists = 2;
         while ((count($artists) < $nbArtists) && ($cpt <= $maxTry)) {
             $cpt++;
             $search = $this->api->search(Tools::generateRandomCharacter() . '% genre:' . $genre, 'artist', ['limit' => 50]);
@@ -90,8 +90,15 @@ class Request
             foreach ($searchArtists as $artist) {
                 if ($strict) {
                     foreach ($artist->genres as $g) {
+                        if (count($artists) >= $nbArtists) {
+                            break;
+                        }
+
                         if ($g === Tools::formatInverseStringForSpotify($genre)) {
-                            $artists[] = $artist->id;
+                            $artists[] = [
+                                'id'     => $artist->id,
+                                'genres' => $artist->genres,
+                            ];
                         }
                     };
                 } else {
@@ -182,9 +189,15 @@ class Request
     {
         $tracks = [];
         foreach ($artists as $artist) {
-            $tracks = array_merge($tracks, $this->getTopTracksFromArtist($artist, $nbTracks));
+            // $tracks[] = [
+            //     'ids'    => $this->getTopTracksFromArtist($artist['id'], $nbTracks),
+            //     'genres' => $artist['genres'],
+            // ];
+            $topTracks = $this->getTopTracksFromArtist($artist['id'], $nbTracks);
+            foreach ($topTracks as $track) {
+                $tracks[$track]  = $artist['genres'];
+            }
         }
-
         return $tracks;
     }
 

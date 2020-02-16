@@ -1,7 +1,7 @@
 @import "~bootstrap/scss/bootstrap";
 
-html {
-
+h1 {
+	margin: 15px 0 30px 0;
 }
 
 .artistBloc {
@@ -80,9 +80,10 @@ html {
 
 .trackBlock {
     display: flex;
+	align-items: center;
 
     img {
-        width: 70px;
+        width: 90px;
     }
 
     .names {
@@ -91,6 +92,11 @@ html {
         justify-content: space-around;
         margin-left: 20px;
     }
+
+	.artistName {
+		font-size: 18px;
+		margin-right: 10px;
+	}
 }
 
 hr {
@@ -137,9 +143,13 @@ hr {
 	padding: 16px;
 }
 /* #ff512f → #dd2476 */
+// linear-gradient(107deg, #fd8a0f, #ff6abb)
 .selection {
+	display: flex;
+	flex-wrap: wrap;
+}
+.selection, .genres {
 	.genre {
-		width: 200px;
 		position: relative;
 		list-style-type: none;
 		border: 1px solid orange;
@@ -150,8 +160,19 @@ hr {
 		&:last-child {
 			margin-right: 0;
 		}
+
+		.close {
+			margin-left: 10px;
+		}
 	}
 }
+
+.genres {
+	display: flex;
+	flex-wrap: wrap;
+}
+
+.playlistResult { margin-top: 20px; }
 .save {
 	border: 1px solid #eee;
 	margin-top: 20px;

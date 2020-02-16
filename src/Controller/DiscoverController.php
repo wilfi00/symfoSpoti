@@ -51,18 +51,11 @@ class DiscoverController extends AbstractController
         ]);
         $request       = new \App\SpotiImplementation\Request($api);
         $request->setGenreRespository($genreRepository);
-        $artistsId     = $request->getRandomArtistsFromGenres($genreEntities, 50, true);
-        $tracksRequest = $request->getTopsTracksFromArtists($artistsId, 2);
-        shuffle($tracksRequest);
+        $artists       = $request->getRandomArtistsFromGenres($genreEntities, 50, true);
+        $tracksRequest = $request->getTopsTracksFromArtists($artists, 2);
 
-        $tracksId = [
-            '5fx0MPLoGImFYsnqK3jBbO',
-            '0MB7xIp2KzXsN84zcd0CCG',
-            '6U5dJB1GszvHA8dLvO7n50',
-            '0KkcPbenGqMINYgcKYXZyJ',
-            '3Iowon86yo3Gm1Lj1fouIG',
-        ];
-        $tracksId = $tracksRequest;
+        $tracksId = array_keys($tracksRequest);
+        shuffle($tracksId);
 
         $requestSpoti = \App\SpotiImplementation\Request::factory();
         $spotiTracks  = $requestSpoti->getTracks($tracksId);
@@ -80,6 +73,7 @@ class DiscoverController extends AbstractController
                 'name'       => $spotiTrack->name,
                 'artistName' => $spotiTrack->artists[0]->name,
                 'image'      => $tmpImg,
+                'genres'     => $tracksRequest[$spotiTrack->id],
             ];
         }
         return $this->render('spotiTemplates/_tracks.html.twig', ['tracks' => $tracks]);
@@ -118,7 +112,7 @@ class DiscoverController extends AbstractController
         $request->setGenreRespository($genreRepository);
         $genres  = $genreRepository->findAll();
 
-$genres = array_slice($genres, 497, 800);
+$genres = array_slice($genres, 696, 1000);
 
         foreach ($genres as $genre) {
             $request->getRandomArtistsFromGenre($genre, 50);
@@ -142,5 +136,7 @@ $genres = array_slice($genres, 497, 800);
         $request = new \App\SpotiImplementation\Request($api);
         $playlist = $request->createNewPlaylist($playlistName);
         $request->addTracksToPlaylist($tracks, $playlist->id);
+
+        return new Response();
     }
 }

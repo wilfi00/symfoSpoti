@@ -2,5 +2,8 @@
 	{% if track.image is not empty %}
 		<img src="{{ track.image }}" />
 	{% endif %}
-    <div class="names"><span class="name">{{ track.name }}</span><span class="artistName">{{ track.artistName}}</span></div>
+    <div class="names">
+		<div class="informations"><span class="artistName">{{ track.artistName}}</span><span class="name">{{ track.name }}</span></div>
+		<div class="genres">{% for genre in track.genres %}<span class="genre" data-name="{{ genre }}"> {{ genre }}</span>{% endfor %}</div>
+	</div>
 </div><hr>{% endfor %}

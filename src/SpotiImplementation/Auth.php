@@ -8,7 +8,7 @@ class Auth
 {
     CONST CLIENT_ID     = '0526d569b3284692b26e01909d76b53d'; // Your client id
     CONST CLIENT_SECRET = '89a3ad66196346a6a3abef6f75855ee1'; // Your secret
-    CONST REDIRECT_URI  = 'https://localhost:8000/spotiCallback'; // Your redirect uri
+    CONST REDIRECT_URI  = 'http://vps778314.ovh.net/spotiCallback'; // Your redirect uri
 
     public static function spotiInit()
     {

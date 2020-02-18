@@ -82,8 +82,6 @@ class Request
         $artists     = [];
         $genre       = Tools::formatStringForSpotify($genre->getName());
 
-$nbArtists = 2;
-
         while ((count($artists) < $nbArtists) && ($cpt <= $maxTry)) {
             $cpt++;
             $search = $this->api->search(Tools::generateRandomCharacter() . '% genre:' . $genre, 'artist', ['limit' => 50]);

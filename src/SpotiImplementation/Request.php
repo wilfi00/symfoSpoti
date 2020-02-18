@@ -81,7 +81,9 @@ class Request
         $cpt         = 0;
         $artists     = [];
         $genre       = Tools::formatStringForSpotify($genre->getName());
+
 $nbArtists = 2;
+
         while ((count($artists) < $nbArtists) && ($cpt <= $maxTry)) {
             $cpt++;
             $search = $this->api->search(Tools::generateRandomCharacter() . '% genre:' . $genre, 'artist', ['limit' => 50]);
@@ -258,5 +260,10 @@ $nbArtists = 2;
     public function createNewPlaylist($name, $isPublic = true)
     {
         return $this->api->createPlaylist(['name' => $name]);
+    }
+
+    public function getArtist($id)
+    {
+        return $this->api->getArtist($id);
     }
 }

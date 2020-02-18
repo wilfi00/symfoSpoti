@@ -27,3 +27,18 @@ juste un seul try ?
 
 
 => Ajouter une colonne symfony entity nbTry
+<li class="genre" data-name="metal">Metal</li>
+yarn encore dev --watch
+composer install
+yarn encore production
+php bin/console cache:clear --env=prod --no-debug
+=> il faut que johan soit le proprio de var
+mais pour apache il faut que ça soit www-data :/
+
+https://linuxhint.com/install_phpmyadmin_debian_10/
+
+
+[Tue Feb 18 11:44:46.578606 2020] [:error] [pid 9626] [client 77.74.209.95:58986] [client 77.74.209.95]
+ModSecurity: Access denied with code 403 (phase 2). Match of "eq 0" against "MULTIPART_UNMATCHED_BOUNDARY" required.
+[file "/etc/modsecurity/modsecurity.conf"] [line "86"] [id "200004"] [msg "Multipart parser detected a possible unmatched boundary."]
+[hostname "vps778314.ovh.net"] [uri "/import.php"] [unique_id "XkvAHqBLb9y7K8W@36KUjwAAAAg"]

@@ -265,4 +265,9 @@ class Request
     {
         return $this->api->createPlaylist(['name' => $name]);
     }
+
+    public function getArtist($id)
+    {
+        return $this->api->getArtist($id);
+    }
 }

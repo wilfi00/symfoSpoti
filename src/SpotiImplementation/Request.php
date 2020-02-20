@@ -72,6 +72,8 @@ class Request
         $artists = [];
         foreach ($genresEntities as $genre) {
             $artists = array_merge($artists, $this->getRandomArtistsFromGenre($genre, $nbArtists, $strict));
+            // API rate limit spotify
+            sleep(2);
         }
         return $artists;
     }
@@ -81,7 +83,9 @@ class Request
         $cpt         = 0;
         $artists     = [];
         $genre       = Tools::formatStringForSpotify($genre->getName());
-$nbArtists = 2;
+        $tmpArtistId = []; // Permet de gérer le fait de récupérer des artistes uniques
+        $nbArtists   = Tools::addErrorProbability($nbArtists);
+
         while ((count($artists) < $nbArtists) && ($cpt <= $maxTry)) {
             $cpt++;
             $search = $this->api->search(Tools::generateRandomCharacter() . '% genre:' . $genre, 'artist', ['limit' => 50]);
@@ -95,10 +99,16 @@ $nbArtists = 2;
                         }
 
                         if ($g === Tools::formatInverseStringForSpotify($genre)) {
-                            $artists[] = [
-                                'id'     => $artist->id,
-                                'genres' => $artist->genres,
-                            ];
+                            $id = $artist->id;
+                            // On ne rajoute que des artistes uniques
+                            if (!in_array($id, $tmpArtistId)) {
+                                $tmpArtistId[] = $id;
+                                $artists[]     = [
+                                    'id'     => $id,
+                                    'genres' => $artist->genres,
+                                ];
+                            }
+
                         }
                     };
                 } else {
@@ -189,15 +199,12 @@ $nbArtists = 2;
     {
         $tracks = [];
         foreach ($artists as $artist) {
-            // $tracks[] = [
-            //     'ids'    => $this->getTopTracksFromArtist($artist['id'], $nbTracks),
-            //     'genres' => $artist['genres'],
-            // ];
             $topTracks = $this->getTopTracksFromArtist($artist['id'], $nbTracks);
             foreach ($topTracks as $track) {
                 $tracks[$track]  = $artist['genres'];
             }
         }
+
         return $tracks;
     }
 
@@ -209,7 +216,6 @@ $nbArtists = 2;
 
         $tracks   = [];
         $topTracks = $this->api->getArtistTopTracks($id, 'country=FR')->tracks;
-
         foreach($topTracks as $track) {
             $tracks[] = $track->id;
         }

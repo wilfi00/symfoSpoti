@@ -38,8 +38,11 @@ class DiscoverController extends AbstractController
      */
     public function generatePlaylist(Request $request, GenreRepository $genreRepository)
     {
-        $genreEntities = [];
-        $genres        = json_decode($request->getContent(), true);
+        $nbSongs           = 100;
+        $nbSongsPerArtists = 2;
+        $nbArtists         = round($nbSongs / $nbSongsPerArtists);
+        $genreEntities     = [];
+        $genres            = json_decode($request->getContent(), true);
         foreach ($genres as $genre) {
             $genreEntities[] = $genreRepository->findByGenre($genre);
         }
@@ -51,11 +54,13 @@ class DiscoverController extends AbstractController
         ]);
         $request       = new \App\SpotiImplementation\Request($api);
         $request->setGenreRespository($genreRepository);
-        $artists       = $request->getRandomArtistsFromGenres($genreEntities, 50, true);
-        $tracksRequest = $request->getTopsTracksFromArtists($artists, 2);
+        $artists       = $request->getRandomArtistsFromGenres($genreEntities, $nbArtists, true);
+        $tracksRequest = $request->getTopsTracksFromArtists($artists, $nbSongsPerArtists);
 
         $tracksId = array_keys($tracksRequest);
         shuffle($tracksId);
+        $tracksId = array_slice($tracksId, 0, $nbSongs);
+
 
         $requestSpoti = \App\SpotiImplementation\Request::factory();
         $spotiTracks  = $requestSpoti->getTracks($tracksId);

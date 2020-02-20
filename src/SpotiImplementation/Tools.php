@@ -151,4 +151,8 @@ class Tools
         return str_replace('+', ' ', $string);
     }
 
+    public static function addErrorProbability($nbArtists)
+    {
+        return round($nbArtists * 1.1);
+    }
 }

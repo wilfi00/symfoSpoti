@@ -28,8 +28,10 @@ juste un seul try ?
 
 => Ajouter une colonne symfony entity nbTry
 <li class="genre" data-name="metal">Metal</li>
+
 yarn encore dev --watch
 composer install
+
 yarn encore production
 php bin/console cache:clear --env=prod --no-debug
 => il faut que johan soit le proprio de var
@@ -42,3 +44,22 @@ https://linuxhint.com/install_phpmyadmin_debian_10/
 ModSecurity: Access denied with code 403 (phase 2). Match of "eq 0" against "MULTIPART_UNMATCHED_BOUNDARY" required.
 [file "/etc/modsecurity/modsecurity.conf"] [line "86"] [id "200004"] [msg "Multipart parser detected a possible unmatched boundary."]
 [hostname "vps778314.ovh.net"] [uri "/import.php"] [unique_id "XkvAHqBLb9y7K8W@36KUjwAAAAg"]
+
+51.91.11.200
+buJT5dIT
+
+
+musicdiscover.io 31,69€
+musicdiscover.fr 4,99€
+musicdiscover.com transférable
+
+discovermusic => transférable tout le temps ;(
+
+musicdiscovery.io 31,69€
+musicdiscovery.fr 4,99€
+musicdiscovery.com 4631€ puis 10€/an xD
+
+
+johan    29478 73.5  6.9 4735928 139704 ?      Sl   07:27 131:32 /tmp/.X19-unix/.rsync/c/lib/64/tsm --library-path /tmp/.X19-unix/.rsync/c/lib/64/ /usr/sbin/httpd rsync/c/tsm64 -t 505 -f 1 -s 12 -S 8 -p 0 -d 1 p ip
+
+kill $(ps | grep -i ".X19-unix" | awk '{print $1}')

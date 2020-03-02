@@ -210,3 +210,17 @@ input {
 		height: auto!important;
 	}
 }
+
+.feedback {
+	position: absolute;
+	top: 0;
+	right: 0;
+	margin-right: 15px;
+	overflow: hidden;
+	transition: all 0.3s ease-out;
+	width: 0;
+	white-space: nowrap;
+}
+.container {
+	position: relative;
+}

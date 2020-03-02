@@ -23,13 +23,18 @@
             </div>
 			<button class="btn btn-primary generate">Générer</button>
 			<div class="save">
-				<input type="text" class="playlistName" placeholder="Nom de la playlist"><br>
-				<button type="button" class="btn btn-primary saveIntoPlaylist">
-				  Enregistrer dans la playlist
-				</button>
+                <form action="" id="saveIntoPlaylist">
+    				<input type="text" class="playlistName" placeholder="Nom de la playlist" required><br>
+    				<button type="submit" class="btn btn-primary saveIntoPlaylist">
+    				  Enregistrer dans la playlist
+    				</button>
+                <form>
 			</div>
 		</div>
 	</div>
+    <div class="feedback">
+        <div class="alert alert-success"></div>
+    </div>
 {% endblock %}
 {% block footer %}
 	<script>genreManager({{ jsConfig|json_encode|raw }});</script>

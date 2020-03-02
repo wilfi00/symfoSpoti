@@ -126,14 +126,13 @@ global.genreManager = function(config) {
 			generatePlaylist();
 		});
 
-		// Bouton pour sauvegarder les tracks dans une playlistResult
-		$('.saveIntoPlaylist').off('click').on('click', function() {
+		$('#saveIntoPlaylist').off('submit').on('submit', function(event) {
+			event.preventDefault();
 			saveIntoPlaylist();
 		});
 
 		$('.inputSearchGenre').off('focusin').on('focusin', function() {
 			$('.genreResult').css('height', '220px');
-			// $('.selection').hide();
 		});
 		$('.inputSearchGenre').off('focusout').on('focusout', function() {
 			$('.genreResult').css('height', '0');
@@ -210,16 +209,16 @@ global.genreManager = function(config) {
 			result.html(response);
 			hideLoader();
 			result.show();
-			// addEvents();
 		}).fail(function(response) {
-			launchError('error');
+			feedbackError('error');
 			hideLoader();
+			feedbackError();
 		});
 	}
 
 	function getSelectedGenres()
 	{
-		var genres = {};
+		var genres = [];
 		$('.selection .genre').each(function() {
 		  genres.push($(this).data('name'));
 		});
@@ -235,8 +234,13 @@ global.genreManager = function(config) {
 			tracks.push($(this).data('id'));
 		});
 
-		$.post(config.saveIntoPlaylistUrl, {'name': playlistName, 'tracks': tracks}, function() {
-			// displayResultGenres(jsonGenres);
+		$.post(
+			config.saveIntoPlaylistUrl,
+			{'name': playlistName, 'tracks': tracks}
+		).done(function(response) {
+			feedbackSuccess('Playlist enregistrée');
+		}).fail(function(response) {
+			feedbackError();
 		});
 	}
 };
@@ -254,7 +258,24 @@ function hideLoader()
 	$('#loader').hide();
 }
 
-function launchError(error)
+function feedbackSuccess(msg)
 {
-	alert(error);
+	showFeedback(msg, 'alert-success');
+}
+function feedbackError(msg = 'Une erreur est survenue')
+{
+	showFeedback(msg, 'alert-danger');
+}
+
+function showFeedback(msg, classname)
+{
+	var feedback      = $('.feedback');
+	var feedbackAlert = feedback.find('.alert');
+
+	feedbackAlert.attr('class', 'alert ' + classname);
+	feedbackAlert.html(msg);
+	feedback.width('220');
+	window.setTimeout(function() {
+		feedback.width('0');
+	}, 3000);
 }

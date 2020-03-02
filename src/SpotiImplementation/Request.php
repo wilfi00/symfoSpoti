@@ -153,6 +153,9 @@ class Request
 
     public function addTracksToPlaylist($tracks, $playlistId)
     {
+        if (empty($tracks) || empty($playlistId)) {
+            return;
+        }
         // Spotify ne peut traiter que 50 tracks max
         $multipleArraysTracks = array_chunk($tracks, 50);
 

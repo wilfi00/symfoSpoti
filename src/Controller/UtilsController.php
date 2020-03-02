@@ -20,6 +20,8 @@ class UtilsController extends AbstractController
             'auto_refresh' => true,
         ]);
         $request       = new \App\SpotiImplementation\Request($api);
-        var_dump($request->getArtist('1zjKozA82ritb32UljA7Yi'));exit();
+        var_dump($request->getArtist('1zjKozA82ritb32UljA7Yi'));
+        var_dump($request->getArtist('1I9Hqy4QnMyVhZwRM2r41B'));
+        exit();
     }
 }

@@ -31,7 +31,6 @@ class GenreRepository extends ServiceEntityRepository
 
         return $query
             ->orderBy('g.ranking', 'ASC')
-            // ->setMaxResults(5)
             ->getQuery()
             ->getResult()
         ;
@@ -48,7 +47,11 @@ class GenreRepository extends ServiceEntityRepository
             ->getResult()
         ;
 
-        return $result[0];
+        if (empty($result)) {
+            return false;
+        } else {
+            return $result[0];
+        }        
     }
 
     public function updateProgressOfPopularityGenres($currentGenre, $try)

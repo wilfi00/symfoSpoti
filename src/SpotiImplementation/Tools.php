@@ -155,4 +155,15 @@ class Tools
     {
         return round($nbArtists * 1.1);
     }
+
+    /**
+     * Retourne le nombre d'artistes que l'on devrait chercher en fonction du nombre de chansons voulus
+     *
+     * @return int Nb artistes
+     */
+    public static function getNbArtistsWeSouldGetByNbSongs($nbSongs)
+    {
+        $nbSongsPerArtists = 2;
+        return round($nbSongs / $nbSongsPerArtists);
+    }
 }

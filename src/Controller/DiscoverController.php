@@ -11,7 +11,7 @@ use App\Repository\GenreRepository;
 class DiscoverController extends AbstractController
 {
     /**
-     * @Route("/discover", name="discover")
+     * @Route("/", name="discover")
      */
     public function displayDiscover()
     {
@@ -33,21 +33,75 @@ class DiscoverController extends AbstractController
         return $this->json($genreRepository->findByGenres(json_decode($request->getContent(), true)));
     }
 
+    /**
+     * Vérification de la validité des données postées par le formulaire discovery
+     *
+     * @return bool True si valid
+     */
+    protected function isValidDatasForDiscover($request, GenreRepository $genreRepository)
+    {
+        $data = json_decode($request->getContent(), true);
+        // Vérification de la data sur le nombre de chanson
+        if (!isset($data['nbSongs'])) {
+            return false;
+        } else {
+            $nbSongs = $data['nbSongs'];
+            if (!empty($nbSongs)) {
+                $validValues = [25, 50, 100, 150, 200];
+                $nbSongs     = intval($nbSongs);
+                if (!in_array($nbSongs, $validValues)) {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        }
+
+        // Vérification de la data sur les genres
+        if (!isset($data['genres'])) {
+            return false;
+        } elseif (!is_array($data['genres'])) {
+            return false;
+        } else {
+            $genres = $data['genres'];
+            if (empty($genres)) {
+                return false;
+            }
+
+            $genreEntities = [];
+            // Pour chaque genre on vérifie que se sont effectivement des genres enregistrés en proposés en DB
+            foreach ($genres as $genre) {
+                $genreEntity = $genreRepository->findByGenre($genre);
+
+                if ($genreEntity === false) {
+                    var_dump('3');
+                    return false;
+                } else {
+                    $genreEntities[] = $genreEntity;
+                }
+            }
+        }
+
+        return ['nbSongs' => $nbSongs, 'genres' => $genreEntities];
+    }
+
      /**
      * @Route("/generatePlaylist", name="generatePlaylist")
      */
     public function generatePlaylist(Request $request, GenreRepository $genreRepository)
     {
-        $nbSongs           = 100;
-        $nbSongsPerArtists = 2;
-        $nbArtists         = round($nbSongs / $nbSongsPerArtists);
-        $genreEntities     = [];
-        $genres            = json_decode($request->getContent(), true);
-        foreach ($genres as $genre) {
-            $genreEntities[] = $genreRepository->findByGenre($genre);
+        $data = $this->isValidDatasForDiscover($request, $genreRepository);
+        if ($data === false) {
+            throw new \Exception('Something went wrong!');
         }
 
-        $api     = new \App\SpotifyWebAPI\SpotifyWebAPI();
+        // On détermine le nombre d'artistes à récupérer en fonction du nombre de chansons
+        $nbSongs           = $data['nbSongs'];
+        $nbSongsPerArtists = 2;
+        $nbArtists         = round($nbSongs / $nbSongsPerArtists);
+        $genreEntities     = $data['genres'];
+
+        $api = new \App\SpotifyWebAPI\SpotifyWebAPI();
         $api->setSession(\App\SpotiImplementation\Tools::getApiSession());
         $api->setOptions([
             'auto_refresh' => true,
@@ -60,7 +114,6 @@ class DiscoverController extends AbstractController
         $tracksId = array_keys($tracksRequest);
         shuffle($tracksId);
         $tracksId = array_slice($tracksId, 0, $nbSongs);
-
 
         $requestSpoti = \App\SpotiImplementation\Request::factory();
         $spotiTracks  = $requestSpoti->getTracks($tracksId);

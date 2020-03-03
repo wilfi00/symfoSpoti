@@ -106,6 +106,7 @@ global.artistManager = function(config) {
 };
 
 global.genreManager = function(config) {
+	var genres = JSON.parse(config.genres);
 	addEvents();
 
 	function addEvents()
@@ -143,15 +144,19 @@ global.genreManager = function(config) {
 	function addInputSearchEvent()
 	{
 		var typingTimer; // Timer
-		var doneTypingInterval = 100;  // On laisse une seconde
+		var doneTypingInterval = 10;  // On laisse une seconde
 		var input = $('.inputSearchGenre');
 
-	    input.off('click').on('click').off('keyup').on('keyup', function () {
+	 	input.off('click keyup').on('click keyup', function () {
 	        clearTimeout(typingTimer);
 	        typingTimer = setTimeout(function() {
-				$.post(config.searchGenreUrl, JSON.stringify(input.val().split(' ')), function(jsonGenres) {
-					displayResultGenres(jsonGenres);
+				var regex = '';
+				input.val().split(' ').forEach(function(value) {
+					regex += '\\b(\\w*' + value + '\\w*)\\b|';
 				});
+				// Supression du dernier caractère de la chaine pour enlever le ou |
+				regex = regex.substring(0, regex.length - 1);
+				displayResultGenres(genres.filter(genre => genre.name.search(regex) >= 0));
 			}, doneTypingInterval);
 	    });
 	    input.off('keydown').on('keydown', function () {
@@ -164,7 +169,7 @@ global.genreManager = function(config) {
 		cleanResults();
 		var htmlResult = $('.genreResult');
 		genres.forEach(function(genre) {
-			$('<li class="genre" data-name="' + genre.name + '">' + genre.name + '</li>').appendTo(htmlResult)
+			$('<li class="genre" data-id="' + genre.id + '">' + genre.name + '</li>').appendTo(htmlResult)
 		});
 		addEvents();
 	}
@@ -178,7 +183,6 @@ global.genreManager = function(config) {
 
 	function addGenreToSelection(genre)
 	{
-		console.log('addGenreToSelection');
 		var test = '<button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
 		genre.clone().append(test).appendTo($('.selection'));
 
@@ -205,7 +209,6 @@ global.genreManager = function(config) {
 			type: 'POST',
 			data : JSON.stringify(data)
 		}).done(function(response) {
-			console.log(response);
 			result.html(response);
 			hideLoader();
 			result.show();
@@ -220,7 +223,7 @@ global.genreManager = function(config) {
 	{
 		var genres = [];
 		$('.selection .genre').each(function() {
-		  genres.push($(this).data('name'));
+		  genres.push($(this).data('id'));
 		});
 
 		return genres;

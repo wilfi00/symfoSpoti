@@ -2,15 +2,15 @@
 {% block title %}Discover{% endblock %}
 {% block content %}
     <h1>Music discovery</h1>
-	<div class="content">
-		<div class="leftColumn">
+	<div class="row">
+		<div class="col-8">
 			<input type="text" class="inputSearchGenre" placeholder="Rechercher un genre...">
 			<div class="selection"></div>
 			<ul class="genreResult"></ul>
 		    <div id="loader"></div>
 		    <div class="playlistResult"></div>
 		</div>
-		<div class="rightColumn">
+		<div class="col-4">
 			<!-- https://codepen.io/Aoyue/pen/rLExYX -->
             <div class="select-discover">
                 <select id="nbTracks">

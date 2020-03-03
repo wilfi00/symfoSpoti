@@ -149,15 +149,29 @@ global.genreManager = function(config) {
 
 	 	input.off('click keyup').on('click keyup', function () {
 	        clearTimeout(typingTimer);
-	        typingTimer = setTimeout(function() {
+			typingTimer = setTimeout(function() {
+				// Recherche exact (uk metalcore matchera uk metalcore)
+				var regex = '';
+				regex +=  '\\b(\\w*' +  $.trim(input.val()) + '\\w*)\\b';
+				var genres1 = genres.filter(genre => genre.name.search(regex) >= 0);
+
+				// Recherche inversée exact (exemple, uk metalcore matchera metalcore uk)
+				var regex = '';
+				regex +=  '\\b(\\w*' +  $.trim(input.val().split(' ').reverse().join(' ')) + '\\w*)\\b';
+				var genres2 = genres.filter(genre => genre.name.search(regex) >= 0);
+
+				// Recherche très générale en mode OU (uk metalcore renverra tous les uk et tous les metalcore)
 				var regex = '';
 				input.val().split(' ').forEach(function(value) {
-					regex += '\\b(\\w*' + value + '\\w*)\\b|';
+				   regex += '\\b(\\w*' + value + '\\w*)\\b|';
 				});
 				// Supression du dernier caractère de la chaine pour enlever le ou |
 				regex = regex.substring(0, regex.length - 1);
-				displayResultGenres(genres.filter(genre => genre.name.search(regex) >= 0));
-			}, doneTypingInterval);
+				var genres3 = genres.filter(genre => genre.name.search(regex) >= 0);
+
+				// On concatène tout et on enlève les genres dupliqués
+				displayResultGenres(genres1.concat(genres2).concat(genres3).unique());
+		   }, doneTypingInterval);
 	    });
 	    input.off('keydown').on('keydown', function () {
 			clearTimeout(typingTimer);
@@ -282,3 +296,15 @@ function showFeedback(msg, classname)
 		feedback.width('0');
 	}, 3000);
 }
+
+Array.prototype.unique = function() {
+    var a = this.concat();
+    for(var i=0; i<a.length; ++i) {
+        for(var j=i+1; j<a.length; ++j) {
+            if(a[i] === a[j])
+                a.splice(j--, 1);
+        }
+    }
+
+    return a;
+};

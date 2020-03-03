@@ -120,6 +120,6 @@ https://developer.spotify.com/documentation/general/guides/authorization-guide/
 
 8/ Voir les recos SEO
 
-9/ Optimiser les perfs pour les genres (charger tous les genres via la DB puis chercher dedans en JS)
+[OK] 9/ Optimiser les perfs pour les genres (charger tous les genres via la DB puis chercher dedans en JS)
 
 10/ Couleurs primaires

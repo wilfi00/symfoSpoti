@@ -105,8 +105,9 @@ pour la prod symfo et les urls de redirections spoti
 2/ Gérer le renouvellement automatique du token api spoti
 
 3/ Voir pour se connecter seulement quand on enregistre la playlist ?
+https://developer.spotify.com/documentation/general/guides/authorization-guide/
 
-4/ Mettre en place une gestion des erreurs globals (pour n'importe quelle erreur y'a au moins ça qui gère)
+[OK] 4/ Mettre en place une gestion des erreurs globals (pour n'importe quelle erreur y'a au moins ça qui gère)
 
 5/ Faire en sorte de ne jamais générer d'erreurs :
     - ne pas générer une playlist sans genre ou alors full random

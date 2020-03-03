@@ -34,17 +34,6 @@ class AppController extends AbstractController
     }
 
     /**
-     * @Route("/testArea", name="testArea")
-     */
-    public function testArea(GenreRepository $genreRepository)
-    {
-        $genres = $genreRepository->findByGenres(['metal']);
-        // var_dump($genres);exit();
-
-        return $this->render('testArea/discover.html.twig');
-    }
-
-    /**
      * @Route("/generateMetalcore", name="generateMetalcore")
      */
     public function generateHundredMetalCoreSongs()

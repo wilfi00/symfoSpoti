@@ -19,20 +19,11 @@ class GenreRepository extends ServiceEntityRepository
         parent::__construct($registry, Genre::class);
     }
 
-    public function findByGenres($genres)
+    public function findAllGetArray(): array
     {
-        $query = $this->createQueryBuilder('g');
-
-        $where = '';
-        foreach ($genres as $id => $genre) {
-            $query->andWhere('g.name LIKE :val_' . $id);
-            $query->setParameter('val_' . $id, '%' . $genre . '%');
-        }
-
-        return $query
-            ->orderBy('g.ranking', 'ASC')
+        return $this->createQueryBuilder('g')
             ->getQuery()
-            ->getResult()
+            ->getArrayResult()
         ;
     }
 
@@ -51,7 +42,7 @@ class GenreRepository extends ServiceEntityRepository
             return false;
         } else {
             return $result[0];
-        }        
+        }
     }
 
     public function updateProgressOfPopularityGenres($currentGenre, $try)
@@ -69,33 +60,4 @@ class GenreRepository extends ServiceEntityRepository
         $sql = 'UPDATE genre SET tries = ' . $tries . ' WHERE name = "' . $genre . '"';
         $conn->query($sql);
     }
-
-    // /**
-    //  * @return Genre[] Returns an array of Genre objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('g')
-            ->andWhere('g.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('g.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?Genre
-    {
-        return $this->createQueryBuilder('g')
-            ->andWhere('g.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

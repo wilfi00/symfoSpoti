@@ -13,24 +13,16 @@ class DiscoverController extends AbstractController
     /**
      * @Route("/", name="discover")
      */
-    public function displayDiscover()
+    public function displayDiscover(GenreRepository $genreRepository)
     {
         return $this->render('testArea/discover.html.twig', [
             'jsConfig' => [
-                'searchGenreUrl'      => $this->generateUrl('searchGenre'),
                 'generatePlaylistUrl' => $this->generateUrl('generatePlaylist'),
                 'saveIntoPlaylistUrl' => $this->generateUrl('saveTracksIntoPlaylist'),
+                'genres'              => json_encode($genreRepository->findAllGetArray()),
             ],
             'tracks' => [],
         ]);
-    }
-
-    /**
-     * @Route("/searchGenre", name="searchGenre")
-     */
-    public function searchGenre(Request $request, GenreRepository $genreRepository)
-    {
-        return $this->json($genreRepository->findByGenres(json_decode($request->getContent(), true)));
     }
 
     /**
@@ -70,11 +62,10 @@ class DiscoverController extends AbstractController
 
             $genreEntities = [];
             // Pour chaque genre on vérifie que se sont effectivement des genres enregistrés en proposés en DB
-            foreach ($genres as $genre) {
-                $genreEntity = $genreRepository->findByGenre($genre);
+            foreach ($genres as $genreId) {
+                $genreEntity = $genreRepository->find($genreId);
 
                 if ($genreEntity === false) {
-                    var_dump('3');
                     return false;
                 } else {
                     $genreEntities[] = $genreEntity;

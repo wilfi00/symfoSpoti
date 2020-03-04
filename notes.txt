@@ -67,7 +67,7 @@ IMPORTANT NOTES:
 
 TODO List :p
 
-1/ Utiliser des variables d'environnements
+[OK] 1/ Utiliser des variables d'environnements
 pour la prod symfo et les urls de redirections spoti
 https://www.php.net/manual/fr/function.getenv.php
 https://symfony.com/doc/current/components/dotenv.html
@@ -95,3 +95,14 @@ https://developer.spotify.com/documentation/general/guides/authorization-guide/
 [OK] 9/ Optimiser les perfs pour les genres (charger tous les genres via la DB puis chercher dedans en JS)
 
 10/ Couleurs primaires
+
+Comportements ajax :
+1/ une requête pour savoir si on est authentifié
+
+si oui alors on joue la requête classique
+si non alors on redirige vers l'authentification
+=> stocker en session php la current uri browser + la callback JS
+=> à la fin on redirige vers la page current uri browser et on joue la fonctionnalité de callback JS
+
+2/ mettre en place en JS une fonctionnalité de callback
+=> au chargement de la page, joue une fonction (on doit lui passer le nom de la fonction)

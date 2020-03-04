@@ -6,6 +6,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use \App\SpotiImplementation\Request as SpotiRequest;
 use App\Repository\GenreRepository;
 
 class DiscoverController extends AbstractController
@@ -92,12 +93,7 @@ class DiscoverController extends AbstractController
         $nbArtists         = round($nbSongs / $nbSongsPerArtists);
         $genreEntities     = $data['genres'];
 
-        $api = new \App\SpotifyWebAPI\SpotifyWebAPI();
-        $api->setSession(\App\SpotiImplementation\Tools::getApiSession());
-        $api->setOptions([
-            'auto_refresh' => true,
-        ]);
-        $request       = new \App\SpotiImplementation\Request($api);
+        $request       = SpotiRequest::factory();
         $request->setGenreRespository($genreRepository);
         $artists       = $request->getRandomArtistsFromGenres($genreEntities, $nbArtists, true);
         $tracksRequest = $request->getTopsTracksFromArtists($artists, $nbSongsPerArtists);
@@ -106,7 +102,7 @@ class DiscoverController extends AbstractController
         shuffle($tracksId);
         $tracksId = array_slice($tracksId, 0, $nbSongs);
 
-        $requestSpoti = \App\SpotiImplementation\Request::factory();
+        $requestSpoti = SpotiRequest::factory();
         $spotiTracks  = $requestSpoti->getTracks($tracksId);
 
         foreach ($spotiTracks as $spotiTrack) {
@@ -128,36 +124,17 @@ class DiscoverController extends AbstractController
         return $this->render('spotiTemplates/_tracks.html.twig', ['tracks' => $tracks]);
     }
 
-    public function test()
-    {
-        $api     = new \App\SpotifyWebAPI\SpotifyWebAPI();
-        $api->setSession(\App\SpotiImplementation\Tools::getApiSession());
-        $api->setOptions([
-            'auto_refresh' => true,
-        ]);
-
-        $request = new \App\SpotiImplementation\Request($api);
-        $artistsId = $request->getRandomArtistsFromGenre(50, 'metalcore');
-        $tracks = $request->getTopsTracksFromArtists($artistsId, 2);
-        shuffle($tracks);
-
-        // spotify:playlist:74GkpvpZYcQ0fgpX9SQsWV
-        // $playlist = '74GkpvpZYcQ0fgpX9SQsWV';
-        // $request->addTracksToPlaylist($tracks, $playlist);
-        // var_dump('done !');exit();
-    }
-
     /**
      * @Route("/setPopularityGenres", name="setPopularityGenres")
      */
     public function setPopularityGenres(GenreRepository $genreRepository)
     {
         $api = new \App\SpotifyWebAPI\SpotifyWebAPI();
-        $api->setSession(\App\SpotiImplementation\Tools::getApiSession());
+        $api->setSession(\App\SpotiImplementation\Auth::getApiSession());
         $api->setOptions([
             'auto_refresh' => true,
         ]);
-        $request = new \App\SpotiImplementation\Request($api);
+        $request = new SpotiRequest($api);
         $request->setGenreRespository($genreRepository);
         $genres  = $genreRepository->findAll();
 
@@ -178,11 +155,11 @@ $genres = array_slice($genres, 696, 1000);
         $tracks       = $request->get('tracks');
 
         $api = new \App\SpotifyWebAPI\SpotifyWebAPI();
-        $api->setSession(\App\SpotiImplementation\Tools::getApiSession());
+        $api->setSession(\App\SpotiImplementation\Auth::getApiSession());
         $api->setOptions([
             'auto_refresh' => true,
         ]);
-        $request = new \App\SpotiImplementation\Request($api);
+        $request = new SpotiRequest($api);
         $playlist = $request->createNewPlaylist($playlistName);
         $request->addTracksToPlaylist($tracks, $playlist->id);
 

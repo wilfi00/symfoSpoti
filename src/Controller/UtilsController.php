@@ -15,7 +15,7 @@ class UtilsController extends AbstractController
     public function getInfoOfArtist()
     {
         $api     = new \App\SpotifyWebAPI\SpotifyWebAPI();
-        $api->setSession(\App\SpotiImplementation\Tools::getApiSession());
+        $api->setSession(\App\SpotiImplementation\Auth::getApiSession());
         $api->setOptions([
             'auto_refresh' => true,
         ]);

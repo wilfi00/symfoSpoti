@@ -6,43 +6,7 @@ use Symfony\Component\HttpFoundation\Session\Session;
 
 class Tools
 {
-    const SESSION_APISESSION      = 'api_session';
     const SESSION_ARTISTSELECTION = 'artist_selection';
-    const CALLBACK_URL            = 'callback_url';
-
-    public static function getApiSession($session = null)
-    {
-        if ($session === null) {
-            $session = new Session();
-        }
-        return unserialize($session->get(static::SESSION_APISESSION));
-    }
-
-    public static function saveApiSession($sessionValue)
-    {
-        $session = new Session();
-        $session->set(static::SESSION_APISESSION, serialize($sessionValue));
-    }
-
-    public static function getApiSessionDeprecated()
-    {
-        return unserialize($_SESSION[static::SESSION_APISESSION]);
-    }
-
-    public static function saveApiSessionDeprecated($session)
-    {
-        $_SESSION[static::SESSION_APISESSION] = serialize($session);
-    }
-
-    public static function getRequiredFiles()
-    {
-        foreach (glob("SpotifyWebAPI/*.php") as $filename) {
-            include_once $filename;
-        }
-        foreach (glob("Src/*.php") as $filename) {
-            include_once $filename;
-        }
-    }
 
     public static function generateRandomCharacter()
     {
@@ -108,34 +72,6 @@ class Tools
         return $playlist->owner->id === $userId;
     }
 
-    public static function isAuthenticated($session = null)
-    {
-        if ($session === null) {
-            $session = new Session();
-        }
-
-        if (!static::getApiSession($session)) {
-            $session->set(static::CALLBACK_URL, static::getCurrentUrl());
-            return false;
-        } else {
-            return true;
-        }
-    }
-
-    public static function getUrlAfterAuthentification($defaultUrl, $session = null)
-    {
-        if ($session === null) {
-            $session = new Session();
-        }
-
-        $previousUrl = $session->remove(static::CALLBACK_URL);
-        if (!empty($previousUrl)) {
-            return $previousUrl;
-        } else {
-            return $defaultUrl;
-        }
-    }
-
     public static function getCurrentUrl()
     {
         return $_SERVER['REQUEST_URI'];
@@ -154,5 +90,15 @@ class Tools
     public static function addErrorProbability($nbArtists)
     {
         return round($nbArtists * 1.1);
+    }
+
+    protected static function getSecret()
+    {
+        return $_ENV['SPOTIFY_API_SECRET'];
+    }
+
+    protected static function getRedirectUri()
+    {
+        return $_ENV['SPOTIFY_REDIRECT_URI'];
     }
 }

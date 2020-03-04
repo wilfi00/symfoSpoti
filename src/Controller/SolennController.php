@@ -46,7 +46,7 @@ class SolennController extends AbstractController
     {
         $session = $request->getSession();
 
-        if (!\App\SpotiImplementation\Tools::isAuthenticated($session)) {
+        if (!\App\SpotiImplementation\Auth::isAuthenticated($session)) {
             return $this->redirectToRoute('init');
         }
 

@@ -1,7 +1,7 @@
 {% extends "testArea/base.html.twig" %}
 {% block title %}Discover{% endblock %}
 {% block content %}
-    <h1>Music discovery</h1>
+    <h1>Discover new music with spotify</h1>
 	<div class="row">
 		<div class="col-8">
 			<input type="text" class="inputSearchGenre" placeholder="Rechercher un genre...">
@@ -26,7 +26,7 @@
                 <form action="" id="saveIntoPlaylist">
     				<input type="text" class="playlistName" placeholder="Nom de la playlist" required><br>
     				<button type="submit" class="btn btn-primary saveIntoPlaylist">
-    				  Enregistrer dans la playlist
+                        <img src="{{ asset('build/images/Spotify_Icon_RGB_Black.png') }}" alt="Spotify logo">Enregistrer dans la playlist
     				</button>
                 </form>
 			</div>

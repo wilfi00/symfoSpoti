@@ -15,6 +15,8 @@ https://symfony.com/doc/current/configuration.html#configuring-environment-varia
 composer dump-env prod
 => améliore les perfs, évite à symfo de parser les .env mais doit être exécuté à chaque changement
 
+php bin/console secrets:decrypt-to-local --force --env=prod
+
 https://linuxhint.com/install_phpmyadmin_debian_10/
 
 

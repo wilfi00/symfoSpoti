@@ -107,6 +107,7 @@ global.artistManager = function(config) {
 
 global.genreManager = function(config) {
 	var genres = JSON.parse(config.genres);
+	$('.saveIntoPlaylist').prop('disabled', true);
 	addEvents();
 
 	function addEvents()
@@ -200,12 +201,22 @@ global.genreManager = function(config) {
 		var test = '<button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
 		genre.clone().append(test).appendTo($('.selection'));
 
+		// Ajout de l'event pour supprimer un genre
 		$('.selection .genre').each(function() {
 			var genre = $(this);
 			$(this).find('.close').off('click').on('click', function() {
 				genre.remove();
+
+				// Si c'était le dernier genre alors on désactive le bouton de génération de playlist
+				if ($('.selection').html() == '') {
+					$('.generate').prop('disabled', true);
+				}
 			});
 		});
+
+		// A l'ajout d'un genre on nettoie la barre de recherche et on active le bouton de génération de playlist
+		$('.inputSearchGenre').val("");
+		$('.generate').prop('disabled', false);
 	}
 
 	function generatePlaylist()
@@ -226,6 +237,7 @@ global.genreManager = function(config) {
 			result.html(response);
 			hideLoader();
 			result.show();
+			$('.saveIntoPlaylist').prop('disabled', false);
 		}).fail(function(response) {
 			feedbackError('error');
 			hideLoader();
@@ -255,7 +267,11 @@ global.genreManager = function(config) {
 			config.saveIntoPlaylistUrl,
 			{'name': playlistName, 'tracks': tracks}
 		).done(function(response) {
-			feedbackSuccess('Playlist enregistrée');
+			if (response.redirect) {
+				window.location.href = response.redirect;
+			} else {
+				feedbackSuccess('Playlist enregistrée');
+			}
 		}).fail(function(response) {
 			feedbackError();
 		});

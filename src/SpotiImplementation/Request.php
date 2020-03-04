@@ -286,6 +286,7 @@ class Request
 
     public function createNewPlaylist($name, $isPublic = true)
     {
+        $this->setUserSession();
         return $this->api->createPlaylist(['name' => $name]);
     }
 

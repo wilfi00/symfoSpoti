@@ -7,6 +7,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use \App\SpotiImplementation\Request as SpotiRequest;
+use \App\SpotiImplementation\Auth as SpotiAuth;
 use App\Repository\GenreRepository;
 
 class DiscoverController extends AbstractController
@@ -130,7 +131,7 @@ class DiscoverController extends AbstractController
     public function setPopularityGenres(GenreRepository $genreRepository)
     {
         $api = new \App\SpotifyWebAPI\SpotifyWebAPI();
-        $api->setSession(\App\SpotiImplementation\Auth::getApiSession());
+        $api->setSession(SpotiAuth::getApiSession());
         $api->setOptions([
             'auto_refresh' => true,
         ]);
@@ -151,18 +152,19 @@ $genres = array_slice($genres, 696, 1000);
      */
     public function saveTracksIntoPlaylist(Request $request)
     {
+        // Si l'utilisateur n'est pas logé sur spotify, on le fait
+        $session = $request->getSession();
+        if (!SpotiAuth::isUserAuthenticated($session)) {
+            return $this->json(['redirect' => $this->generateUrl('init')]);
+        }
+
         $playlistName = $request->get('name');
         $tracks       = $request->get('tracks');
 
-        $api = new \App\SpotifyWebAPI\SpotifyWebAPI();
-        $api->setSession(\App\SpotiImplementation\Auth::getApiSession());
-        $api->setOptions([
-            'auto_refresh' => true,
-        ]);
-        $request = new SpotiRequest($api);
+        $request  = SpotiRequest::factory();
         $playlist = $request->createNewPlaylist($playlistName);
         $request->addTracksToPlaylist($tracks, $playlist->id);
 
-        return new Response();
+        return $this->redirect($this->generateUrl('discover'));
     }
 }

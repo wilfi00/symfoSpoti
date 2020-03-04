@@ -20,6 +20,7 @@ class Auth
             static::getRedirectUri()
         );
         $session->requestCredentialsToken();
+
         // Sauvegarde
         static::saveBasicApiSession($session);
     }
@@ -57,18 +58,26 @@ class Auth
         static::saveApiSession($session);
     }
 
-    public static function isAuthenticated($session = null)
+    public static function isUserAuthenticated($session = null)
     {
         if ($session === null) {
             $session = new Session();
         }
 
-        if (!static::getApiSession($session)) {
-            $session->set(static::CALLBACK_URL, static::getCurrentUrl());
-            return false;
-        } else {
-            return true;
+        $apiSession = static::getApiSession($session);
+
+        // Si on a bien une session
+        if ($apiSession) {
+            // Et si la session n'est pas expiré
+            if (!static::isSessionExpired($apiSession)) {
+                // L'utilisateur est bien authentifié
+                return true;
+            }
         }
+
+        // Sinon ça veut dire qu'il ne l'est pas
+        $session->set(static::CALLBACK_URL, Tools::getCurrentUrl());
+        return false;
     }
 
     public static function getUrlAfterAuthentification($defaultUrl, $session = null)
@@ -92,8 +101,7 @@ class Auth
         }
         $apiSession = $session->get(static::SESSION_APISESSION);
         if ($apiSession === null) {
-            header(static::spotiInit());
-            exit();
+            return $apiSession;
         }
 
         return unserialize($session->get(static::SESSION_APISESSION));
@@ -110,11 +118,21 @@ class Auth
         if ($session === null) {
             $session = new Session();
         }
+
         $basicApiSession = $session->get(static::SESSION_BASICAPISESSION);
+
         // Si jamais on a rien, alors on joue l'authentification
         if ($basicApiSession === null) {
             static::makeBasicAuth();
         }
+
+        $basicApiSession = unserialize($session->get(static::SESSION_BASICAPISESSION));
+
+        // Si jamais la session est expiré alors on joue l'authentification
+        if (static::isSessionExpired($basicApiSession)) {
+            static::makeBasicAuth();
+        }
+
         return unserialize($session->get(static::SESSION_BASICAPISESSION));
     }
 
@@ -132,5 +150,10 @@ class Auth
     protected static function getRedirectUri()
     {
         return $_ENV['SPOTIFY_REDIRECT_URI'];
+    }
+
+    protected function isSessionExpired($session)
+    {
+        return $session->getTokenExpiration() <= time();
     }
 }

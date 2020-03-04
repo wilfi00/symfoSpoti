@@ -21,11 +21,11 @@
         			<option value="200">200 chansons</option>
         		</select>
             </div>
-			<button class="btn btn-primary generate">Générer</button>
+			<button class="btn btn-primary generate" disabled>Générer</button>
 			<div class="save">
                 <form action="" id="saveIntoPlaylist">
     				<input type="text" class="playlistName" placeholder="Nom de la playlist" required><br>
-    				<button type="submit" class="btn btn-primary saveIntoPlaylist">
+    				<button type="submit" class="btn btn-primary saveIntoPlaylist" title="Générez d'abord une playlist" disabled>
                         <img src="{{ asset('build/images/Spotify_Icon_RGB_Black.png') }}" alt="Spotify logo">Enregistrer dans la playlist
     				</button>
                 </form>

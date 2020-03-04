@@ -108,6 +108,7 @@ global.artistManager = function(config) {
 global.genreManager = function(config) {
 	var genres = JSON.parse(config.genres);
 	$('.saveIntoPlaylist').prop('disabled', true);
+	$('.generate').prop('disabled', true);
 	addEvents();
 
 	function addEvents()

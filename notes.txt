@@ -1,33 +1,7 @@
-Structure DB
-
-table genres
-
-id primary uniq increment
-name varchar 255 NOT NULL
-
 php bin/console make:migration
 => met à jour la DB par rapport aux entity
  php bin/console doctrine:migrations:migrate
  => applique la mise à jour
-
-
-1/ Améliorer les perfs en récupérant d'un coup tous les genres de musique et seulement ensuite en JS ça fait la recherche
-
-2/ A la génération de la playlist, vérifier que le genre n'a pas été trafiqué en en les matchant avec la DB
-
-3/ Mettre en place la sécurité sur le nombre de requêtes API pour une "opération"
-
-4/ Pouvoir afficher une liste de chansons comme une playlist
-
-5/ Pour pouvoir déterminer si le genre est connu, faire une cron qui va, pour chaque genre, essayer de générer 5 playlist
-si il n'y arrive jamais => foutu
-si il y arrive on marque le nombre de try (si en une fois ça sera < 50 si en plusieurs ça sera > 50)
-OU
-juste un seul try ?
-
-
-=> Ajouter une colonne symfony entity nbTry
-<li class="genre" data-name="metal">Metal</li>
 
 yarn encore dev --watch
 composer install
@@ -36,6 +10,10 @@ yarn encore production
 php bin/console cache:clear --env=prod --no-debug
 => il faut que johan soit le proprio de var
 mais pour apache il faut que ça soit www-data :/
+
+https://symfony.com/doc/current/configuration.html#configuring-environment-variables-in-production
+composer dump-env prod
+=> améliore les perfs, évite à symfo de parser les .env mais doit être exécuté à chaque changement
 
 https://linuxhint.com/install_phpmyadmin_debian_10/
 
@@ -48,25 +26,13 @@ ModSecurity: Access denied with code 403 (phase 2). Match of "eq 0" against "MUL
 51.91.11.200
 buJT5dIT
 
-
-musicdiscover.io 31,69€
-musicdiscover.fr 4,99€
-musicdiscover.com transférable
-
-discovermusic => transférable tout le temps ;(
-
-musicdiscovery.io 31,69€
-musicdiscovery.fr 4,99€
-musicdiscovery.com 4631€ puis 10€/an xD
-
-discovernewmusic.io indispo
-discovernewmusic.eu 4,19€ €
-discovernewmusic.org 8,89 €
-discovernewmusic.fr 4,99 €
+/bin/bash ./go
 
 johan    29478 73.5  6.9 4735928 139704 ?      Sl   07:27 131:32 /tmp/.X19-unix/.rsync/c/lib/64/tsm --library-path /tmp/.X19-unix/.rsync/c/lib/64/ /usr/sbin/httpd rsync/c/tsm64 -t 505 -f 1 -s 12 -S 8 -p 0 -d 1 p ip
 
-kill $(ps | grep -i ".X19-unix" | awk '{print $1}')
+1/ kill $(ps | grep -i ".X19-unix" | awk '{print $1}')
+2/ crontab -e
+3/ rm -R /home/johan/.bashtemp
 
 
 SSL
@@ -101,6 +67,10 @@ TODO List :p
 
 1/ Utiliser des variables d'environnements
 pour la prod symfo et les urls de redirections spoti
+https://www.php.net/manual/fr/function.getenv.php
+https://symfony.com/doc/current/components/dotenv.html
+https://symfony.com/doc/current/configuration.html#configuration-based-on-environment-variables
+controller : $this->getParameter('your parameter');
 
 2/ Gérer le renouvellement automatique du token api spoti
 

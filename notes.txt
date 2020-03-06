@@ -96,6 +96,8 @@ https://developer.spotify.com/documentation/general/guides/authorization-guide/
 
 10/ Couleurs primaires
 
+11/ Voir pour sauvegarder le tout en session, histoire de ne pas tout perdre en un F5 :)
+
 Comportements ajax :
 1/ une requête pour savoir si on est authentifié
 
@@ -106,3 +108,6 @@ si non alors on redirige vers l'authentification
 
 2/ mettre en place en JS une fonctionnalité de callback
 => au chargement de la page, joue une fonction (on doit lui passer le nom de la fonction)
+
+Warning deprecated
+https://stackoverflow.com/questions/59327363/deprecation-warnings-after-upgrading-symfony-4-3-9-to-4-4-1-5-0

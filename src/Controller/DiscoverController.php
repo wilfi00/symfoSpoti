@@ -15,15 +15,16 @@ class DiscoverController extends AbstractController
     /**
      * @Route("/", name="discover")
      */
-    public function displayDiscover(GenreRepository $genreRepository)
+    public function displayDiscover(Request $request, GenreRepository $genreRepository)
     {
         return $this->render('testArea/discover.html.twig', [
             'jsConfig' => [
                 'generatePlaylistUrl' => $this->generateUrl('generatePlaylist'),
-                'saveIntoPlaylistUrl' => $this->generateUrl('saveTracksIntoPlaylist'),
                 'genres'              => json_encode($genreRepository->findAllGetArray()),
+                'success'             => $request->query->get('success'),
             ],
             'tracks' => [],
+            'saveIntoPlaylistUrl' => $this->generateUrl('saveTracksIntoPlaylist'),
         ]);
     }
 
@@ -152,19 +153,38 @@ $genres = array_slice($genres, 696, 1000);
      */
     public function saveTracksIntoPlaylist(Request $request)
     {
+        // On part du principe que ça va échouer ;(
+        $success = false;
+
         // Si l'utilisateur n'est pas logé sur spotify, on le fait
         $session = $request->getSession();
         if (!SpotiAuth::isUserAuthenticated($session)) {
-            return $this->json(['redirect' => $this->generateUrl('init')]);
+            // On sauvegarde les datas post avant la redirection pour se connecter
+            $session->set(SpotiAuth::CALLBACK_DATA, [
+                'playlistName' => $request->request->get('playlistName'),
+                'tracks'       => json_decode($request->request->get('tracks'))
+            ]);
+            return $this->redirect($this->generateUrl('init'), 301);
         }
 
-        $playlistName = $request->get('name');
-        $tracks       = $request->get('tracks');
+        $playlistName = $request->request->get('playlistName');
+        $tracks       = json_decode($request->request->get('tracks'));
 
-        $request  = SpotiRequest::factory();
-        $playlist = $request->createNewPlaylist($playlistName);
-        $request->addTracksToPlaylist($tracks, $playlist->id);
+        if ($playlistName === null && $tracks === null) {
+            $data         = $session->get(SpotiAuth::CALLBACK_DATA);
+            $playlistName = $data['playlistName'];
+            $tracks       = $data['tracks'];
+        }
 
-        return $this->redirect($this->generateUrl('discover'));
+        if (!empty($playlistName) && !empty($tracks)) {
+            $request  = SpotiRequest::factory();
+            $playlist = $request->createNewPlaylist($playlistName);
+            $request->addTracksToPlaylist($tracks, $playlist->id);
+            // Succès de l'opération, feedback vert \o/
+            $success = true;
+        }
+
+
+        return $this->redirect($this->generateUrl('discover', ['success' => $success]));
     }
 }

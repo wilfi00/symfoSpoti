@@ -12,16 +12,22 @@
 		</div>
 		<div class="col-4">
 			<!-- https://codepen.io/Aoyue/pen/rLExYX -->
-            <div class="select-discover">
-                <select id="nbTracks">
-        			<option value="25">25 chansons</option>
-        			<option value="50">50 chansons</option>
-        			<option value="100">100 chansons</option>
-        			<option value="150">150 chansons</option>
-        			<option value="200">200 chansons</option>
-        		</select>
+            <div class="row justify-content-around">
+                <div class="col-5">
+                    <div class="select-discover">
+                        <select id="nbTracks">
+                			<option value="25">25 chansons</option>
+                			<option value="50">50 chansons</option>
+                			<option value="100">100 chansons</option>
+                			<option value="150">150 chansons</option>
+                			<option value="200">200 chansons</option>
+                		</select>
+                    </div>
+                </div>
+                <div class="col-7">
+    	             <button class="btn btn-primary generate" disabled>Générer</button>
+                </div>
             </div>
-			<button class="btn btn-primary generate" disabled>Générer</button>
 			<div class="save">
                 <form action="{{ saveIntoPlaylistUrl }}" id="saveIntoPlaylist" method="POST">
     				<input name="playlistName" type="text" class="playlistName" placeholder="Nom de la playlist" required><br>

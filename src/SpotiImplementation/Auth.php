@@ -11,6 +11,7 @@ class Auth
     const SESSION_APISESSION      = 'api_session';
     const SESSION_BASICAPISESSION = 'api_basic_session';
     const CALLBACK_URL            = 'callback_url';
+    const CALLBACK_DATA           = 'callback_data';
 
     public static function makeBasicAuth()
     {

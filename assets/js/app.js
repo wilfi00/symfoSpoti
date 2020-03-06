@@ -107,9 +107,26 @@ global.artistManager = function(config) {
 
 global.genreManager = function(config) {
 	var genres = JSON.parse(config.genres);
-	$('.saveIntoPlaylist').prop('disabled', true);
-	$('.generate').prop('disabled', true);
+
+	init();
 	addEvents();
+
+	function init()
+	{
+		// Désactivation par défaut des boutons :)
+		$('.saveIntoPlaylist').prop('disabled', true);
+		$('.generate').prop('disabled', true);
+
+		if (config.success === '1') {
+			feedbackSuccess('La playlist a bien été enregistrée');
+			// Nettoyage de l'url
+			window.history.replaceState({}, document.title, location.protocol + "//" + location.host + location.pathname);
+		} else if (config.success === '0') {
+			feedbackError();
+			// Nettoyage de l'url
+			window.history.replaceState({}, document.title, location.protocol + "//" + location.host + location.pathname);
+		}
+	}
 
 	function addEvents()
 	{
@@ -130,8 +147,7 @@ global.genreManager = function(config) {
 		});
 
 		$('#saveIntoPlaylist').off('submit').on('submit', function(event) {
-			event.preventDefault();
-			saveIntoPlaylist();
+			saveIntoPlaylist(event);
 		});
 
 		$('.inputSearchGenre').off('focusin').on('focusin', function() {
@@ -256,26 +272,14 @@ global.genreManager = function(config) {
 		return genres;
 	}
 
-	function saveIntoPlaylist()
+	function saveIntoPlaylist(event)
 	{
-		var playlistName = $('.playlistName').val();
 		var tracks = [];
 		$('.playlistResult .trackBlock').each(function() {
 			tracks.push($(this).data('id'));
 		});
 
-		$.post(
-			config.saveIntoPlaylistUrl,
-			{'name': playlistName, 'tracks': tracks}
-		).done(function(response) {
-			if (response.redirect) {
-				window.location.href = response.redirect;
-			} else {
-				feedbackSuccess('Playlist enregistrée');
-			}
-		}).fail(function(response) {
-			feedbackError();
-		});
+		$('#saveIntoPlaylist').append('<input type="hidden" name="tracks" value=\'' + JSON.stringify(tracks) + '\'>');
 	}
 };
 
@@ -292,7 +296,7 @@ function hideLoader()
 	$('#loader').hide();
 }
 
-function feedbackSuccess(msg)
+function feedbackSuccess(msg = 'Le traitement s\'est bien déroulé')
 {
 	showFeedback(msg, 'alert-success');
 }
@@ -301,14 +305,19 @@ function feedbackError(msg = 'Une erreur est survenue')
 	showFeedback(msg, 'alert-danger');
 }
 
-function showFeedback(msg, classname)
+function showFeedback(msg, classname, size = 220)
 {
 	var feedback      = $('.feedback');
 	var feedbackAlert = feedback.find('.alert');
 
 	feedbackAlert.attr('class', 'alert ' + classname);
 	feedbackAlert.html(msg);
-	feedback.width('220');
+
+	// Permet d'appliquer le width que prendra le message
+	feedbackAlert.css('position', 'absolute');
+	feedback.width(feedbackAlert.outerWidth());
+	feedbackAlert.css('position', 'relative');
+
 	window.setTimeout(function() {
 		feedback.width('0');
 	}, 3000);

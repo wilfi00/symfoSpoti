@@ -4,8 +4,8 @@ php bin/console make:migration
  => applique la mise à jour
 
 yarn encore dev --watch
-composer install
 
+composer install
 yarn encore production
 php bin/console cache:clear --env=prod --no-debug
 => il faut que johan soit le proprio de var

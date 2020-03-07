@@ -84,7 +84,7 @@ class SolennController extends AbstractController
            ]);
         }
 
-        return $this->render('testArea/solenn.html.twig', [
+        return $this->render('pages/solenn.html.twig', [
            'form'          => $form->createView(),
            'artistsSearch' => $artists,
            'artistsInit'   => $this->initArtists($session),

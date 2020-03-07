@@ -80,7 +80,7 @@ https://developer.spotify.com/documentation/general/guides/authorization-guide/
 
 [OK] 4/ Mettre en place une gestion des erreurs globals (pour n'importe quelle erreur y'a au moins ça qui gère)
 
-5/ Faire en sorte de ne jamais générer d'erreurs :
+[OK] 5/ Faire en sorte de ne jamais générer d'erreurs :
     - ne pas générer une playlist sans genre ou alors full random
     - ne pas enregistrer de playlist si pas de chansons ?
     - retours d'erreur API spoti ;( (overquota etc...)
@@ -89,7 +89,7 @@ https://developer.spotify.com/documentation/general/guides/authorization-guide/
 
 7/ Traduire les contenus (i18n)
 
-8/ Voir les recos SEO
+[OK] 8/ Voir les recos SEO
 
 [OK] 9/ Optimiser les perfs pour les genres (charger tous les genres via la DB puis chercher dedans en JS)
 
@@ -99,7 +99,8 @@ https://developer.spotify.com/documentation/general/guides/authorization-guide/
 
 [OK] 12/ Ne pas permettre la sélection de plusieurs fois le même genre
 
-exception k pop ?
+13/ exception k pop ?
+14/ Trouver une image/un logo (favicon + og:image)
 
 
 

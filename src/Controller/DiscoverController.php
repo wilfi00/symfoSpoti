@@ -10,6 +10,7 @@ use \App\SpotiImplementation\Request as SpotiRequest;
 use \App\SpotiImplementation\Auth as SpotiAuth;
 use App\Repository\GenreRepository;
 use \Sonata\SeoBundle\Seo\SeoPageInterface as Seo;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class DiscoverController extends AbstractController
 {
@@ -18,7 +19,8 @@ class DiscoverController extends AbstractController
      */
     public function displayDiscover(Request $request, GenreRepository $genreRepository, Seo $seo)
     {
-        // var_dump($seo);
+        $seo->addMeta('property', 'og:url',  $this->generateUrl('discover', [], UrlGeneratorInterface::ABSOLUTE_URL));
+
         return $this->render('pages/discover.html.twig', [
             'jsConfig' => [
                 'generatePlaylistUrl' => $this->generateUrl('generatePlaylist'),

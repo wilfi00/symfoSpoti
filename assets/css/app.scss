@@ -64,6 +64,11 @@ $text-color: #333;
 	}
 }
 
+.popover {
+	border-color: $secondary-color;
+	.arrow::before { border-right-color: $secondary-color;}
+}
+
 select {
 	display: none;
 }
@@ -210,7 +215,7 @@ input {
 	cursor: auto;
 	margin-right: 10px;
 
-	&:focus, &:hover, &:active {
+	&:focus, &:hover, &:active, &.hover {
 		border-color: darken($secondary-color, 20%);
 		box-shadow: 0 0 5px darken($background-color, 10%);
 	}

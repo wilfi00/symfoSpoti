@@ -115,11 +115,11 @@ global.genreManager = function(config) {
 		generateButton.prop('disabled', true);
 
 		if (config.success === '1') {
-			feedbackSuccess('La playlist a bien été enregistrée');
+			feedbackSuccess(config.text.playlistSaveSucessFeedback);
 			// Nettoyage de l'url
 			window.history.replaceState({}, document.title, location.protocol + "//" + location.host + location.pathname);
 		} else if (config.success === '0') {
-			feedbackError();
+			feedbackError(config.text.feedbackError);
 			// Nettoyage de l'url
 			window.history.replaceState({}, document.title, location.protocol + "//" + location.host + location.pathname);
 		}
@@ -295,9 +295,8 @@ global.genreManager = function(config) {
 			result.show();
 			saveIntoPlaylistButton.prop('disabled', false);
 		}).fail(function(response) {
-			feedbackError('error');
 			hideLoader();
-			feedbackError();
+			feedbackError(config.text.feedbackError);
 		});
 	}
 
@@ -335,11 +334,11 @@ function hideLoader()
 	$('#loader').hide();
 }
 
-function feedbackSuccess(msg = 'Le traitement s\'est bien déroulé')
+function feedbackSuccess(msg = '')
 {
 	showFeedback(msg, 'alert-success');
 }
-function feedbackError(msg = 'Une erreur est survenue')
+function feedbackError(msg)
 {
 	showFeedback(msg, 'alert-danger');
 }

@@ -1,1 +1,14 @@
-title.discover: Découvrir
+# Framework
+feedbackError: Une erreur est survenue
+
+# Discover
+discover_h1: Découvre de nouveaux artistes
+discover_p1: Ajoute tes genres de musiques favoris pour générer une playlist personnalisée. Ajoute la ensuite à ton compte Spotify pour pouvoir l'écouter !
+discover_p1Warning: Attention, la génération d'une playlist peut prendre un peu de temps...
+discover_searchPlaceholder: Rechercher un genre
+discover_songs: chansons
+discover_generate: Générer
+discover_generateToolTip: Ajoute d'abord des genres pour générer ta playlist
+discover_playlistSave: Enregistrer dans la playlist
+discover_playlistSaveToolTip: Commence par générer ta playlist personnalisée
+discover_playlistSaveSucessFeedback: La playlist a bien été enregistrée

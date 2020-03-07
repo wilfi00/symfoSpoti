@@ -22,16 +22,29 @@ class DiscoverController extends AbstractController
     {
         $seo->addMeta('property', 'og:url',  $this->generateUrl('discover', [], UrlGeneratorInterface::ABSOLUTE_URL));
 
-        // var_dump($translator->trans('title.discover'));
-
         return $this->render('pages/discover.html.twig', [
             'jsConfig' => [
                 'generatePlaylistUrl' => $this->generateUrl('generatePlaylist'),
                 'genres'              => $genreRepository->findAllGetArray(),
                 'success'             => $request->query->get('success'),
+                'text'                => [
+                    'playlistSaveSucessFeedback' => $translator->trans('discover_playlistSaveSucessFeedback'),
+                    'feedbackError'              => $translator->trans('feedbackError'),
+                ]
             ],
             'tracks' => [],
             'saveIntoPlaylistUrl' => $this->generateUrl('saveTracksIntoPlaylist'),
+            'text' => [
+                'h1'                  => $translator->trans('discover_h1'),
+                'p1'                  => $translator->trans('discover_p1'),
+                'p1Warning'           => $translator->trans('discover_p1Warning'),
+                'searchPlaceholder'   => $translator->trans('discover_searchPlaceholder'),
+                'songs'               => $translator->trans('discover_songs'),
+                'generate'            => $translator->trans('discover_generate'),
+                'generateToolTip'     => $translator->trans('discover_generateToolTip'),
+                'playlistSave'        => $translator->trans('discover_playlistSave'),
+                'playlistSaveToolTip' => $translator->trans('discover_playlistSaveToolTip'),
+            ]
         ]);
     }
 

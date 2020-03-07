@@ -13,12 +13,7 @@ require('../css/nice-select.scss');
 jQuery = $ = require('jquery');
 
 require('bootstrap');
-require('../js/select.js');
 require('../js/jquery.nice-select.min.js');
-
-$(document).ready(function() {
-	$('select').niceSelect();
-});
 
 global.artistManager = function(config) {
 	var sidebarSelection = $('.sidebar-left');
@@ -106,7 +101,9 @@ global.artistManager = function(config) {
 };
 
 global.genreManager = function(config) {
-	var genres = config.genres;
+	var genres                   = config.genres;
+	const generateButton         = $('.generate');
+	const saveIntoPlaylistButton = $('.saveIntoPlaylist');
 
 	init();
 	addEvents();
@@ -114,8 +111,8 @@ global.genreManager = function(config) {
 	function init()
 	{
 		// Désactivation par défaut des boutons :)
-		$('.saveIntoPlaylist').prop('disabled', true);
-		$('.generate').prop('disabled', true);
+		saveIntoPlaylistButton.prop('disabled', true);
+		generateButton.prop('disabled', true);
 
 		if (config.success === '1') {
 			feedbackSuccess('La playlist a bien été enregistrée');
@@ -126,6 +123,9 @@ global.genreManager = function(config) {
 			// Nettoyage de l'url
 			window.history.replaceState({}, document.title, location.protocol + "//" + location.host + location.pathname);
 		}
+
+		// Nice select
+		$('select').niceSelect();
 	}
 
 	function addEvents()
@@ -142,7 +142,7 @@ global.genreManager = function(config) {
 		});
 
 		// Bouton de génération de la playlist
-		$('.generate').off('click').on('click', function() {
+		generateButton.off('click').on('click', function() {
 			generatePlaylist();
 		});
 
@@ -157,6 +157,36 @@ global.genreManager = function(config) {
 			$('.genreResult').css('height', '0');
 			$('.selection').show();
 		});
+
+		// Popover sur le bouton de génération de playlist
+		generateButton.hover(
+			function() {
+				if (generateButton.is(':disabled')) {
+					$(this).popover('show');
+					$('.inputSearchGenre').addClass('hover');
+					setTimeout(function() {
+						$('.inputSearchGenre').removeClass('hover');
+					}, 650);
+
+				}
+			}, function() {
+				if (generateButton.is(':disabled')) {
+					$(this).popover('hide');
+				}
+			}
+		);
+		// Popover sur le bouton d'enregistrement de la playlist dans spotfiy
+		saveIntoPlaylistButton.hover(
+			function() {
+				if (saveIntoPlaylistButton.is(':disabled')) {
+					$(this).popover('show');
+				}
+			}, function() {
+				if (saveIntoPlaylistButton.is(':disabled')) {
+					$(this).popover('hide');
+				}
+			}
+		);
 	}
 
 	function addInputSearchEvent()
@@ -234,14 +264,14 @@ global.genreManager = function(config) {
 
 				// Si c'était le dernier genre alors on désactive le bouton de génération de playlist
 				if ($('.selection').html() == '') {
-					$('.generate').prop('disabled', true);
+					generateButton.prop('disabled', true);
 				}
 			});
 		});
 
 		// A l'ajout d'un genre on nettoie la barre de recherche et on active le bouton de génération de playlist
 		$('.inputSearchGenre').val("");
-		$('.generate').prop('disabled', false);
+		generateButton.prop('disabled', false);
 		const index = genres.indexOf(5);
 	}
 
@@ -263,7 +293,7 @@ global.genreManager = function(config) {
 			result.html(response);
 			hideLoader();
 			result.show();
-			$('.saveIntoPlaylist').prop('disabled', false);
+			saveIntoPlaylistButton.prop('disabled', false);
 		}).fail(function(response) {
 			feedbackError('error');
 			hideLoader();

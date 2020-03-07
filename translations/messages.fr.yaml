@@ -9,6 +9,9 @@ discover_searchPlaceholder: Rechercher un genre
 discover_songs: chansons
 discover_generate: Générer
 discover_generateToolTip: Ajoute d'abord des genres pour générer ta playlist
+discover_playlistName: Nom de la playlist
 discover_playlistSave: Enregistrer dans la playlist
 discover_playlistSaveToolTip: Commence par générer ta playlist personnalisée
 discover_playlistSaveSucessFeedback: La playlist a bien été enregistrée
+
+#SEO

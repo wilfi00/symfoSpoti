@@ -21,6 +21,10 @@ class DiscoverController extends AbstractController
     public function displayDiscover(Request $request, GenreRepository $genreRepository, Seo $seo, TranslatorInterface $translator)
     {
         $seo->addMeta('property', 'og:url',  $this->generateUrl('discover', [], UrlGeneratorInterface::ABSOLUTE_URL));
+        if ($request->getLocale() !== 'fr') {
+            $seo->addMeta('name', 'description',    $translator->trans('seo_description'));
+            $seo->addMeta('property', 'og:description', $translator->trans('seo_description'));
+        }
 
         return $this->render('pages/discover.html.twig', [
             'jsConfig' => [
@@ -42,6 +46,7 @@ class DiscoverController extends AbstractController
                 'songs'               => $translator->trans('discover_songs'),
                 'generate'            => $translator->trans('discover_generate'),
                 'generateToolTip'     => $translator->trans('discover_generateToolTip'),
+                'playlistName'        => $translator->trans('discover_playlistName'),
                 'playlistSave'        => $translator->trans('discover_playlistSave'),
                 'playlistSaveToolTip' => $translator->trans('discover_playlistSaveToolTip'),
             ]

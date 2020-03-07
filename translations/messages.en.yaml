@@ -1,0 +1,18 @@
+# Framework
+feedbackError: An error has occurred
+
+# Discover
+discover_h1: Discover new artists
+discover_p1: Add your favorites music genres to generate a personalized playlist. Add her to your Spotify account and listen to it !
+discover_p1Warning: Caution, the playlist generation can take a bit of time
+discover_searchPlaceholder: Search genre
+discover_songs: songs
+discover_generate: Generate
+discover_generateToolTip: Add genres and the generate a playlist
+discover_playlistName: Playlist name
+discover_playlistSave: Save into playlist
+discover_playlistSaveToolTip: Start by generate your custom playlist
+discover_playlistSaveSucessFeedback: The playlist has been saved
+
+#SEO
+seo_description: Discover new songs and save them in a Spotify playlist !

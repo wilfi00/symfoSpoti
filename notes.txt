@@ -73,6 +73,8 @@ https://symfony.com/doc/current/components/dotenv.html
 https://symfony.com/doc/current/configuration.html#configuration-based-on-environment-variables
 controller : $this->getParameter('your parameter');
 
+23 => frites
+
 [OK] 2/ Gérer le renouvellement automatique du token api spoti
 
 [OK] 3/ Voir pour se connecter seulement quand on enregistre la playlist ?

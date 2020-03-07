@@ -7,8 +7,8 @@ sonata_seo:
         default:          sonata.seo.page.default
         metas:
             name:
-                keywords:             discover music spotify
-                description:          The description
+                keywords:             Discover music spotify
+                description:          Découvre de nouvelles musiques et enregistre les dans une playlist spotify !
                 robots:               index, follow
 
             property:
@@ -18,8 +18,8 @@ sonata_seo:
 
                 # Open Graph information
                 # see http://developers.facebook.com/docs/opengraphprotocol/#types or http://ogp.me/
-                'og:site_name':       Discover new music
-                'og:description':     Discover new music with spotify API
+                'og:site_name':      Discover new music
+                'og:description':    Découvre de nouvelles musiques et enregistre les dans une playlist spotify !
 
             http-equiv:
                 'Content-Type':         text/html; charset=utf-8

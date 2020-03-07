@@ -2,7 +2,7 @@
 {% block content %}
     <h1>Découvrez de nouveaux artistes</h1>
     <p>Commencez à chercher vos genres de musiques favoris pour générer une playlist personnalisée. Vous pouvez ensuite ajouter cette playlist à votre compte Spotify !<br>Attention, la génération d'une playlist peut prendre un peu de temps...</p>
-	<div class="row">
+    <div class="row">
 		<div class="col-8">
 			<input type="text" class="inputSearchGenre" placeholder="Rechercher un genre...">
 			<div class="selection"></div>
@@ -29,13 +29,13 @@
                     </div>
                 </div>
                 <div class="col-7">
-    	             <button class="btn btn-primary generate" disabled>Générer</button>
+    	             <button class="btn btn-primary generate" disabled data-content="Ajoutez d'abord des genres pour générer votre playlist">Générer</button>
                 </div>
             </div>
 			<div class="save">
                 <form action="{{ saveIntoPlaylistUrl }}" id="saveIntoPlaylist" method="POST">
     				<input name="playlistName" type="text" class="playlistName" placeholder="Nom de la playlist" required><br>
-    				<button type="submit" class="btn btn-primary saveIntoPlaylist" title="Générez d'abord une playlist" disabled>
+    				<button type="submit" class="btn btn-primary saveIntoPlaylist" data-content="Commencez par générer votre playlist personnalisée" disabled>
                         <img src="{{ asset('build/images/Spotify_Icon_RGB_Black.png') }}" alt="Spotify logo">Enregistrer dans la playlist
     				</button>
                 </form>

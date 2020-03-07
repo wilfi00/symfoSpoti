@@ -1,12 +1,16 @@
-{% extends "testArea/base.html.twig" %}
-{% block title %}Discover{% endblock %}
+{% extends "base.html.twig" %}
 {% block content %}
-    <h1>Discover new music with spotify</h1>
+    <h1>Découvrez de nouveaux artistes</h1>
+    <p>Commencez à chercher vos genres de musiques favoris pour générer une playlist personnalisée. Vous pouvez ensuite ajouter cette playlist à votre compte Spotify !<br>Attention, la génération d'une playlist peut prendre un peu de temps...</p>
 	<div class="row">
 		<div class="col-8">
 			<input type="text" class="inputSearchGenre" placeholder="Rechercher un genre...">
 			<div class="selection"></div>
-			<ul class="genreResult"></ul>
+			<ul class="genreResult">
+                {% for genre in jsConfig.genres %}
+                    <li class="genre" id="genre{{ genre.id }}" data-id="{{ genre.id }}">{{ genre.name }}</li>
+                {% endfor %}
+            </ul>
 		    <div id="loader"></div>
 		    <div class="playlistResult"></div>
 		</div>

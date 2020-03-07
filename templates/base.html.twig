@@ -1,12 +1,25 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="fr">
     <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
+        {% block stylesheets %}
+            {{ encore_entry_link_tags('app') }}
+        {% endblock %}
+
+        {{ sonata_seo_title() }}
+        {{ sonata_seo_metadatas() }}
     </head>
     <body>
-        {% block body %}{% endblock %}
-        {% block javascripts %}{% endblock %}
+        {% block sidebarLeft %}
+        {% endblock %}
+        <div class="container">
+            {% block content %}
+                <h3>Cliquez sur un des boutons</h3>
+                <a href="{{ path('solenn')}}">Go to solenn :)</a>
+            {% endblock %}
+        </div>
     </body>
+    <footer>
+        {{ encore_entry_script_tags('app') }}
+        {% block footer %}{% endblock %}
+    </footer>
 </html>

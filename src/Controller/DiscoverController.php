@@ -9,18 +9,20 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use \App\SpotiImplementation\Request as SpotiRequest;
 use \App\SpotiImplementation\Auth as SpotiAuth;
 use App\Repository\GenreRepository;
+use \Sonata\SeoBundle\Seo\SeoPageInterface as Seo;
 
 class DiscoverController extends AbstractController
 {
     /**
      * @Route("/", name="discover")
      */
-    public function displayDiscover(Request $request, GenreRepository $genreRepository)
+    public function displayDiscover(Request $request, GenreRepository $genreRepository, Seo $seo)
     {
-        return $this->render('testArea/discover.html.twig', [
+        // var_dump($seo);
+        return $this->render('pages/discover.html.twig', [
             'jsConfig' => [
                 'generatePlaylistUrl' => $this->generateUrl('generatePlaylist'),
-                'genres'              => json_encode($genreRepository->findAllGetArray()),
+                'genres'              => $genreRepository->findAllGetArray(),
                 'success'             => $request->query->get('success'),
             ],
             'tracks' => [],
@@ -63,6 +65,9 @@ class DiscoverController extends AbstractController
                 return false;
             }
 
+            // On s'assure de ne pas avoir de doublons
+            $genres = array_unique($genres);
+
             $genreEntities = [];
             // Pour chaque genre on vérifie que se sont effectivement des genres enregistrés en proposés en DB
             foreach ($genres as $genreId) {
@@ -91,10 +96,9 @@ class DiscoverController extends AbstractController
 
         // On détermine le nombre d'artistes à récupérer en fonction du nombre de chansons
         $nbSongs           = $data['nbSongs'];
-        $nbSongsPerArtists = 2;
-        $nbArtists         = round($nbSongs / $nbSongsPerArtists);
         $genreEntities     = $data['genres'];
-
+        $nbSongsPerArtists = 2;
+        $nbArtists         = ceil($nbSongs / count($genreEntities) / $nbSongsPerArtists);
         $request       = SpotiRequest::factory();
         $request->setGenreRespository($genreRepository);
         $artists       = $request->getRandomArtistsFromGenres($genreEntities, $nbArtists, true);

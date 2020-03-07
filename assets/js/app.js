@@ -106,7 +106,7 @@ global.artistManager = function(config) {
 };
 
 global.genreManager = function(config) {
-	var genres = JSON.parse(config.genres);
+	var genres = config.genres;
 
 	init();
 	addEvents();
@@ -151,7 +151,7 @@ global.genreManager = function(config) {
 		});
 
 		$('.inputSearchGenre').off('focusin').on('focusin', function() {
-			$('.genreResult').css('height', '220px');
+			// $('.genreResult').css('height', '220px');
 		});
 		$('.inputSearchGenre').off('focusout').on('focusout', function() {
 			$('.genreResult').css('height', '0');
@@ -162,10 +162,11 @@ global.genreManager = function(config) {
 	function addInputSearchEvent()
 	{
 		var typingTimer; // Timer
-		var doneTypingInterval = 10;  // On laisse une seconde
+		var doneTypingInterval = 10;
 		var input = $('.inputSearchGenre');
 
 	 	input.off('click keyup').on('click keyup', function () {
+			$('.genreResult').css('height', '220px');
 	        clearTimeout(typingTimer);
 			typingTimer = setTimeout(function() {
 				// Recherche exact (uk metalcore matchera uk metalcore)
@@ -198,18 +199,25 @@ global.genreManager = function(config) {
 
 	function displayResultGenres(genres)
 	{
+		if (genres.length === 0) {
+			return;
+		}
 		cleanResults();
-		var htmlResult = $('.genreResult');
+		var ids = '';
 		genres.forEach(function(genre) {
-			$('<li class="genre" data-id="' + genre.id + '">' + genre.name + '</li>').appendTo(htmlResult)
+			ids += '#genre' + genre.id + ', ';
 		});
-		addEvents();
+		ids = ids.substring(0, ids.length - 2);
+		var jsElements = document.querySelectorAll(ids);
+		jsElements.forEach(function(element) {
+			element.style.display = '';
+		});
 	}
 
 	function cleanResults()
 	{
-		$('.genreResult .genre').each(function() {
-			$(this).remove();
+		document.querySelectorAll('.genreResult .genre').forEach(function(element) {
+			element.style.display = 'none';
 		});
 	}
 
@@ -217,7 +225,7 @@ global.genreManager = function(config) {
 	{
 		var test = '<button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
 		genre.clone().append(test).appendTo($('.selection'));
-
+		genre.remove();
 		// Ajout de l'event pour supprimer un genre
 		$('.selection .genre').each(function() {
 			var genre = $(this);
@@ -234,6 +242,7 @@ global.genreManager = function(config) {
 		// A l'ajout d'un genre on nettoie la barre de recherche et on active le bouton de génération de playlist
 		$('.inputSearchGenre').val("");
 		$('.generate').prop('disabled', false);
+		const index = genres.indexOf(5);
 	}
 
 	function generatePlaylist()

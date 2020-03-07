@@ -35,8 +35,6 @@ class Auth
         );
         $options = [
             'scope' => [
-                'playlist-read-private',
-                'user-read-private',
                 'playlist-modify-public',
                 'playlist-modify-private'
             ],
@@ -153,7 +151,7 @@ class Auth
         return $_ENV['SPOTIFY_REDIRECT_URI'];
     }
 
-    protected function isSessionExpired($session)
+    protected static function isSessionExpired($session)
     {
         return $session->getTokenExpiration() <= time();
     }

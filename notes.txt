@@ -6,8 +6,7 @@ php bin/console make:migration
 yarn encore dev --watch
 
 composer install
-yarn encore production
-php bin/console cache:clear --env=prod --no-debug
+yarn encore production && php bin/console cache:clear --env=prod --no-debug
 => il faut que johan soit le proprio de var
 mais pour apache il faut que ça soit www-data :/
 
@@ -74,9 +73,9 @@ https://symfony.com/doc/current/components/dotenv.html
 https://symfony.com/doc/current/configuration.html#configuration-based-on-environment-variables
 controller : $this->getParameter('your parameter');
 
-2/ Gérer le renouvellement automatique du token api spoti
+[OK] 2/ Gérer le renouvellement automatique du token api spoti
 
-3/ Voir pour se connecter seulement quand on enregistre la playlist ?
+[OK] 3/ Voir pour se connecter seulement quand on enregistre la playlist ?
 https://developer.spotify.com/documentation/general/guides/authorization-guide/
 
 [OK] 4/ Mettre en place une gestion des erreurs globals (pour n'importe quelle erreur y'a au moins ça qui gère)
@@ -94,20 +93,15 @@ https://developer.spotify.com/documentation/general/guides/authorization-guide/
 
 [OK] 9/ Optimiser les perfs pour les genres (charger tous les genres via la DB puis chercher dedans en JS)
 
-10/ Couleurs primaires
+[OK] 10/ Couleurs primaires
 
 11/ Voir pour sauvegarder le tout en session, histoire de ne pas tout perdre en un F5 :)
 
-Comportements ajax :
-1/ une requête pour savoir si on est authentifié
+[OK] 12/ Ne pas permettre la sélection de plusieurs fois le même genre
 
-si oui alors on joue la requête classique
-si non alors on redirige vers l'authentification
-=> stocker en session php la current uri browser + la callback JS
-=> à la fin on redirige vers la page current uri browser et on joue la fonctionnalité de callback JS
+exception k pop ?
 
-2/ mettre en place en JS une fonctionnalité de callback
-=> au chargement de la page, joue une fonction (on doit lui passer le nom de la fonction)
+
 
 Warning deprecated
 https://stackoverflow.com/questions/59327363/deprecation-warnings-after-upgrading-symfony-4-3-9-to-4-4-1-5-0

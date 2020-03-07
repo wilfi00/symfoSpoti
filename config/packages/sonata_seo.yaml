@@ -19,7 +19,10 @@ sonata_seo:
                 # Open Graph information
                 # see http://developers.facebook.com/docs/opengraphprotocol/#types or http://ogp.me/
                 'og:site_name':      Discover new music
+                'og:title':          Discover new music
                 'og:description':    Découvre de nouvelles musiques et enregistre les dans une playlist spotify !
+                'og:locale':         fr_FR
+                'og:type':           website
 
             http-equiv:
                 'Content-Type':         text/html; charset=utf-8

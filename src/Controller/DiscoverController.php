@@ -11,15 +11,18 @@ use \App\SpotiImplementation\Auth as SpotiAuth;
 use App\Repository\GenreRepository;
 use \Sonata\SeoBundle\Seo\SeoPageInterface as Seo;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class DiscoverController extends AbstractController
 {
     /**
      * @Route("/", name="discover")
      */
-    public function displayDiscover(Request $request, GenreRepository $genreRepository, Seo $seo)
+    public function displayDiscover(Request $request, GenreRepository $genreRepository, Seo $seo, TranslatorInterface $translator)
     {
         $seo->addMeta('property', 'og:url',  $this->generateUrl('discover', [], UrlGeneratorInterface::ABSOLUTE_URL));
+
+        // var_dump($translator->trans('title.discover'));
 
         return $this->render('pages/discover.html.twig', [
             'jsConfig' => [

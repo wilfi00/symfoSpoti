@@ -34,7 +34,7 @@
             </div>
 			<div class="save">
                 <form action="{{ saveIntoPlaylistUrl }}" id="saveIntoPlaylist" method="POST">
-    				<input name="playlistName" type="text" class="playlistName" placeholder="Nom de la playlist" required><br>
+    				<input name="playlistName" type="text" class="playlistName" placeholder="{{ text.playlistName }}" required><br>
     				<button type="submit" class="btn btn-primary saveIntoPlaylist" data-content="{{ text.playlistSaveToolTip }}" disabled>
                         <img src="{{ asset('build/images/Spotify_Icon_RGB_Black.png') }}" alt="Spotify logo">{{ text.playlistSave }}
     				</button>

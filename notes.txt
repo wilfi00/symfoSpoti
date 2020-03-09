@@ -108,3 +108,10 @@ https://developer.spotify.com/documentation/general/guides/authorization-guide/
 
 Warning deprecated
 https://stackoverflow.com/questions/59327363/deprecation-warnings-after-upgrading-symfony-4-3-9-to-4-4-1-5-0
+
+
+HTTP Security Header	Header Role	Status
+X-Frame-Options	Protects against Clickjacking attacks	Not set
+X-XSS-Protection	Mitigates Cross-Site Scripting (XSS) attacks	Not set
+Strict-Transport-Security	Protects against man-in-the-middle attacks	Not set
+X-Content-Type-Options	Prevents possible phishing or XSS attacks	Not set

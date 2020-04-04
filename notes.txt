@@ -87,9 +87,9 @@ https://developer.spotify.com/documentation/general/guides/authorization-guide/
     - ne pas enregistrer de playlist si pas de chansons ?
     - retours d'erreur API spoti ;( (overquota etc...)
 
-6/ Gérer une version multilingue /en
+[OK] 6/ Gérer une version multilingue /en
 
-7/ Traduire les contenus (i18n)
+[OK] 7/ Traduire les contenus (i18n)
 
 [OK] 8/ Voir les recos SEO
 
@@ -115,3 +115,6 @@ X-Frame-Options	Protects against Clickjacking attacks	Not set
 X-XSS-Protection	Mitigates Cross-Site Scripting (XSS) attacks	Not set
 Strict-Transport-Security	Protects against man-in-the-middle attacks	Not set
 X-Content-Type-Options	Prevents possible phishing or XSS attacks	Not set
+
+pour le changement de langue : (choix utilisateur)
+https://symfony.com/doc/current/session/locale_sticky_session.html

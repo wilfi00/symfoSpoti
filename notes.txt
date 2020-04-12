@@ -120,3 +120,12 @@ default-src http://www.webo-facto.com 'unsafe-eval' 'unsafe-inline' https://www.
 
 pour le changement de langue : (choix utilisateur)
 https://symfony.com/doc/current/session/locale_sticky_session.html
+
+
+Comportement souhaité pour le changement de langue :
+- pas de prefixe, juste discovernewmusic.fr/action => français
+- prefixe => force la langue exemple :
+    - discovernewmusic.fr/fr/action => français
+    - discovernewmusic.fr/en/action => anglais
+- si locale inconnue => anglais exemple :
+    - discovernewmusic.fr/de/action => anglais

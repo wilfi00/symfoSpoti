@@ -19,12 +19,13 @@ class RequestSubscriber implements EventSubscriberInterface
 
     public function localeRequest(RequestEvent $event)
     {
-        $request           = $event->getRequest();
-        $preferredLanguage = $request->getPreferredLanguage();
-        $language          = explode('_', $preferredLanguage)[0];
-        if ($language !== 'fr' && $language !== 'en') {
-            $language = 'en';
-        }
-        $request->setLocale($language);
+        // c'était utilisé pour changer la langue en fonction de la préférence utilisateur
+        // $request           = $event->getRequest();
+        // $preferredLanguage = $request->getPreferredLanguage();
+        // $language          = explode('_', $preferredLanguage)[0];
+        // if ($language !== 'fr' && $language !== 'en') {
+        //     $language = 'en';
+        // }
+        // $request->setLocale($language);
     }
 }

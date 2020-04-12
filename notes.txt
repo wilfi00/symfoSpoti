@@ -3,6 +3,9 @@ php bin/console make:migration
  php bin/console doctrine:migrations:migrate
  => applique la mise à jour
 
+composer update
+yarn upgrade (il faut que yarn ne tourne pas !)
+
 yarn encore dev --watch
 
 composer install

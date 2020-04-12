@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="{{ app.request.locale }}"> 
+<html lang="{{ app.request.locale }}">
     <head>
         {% block stylesheets %}
             {{ encore_entry_link_tags('app') }}
@@ -12,6 +12,14 @@
         {% block sidebarLeft %}
         {% endblock %}
         <div class="container">
+            <div class="changeLanguageSelector">
+                <form action="/changeLanguage" id="changeLanguage" method="POST">
+                    <select name="language">
+                        <option value="fr">Français</option>
+                        <option value="en">Anglais</option>
+                    </select>
+                </form>
+            </div>
             {% block content %}
                 <h3>Cliquez sur un des boutons</h3>
                 <a href="{{ path('solenn')}}">Go to solenn :)</a>
@@ -21,5 +29,6 @@
     <footer>
         {{ encore_entry_script_tags('app') }}
         {% block footer %}{% endblock %}
+        <script>changeLanguage("{{ app.request.locale }}");</script>
     </footer>
 </html>

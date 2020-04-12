@@ -285,7 +285,7 @@ input {
 	}
 }
 
-.select-discover {
+.select-discover, .changeLanguageSelector {
 	width: 135px;
 	display: inline-block;
 
@@ -302,6 +302,11 @@ input {
 			box-shadow: 0 0 5px darken($background-color, 10%);
 		}
 	}
+}
+
+.changeLanguageSelector {
+	position: absolute;
+	right: 15px;
 }
 
 .feedback {

@@ -11,9 +11,8 @@ require('../css/nice-select.scss');
 
 // Need jQuery? Install it with "yarn add jquery", then uncomment to require it.
 jQuery = $ = require('jquery');
-
-require('bootstrap');
 require('../js/jquery.nice-select.min.js');
+require('bootstrap');
 
 global.artistManager = function(config) {
 	var sidebarSelection = $('.sidebar-left');
@@ -372,3 +371,33 @@ Array.prototype.unique = function() {
 
     return a;
 };
+
+// Changement de langue
+global.changeLanguage = function(defaultLanguage)
+{
+	var select = $('#changeLanguage select');
+
+	// Langage courant
+	if (defaultLanguage === 'en') {
+		// Html select
+		var option = select.find('option[value="en"]');
+		option.attr('selected', true);
+		// Nice select
+		$('#changeLanguage').find('.nice-select .current').html(option.html());
+		$('#changeLanguage').find('.nice-select li[data-value="en"]').addClass('selected focus');
+		$('#changeLanguage').find('.nice-select li[data-value="fr"]').removeClass('selected focus');
+	} else {
+		// Html select
+		var option = select.find('option[value="fr"]');
+		option.attr('selected', true);
+		// Nice select
+		$('#changeLanguage').find('.nice-select .current').html(option.html());
+		$('#changeLanguage').find('.nice-select li[data-value="en"]').removeClass('selected focus');
+		$('#changeLanguage').find('.nice-select li[data-value="fr"]').addClass('selected focus');
+	}
+
+	// Si on sélectionne une langue, on recharge la page avec la langue choisie
+	select.change(function(eventData) {
+		$('#changeLanguage').submit();
+	});
+}

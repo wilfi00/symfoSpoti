@@ -122,7 +122,7 @@ class DiscoverController extends AbstractController
         $genreEntities     = $data['genres'];
         $nbSongsPerArtists = 2;
         $nbArtists         = ceil($nbSongs / count($genreEntities) / $nbSongsPerArtists);
-        $request       = SpotiRequest::factory();
+        $request           = SpotiRequest::factory();
         $request->setGenreRespository($genreRepository);
         $artists       = $request->getRandomArtistsFromGenres($genreEntities, $nbArtists, true);
         $tracksRequest = $request->getTopsTracksFromArtists($artists, $nbSongsPerArtists);
@@ -210,7 +210,6 @@ $genres = array_slice($genres, 696, 1000);
             // Succès de l'opération, feedback vert \o/
             $success = true;
         }
-
 
         return $this->redirect($this->generateUrl('discover', ['success' => $success]));
     }

@@ -5,6 +5,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use App\Form\Type\PlaylistSelection;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use \App\SpotiImplementation\Request as SpotiRequest;
+use \App\SpotiImplementation\Auth as SpotiAuth;
+use \App\SpotiImplementation\Tools as SpotiTools;
 
 class Display extends AbstractController
 {
@@ -20,15 +23,21 @@ class Display extends AbstractController
      */
     public function displayPlaylists(Request $request)
     {
+        $session = $request->getSession();
+
+        if (!SpotiAuth::isUserAuthenticated($session)) {
+            return $this->redirectToRoute('init');
+        }
+
         $form = $this->createForm(PlaylistSelection::class);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
 
-            $requestSpoti = \App\SpotiImplementation\Request::factory();
+            $requestSpoti = SpotiRequest::factory();
             $requestSpoti->addTopTracksToPlaylist($data);
 
-            \App\SpotiImplementation\Tools::emptyArtistSelectionInSession();
+            SpotiTools::emptyArtistSelectionInSession();
 
             return $this->redirectToRoute('solenn');
         }

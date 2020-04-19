@@ -5,16 +5,18 @@ namespace App\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
+use \App\SpotiImplementation\Auth as SpotiAuth;
+use \App\SpotiImplementation\Request as SpotiRequest;
 
 class PlaylistSelection extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $requestSpoti  = \App\SpotiImplementation\Request::factory();
+        $requestSpoti  = SpotiRequest::factory();
         $playlists     = $requestSpoti->getUserPlaylistsForModaleSelection();
 
         $builder
-            ->add('nbSongs', ChoiceType::class,   [
+            ->add('nbSongs', ChoiceType::class,  [
                 'choices' => ['5' => '5', '10' => '10'],
                 'label'   => 'Nombre de chansons par groupe : ',])
             ->add('playlist', ChoiceType::class, [

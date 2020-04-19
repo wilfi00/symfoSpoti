@@ -1,7 +1,6 @@
 <?php
 
 namespace App\SpotiImplementation;
-set_time_limit(0);
 use App\Repository\GenreRepository;
 use \App\SpotiImplementation\Auth as SpotiAuth;
 
@@ -170,6 +169,7 @@ class Request
 
     public function addTracksToPlaylist($tracks, $playlistId)
     {
+        $this->setUserSession();
         if (empty($tracks) || empty($playlistId)) {
             return;
         }
@@ -183,6 +183,7 @@ class Request
 
     public function getUserPlaylistsForModaleSelection()
     {
+        $this->setUserSession();
         $currentUserId = $this->api->me()->id;
 
         $playlists          = [];

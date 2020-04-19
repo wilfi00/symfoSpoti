@@ -8,7 +8,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-
+use \App\SpotiImplementation\Request as SpotiRequest;
+use \App\SpotiImplementation\Auth as SpotiAuth;
+use \App\SpotiImplementation\Tools as SpotiTools;
 use Symfony\Component\HttpFoundation\Session\Session;
 
 class SolennController extends AbstractController
@@ -16,7 +18,7 @@ class SolennController extends AbstractController
     public function initArtists($session)
     {
         $artists          = [];
-        $artistsSelection = \App\SpotiImplementation\Tools::getArtistsSelectionInSession($session);
+        $artistsSelection = SpotiTools::getArtistsSelectionInSession($session);
 
         if (empty($artistsSelection )) {
             return $artists;
@@ -40,13 +42,13 @@ class SolennController extends AbstractController
     }
 
     /**
-     * @Route("/", name="solenn")
+     * @Route("/testAreaSolenn", name="solenn")
      */
     public function testAreaSolenn(Request $request)
     {
         $session = $request->getSession();
 
-        if (!\App\SpotiImplementation\Auth::isUserAuthenticated($session)) {
+        if (!SpotiAuth::isUserAuthenticated($session)) {
             return $this->redirectToRoute('init');
         }
 
@@ -62,7 +64,7 @@ class SolennController extends AbstractController
             $data       = $form->getData();
             $artistName = $data['artist'];
 
-            $requestSpoti = \App\SpotiImplementation\Request::factory();
+            $requestSpoti = SpotiRequest::factory();
             $answer       = $requestSpoti->searchForArtist($artistName);
 
             foreach ($answer as $artist) {
@@ -101,7 +103,7 @@ class SolennController extends AbstractController
      */
     public function addArtistToSelection(Request $request)
     {
-        \App\SpotiImplementation\Tools::saveArtistSelectionInSession(json_decode($request->getContent(), true));
+        SpotiTools::saveArtistSelectionInSession(json_decode($request->getContent(), true));
 
         return new Response();
     }
@@ -111,7 +113,7 @@ class SolennController extends AbstractController
      */
     public function removeArtistToSelectionUrl(Request $request)
     {
-        \App\SpotiImplementation\Tools::deleteArtistSelectionInSession($request->getContent());
+        SpotiTools::deleteArtistSelectionInSession($request->getContent());
 
         return new Response();
     }
@@ -121,7 +123,7 @@ class SolennController extends AbstractController
      */
     public function emptyArtistsSelection()
     {
-        \App\SpotiImplementation\Tools::emptyArtistSelectionInSession();
+        SpotiTools::emptyArtistSelectionInSession();
         return new Response();
     }
 }

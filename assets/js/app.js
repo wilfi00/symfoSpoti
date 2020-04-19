@@ -14,6 +14,9 @@ jQuery = $ = require('jquery');
 require('../js/jquery.nice-select.min.js');
 require('bootstrap');
 
+// Nice select
+$('select').niceSelect();
+
 global.artistManager = function(config) {
 	var sidebarSelection = $('.sidebar-left');
 	addEvents();
@@ -122,9 +125,6 @@ global.genreManager = function(config) {
 			// Nettoyage de l'url
 			window.history.replaceState({}, document.title, location.protocol + "//" + location.host + location.pathname);
 		}
-
-		// Nice select
-		$('select').niceSelect();
 	}
 
 	function addEvents()

@@ -79,12 +79,12 @@ class Tools
 
     public static function formatStringForSpotify($string)
     {
-        return str_replace(' ', '+', $string);
+	return '"' . $string . '"';
     }
 
     public static function formatInverseStringForSpotify($string)
     {
-        return str_replace('+', ' ', $string);
+	return substr($string, 1, -1);
     }
 
     public static function addErrorProbability($nbArtists)

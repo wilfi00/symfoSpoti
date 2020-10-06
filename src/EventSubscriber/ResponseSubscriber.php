@@ -24,7 +24,7 @@ class ResponseSubscriber implements EventSubscriberInterface
          $responseHeaders->set('Strict-Transport-Security', 'max-age=86400');
          $responseHeaders->set('X-Content-Type-Options', 'nosniff');
          $responseHeaders->set('X-XSS-Protection', '1');
-         $responseHeaders->set('Content-Security-Policy', $this->getContentSecurityPolicy());
+         //$responseHeaders->set('Content-Security-Policy', $this->getContentSecurityPolicy());
     }
 
     public function getContentSecurityPolicy()

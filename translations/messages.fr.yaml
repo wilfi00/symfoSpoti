@@ -1,6 +1,12 @@
 # Framework
 feedbackError: Une erreur est survenue
 
+# Base
+brand_name: Génère une playlist
+from_genre: A partir des genres
+from_selected_artists: A partir d'une sélection d'artistes
+from_followed_artists: A partir de tes artites suivis
+
 # Discover
 discover_h1: Découvre de nouveaux artistes
 discover_p1: Ajoute tes genres de musiques favoris pour générer une playlist personnalisée. Ajoute la ensuite à ton compte Spotify pour pouvoir l'écouter !
@@ -13,6 +19,7 @@ discover_playlistName: Nom de la playlist
 discover_playlistSave: Enregistrer dans la playlist
 discover_playlistSaveToolTip: Commence par générer ta playlist personnalisée
 discover_playlistSaveSucessFeedback: La playlist a bien été enregistrée
+
 
 #SEO
 seo_description: Découvre de nouvelles musiques et enregistre les dans une playlist spotify !

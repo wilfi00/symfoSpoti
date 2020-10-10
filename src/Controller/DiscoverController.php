@@ -38,18 +38,6 @@ class DiscoverController extends AbstractController
             ],
             'tracks' => [],
             'saveIntoPlaylistUrl' => $this->generateUrl('saveTracksIntoPlaylist'),
-            'text' => [
-                'h1'                  => $translator->trans('discover_h1'),
-                'p1'                  => $translator->trans('discover_p1'),
-                'p1Warning'           => $translator->trans('discover_p1Warning'),
-                'searchPlaceholder'   => $translator->trans('discover_searchPlaceholder'),
-                'songs'               => $translator->trans('discover_songs'),
-                'generate'            => $translator->trans('discover_generate'),
-                'generateToolTip'     => $translator->trans('discover_generateToolTip'),
-                'playlistName'        => $translator->trans('discover_playlistName'),
-                'playlistSave'        => $translator->trans('discover_playlistSave'),
-                'playlistSaveToolTip' => $translator->trans('discover_playlistSaveToolTip'),
-            ]
         ]);
     }
 

@@ -8,7 +8,27 @@
         {{ sonata_seo_title() }}
         {{ sonata_seo_metadatas() }}
     </head>
-    <body>
+    <body class="test">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+          <a class="navbar-brand" href="{{ path('discover') }}">{% trans %}brand_name{% endtrans %} :</a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+        
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+              <li class="nav-item {% if app.request.attributes.get('_route') == 'discover' %}active{% endif %}">
+                <a class="nav-link" href="{{ path('discover') }}">{% trans %}from_genre{% endtrans %}</a>
+              </li>
+              <li class="nav-item {% if app.request.attributes.get('_route') == 'artist_selection' %}active{% endif %}">
+                <a class="nav-link" href="{{ path('artist_selection') }}">{% trans %}from_selected_artists{% endtrans %}</a>
+              </li>
+              <li class="nav-item {% if app.request.attributes.get('_route') == 'artist_followed' %}active{% endif %}">
+                <a class="nav-link" href="{{ path('artist_selection') }}">{% trans %}from_followed_artists{% endtrans %}</a>
+              </li>
+            </ul>
+          </div>
+        </nav>
         {% block sidebarLeft %}
         {% endblock %}
         <div class="container">
@@ -21,14 +41,12 @@
                 </form>
             </div>
             {% block content %}
-                <h3>Cliquez sur un des boutons</h3>
-                <a href="{{ path('solenn')}}">Go to solenn :)</a>
             {% endblock %}
         </div>
+        <footer>
+            {{ encore_entry_script_tags('app') }}
+            {% block footer %}{% endblock %}
+            <script>changeLanguage("{{ app.request.locale }}");</script>
+        </footer>
     </body>
-    <footer>
-        {{ encore_entry_script_tags('app') }}
-        {% block footer %}{% endblock %}
-        <script>changeLanguage("{{ app.request.locale }}");</script>
-    </footer>
 </html>

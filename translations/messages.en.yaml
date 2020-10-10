@@ -1,6 +1,12 @@
 # Framework
 feedbackError: An error has occurred
 
+# Base
+brand_name: Generate playlist
+from_genre: From genres
+from_selected_artists: From selected artists
+from_followed_artists: From followed artists
+
 # Discover
 discover_h1: Discover new artists
 discover_p1: Add your favorites music genres to generate a personalized playlist. Add her to your Spotify account and listen to it !

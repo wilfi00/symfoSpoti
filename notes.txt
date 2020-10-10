@@ -132,3 +132,9 @@ Comportement souhaité pour le changement de langue :
     - discovernewmusic.fr/en/action => anglais
 - si locale inconnue => anglais exemple :
     - discovernewmusic.fr/de/action => anglais
+
+
+----- 
+minecraft
+fichier service : /etc/systemd/system/minecraftserver.service
+commande service : systemctl start minecraftserver.service

@@ -18,8 +18,23 @@ require('bootstrap');
 $('select').niceSelect();
 
 global.artistManager = function(config) {
-	var sidebarSelection = $('.sidebar-left');
-	addEvents();
+	var sidebarSelection = $('.artistSelection');
+	init();
+
+	function init()
+	{
+		addEvents();
+
+		if (config.success === '1') {
+			feedbackSuccess(config.text.playlistSaveSucessFeedback);
+			// Nettoyage de l'url
+			window.history.replaceState({}, document.title, location.protocol + "//" + location.host + location.pathname);
+		} else if (config.success === '0') {
+			feedbackError(config.text.feedbackError);
+			// Nettoyage de l'url
+			window.history.replaceState({}, document.title, location.protocol + "//" + location.host + location.pathname);
+		}
+	}
 
 	function addEvents()
 	{
@@ -31,21 +46,21 @@ global.artistManager = function(config) {
 		});
 
 		// Suppression de l'artiste de la sélection
-		$('.sidebar-left .removeArtist').each(function() {
+		$('.artistSelection .removeArtist').each(function() {
 			$(this).off('click').on('click', function() {
 				removeArtistToSelection($(this).parent());
 			});
 		});
 
 		// Supprime toute la sélection
-		$('.sidebar-left .removeAll').off('click').on('click', function() {
+		$('.removeAll').off('click').on('click', function() {
 			removeAllSelection();
 		});
 	}
 
 	function addArtistToSelection(artist)
 	{
-		artist.clone().appendTo(sidebarSelection);
+		artist.clone().add('<hr>').prependTo(sidebarSelection);
 		addEvents();
 		artist.css('pointer-events', 'none');
 		$.post(config.addArtistToSelectionUrl, JSON.stringify(artist.data().information));
@@ -53,6 +68,7 @@ global.artistManager = function(config) {
 
 	function removeArtistToSelection(artist)
 	{
+		artist.next().remove();
 		artist.remove();
 		$.post(config.removeArtistToSelectionUrl, artist.data().information.id);
 	}
@@ -60,7 +76,7 @@ global.artistManager = function(config) {
 	function removeAllSelection()
 	{
 		$.get(config.removeAllSelectionUrl);
-		$('.sidebar-left .artistBloc').each(function() {
+		$('.artistSelection .artistBloc').each(function() {
 			$(this).remove();
 		});
 	}
@@ -91,6 +107,9 @@ global.artistManager = function(config) {
 	$('#search-form :input').each(function() {
 	    var input = $("#" + this.id);
 	    input.on('keyup', function () {
+	    	if (input.val() == '') {
+	    		return;
+	    	}
 	        clearTimeout(typingTimer);
 	        typingTimer = setTimeout(function() {
 				$('#search-form').submit();

@@ -39,7 +39,7 @@ class Display extends AbstractController
 
             SpotiTools::emptyArtistSelectionInSession();
 
-            return $this->redirectToRoute('solenn');
+            return $this->redirectToRoute('artist_selection', ['success' => 1]);
         }
 
         return $this->render('spotiTemplates/_modale_playlists.html.twig', [

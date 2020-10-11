@@ -12,8 +12,9 @@ use \App\SpotiImplementation\Request as SpotiRequest;
 use \App\SpotiImplementation\Auth as SpotiAuth;
 use \App\SpotiImplementation\Tools as SpotiTools;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
-class SolennController extends AbstractController
+class DiscoverFromArtistsController extends AbstractController
 {
     public function initArtists($session)
     {
@@ -44,7 +45,7 @@ class SolennController extends AbstractController
     /**
      * @Route("/artistsSelection", name="artist_selection")
      */
-    public function testAreaSolenn(Request $request)
+    public function artistSelection(Request $request, TranslatorInterface $translator)
     {
         $session = $request->getSession();
 
@@ -55,7 +56,7 @@ class SolennController extends AbstractController
         $artists = [];
 
         $form = $this->createFormBuilder(null, ['attr' => ['id' => 'search-form']])
-            ->add('artist', TextType::class,   ['label' => 'Entrez le nom d\'un groupe : '])
+            ->add('artist', TextType::class,   ['label' => false, 'attr' => ['placeholder' => 'discover_fa_fill_artist']])
             ->getForm();
 
         $form->handleRequest($request);
@@ -86,7 +87,7 @@ class SolennController extends AbstractController
            ]);
         }
 
-        return $this->render('pages/solenn.html.twig', [
+        return $this->render('pages/discover_from_artists.html.twig', [
            'form'          => $form->createView(),
            'artistsSearch' => $artists,
            'artistsInit'   => $this->initArtists($session),
@@ -94,7 +95,12 @@ class SolennController extends AbstractController
                'addArtistToSelectionUrl'    => $this->generateUrl('addArtist'),
                'removeArtistToSelectionUrl' => $this->generateUrl('removeArtist'),
                'removeAllSelectionUrl'      => $this->generateUrl('emptyArtistsSelection'),
-           ]
+               'success'       => $request->query->get('success'),
+               'text'          => [
+                    'playlistSaveSucessFeedback' => $translator->trans('discover_playlistSaveSucessFeedback'),
+                    'feedbackError'              => $translator->trans('feedbackError'),
+                ],
+           ],
        ]);
     }
 

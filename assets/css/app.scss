@@ -46,6 +46,14 @@ $text-color: #333;
 // $primary-color: #f83600;
 // $secondary-color: #fe8c00;
 
+a { 
+	color: $primary-color !important;
+	&:hover, &:focus {
+		text-decoration: none;
+	}
+}
+button:focus { outline: none; }
+
 .btn-primary {
 	background-color: $primary-color!important;
 	border-color: $secondary-color!important;
@@ -64,6 +72,18 @@ $text-color: #333;
 	}
 }
 
+.navbar {
+	padding: 0 1rem!important;
+	background-color: $secondary-color!important;
+	
+	a { 
+		padding: 15px;
+		color: white!important; 
+		transition: background-color 0.3s;
+	}
+	li.active a, a:hover:not(.navbar-brand) { background-color: $primary-color!important; }
+}
+
 .popover {
 	border-color: $secondary-color;
 	.arrow::before { border-right-color: $secondary-color;}
@@ -77,36 +97,52 @@ h1 {
 	margin: 30px 0 30px 0;
 }
 
+// Discover from artists
+.saveFromArtists {
+	width: 200px;
+	height: 58px;
+	margin-bottom: 50px;
+}
+.removeAll {
+	margin-bottom: 50px;
+}
+#form_artist { margin-bottom: 50px; }
+.artistSelection {
+	.artistBloc {
+		cursor: inherit;
+	}
+	.removeArtist {
+		cursor: pointer;
+		padding: 2px;
+	}
+	hr {
+		display: inline-block;
+		width: 208px;
+		&:last {
+			display: none;
+		}
+	}
+}
 .artistBloc {
+	position: relative;
 	display: inline-block;
     cursor: pointer;
 	width: 200px;
-	height: 200px;
 	text-align: center;
 
     img {
     	width: 100px;
     }
-    .hiddenArtistId, .removeArtist {
-        display: none;
-    }
-}
-
-.sidebar-left {
-    float: left;
-    margin: 40px 20px 0 0;
-
     .removeArtist {
-        display: inline-block;
-        cursor: pointer;
+        position: absolute;
+        right: 0;
     }
-
-    .artistBloc {
-        cursor: auto;
-    }
+    
 }
-.sidebar-left > a {
-    display: block;
+.search-result {
+	.artistBloc { margin-bottom: 40px; }
+	hr { display: none; }
+	.removeArtist { display: none; }
 }
 
 #loader {

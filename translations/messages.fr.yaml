@@ -1,11 +1,14 @@
 # Framework
 feedbackError: Une erreur est survenue
+save: Enregistrer
+reset: Réinitialiser
+back: Retour
 
 # Base
 brand_name: Génère une playlist
 from_genre: A partir des genres
 from_selected_artists: A partir d'une sélection d'artistes
-from_followed_artists: A partir de tes artites suivis
+from_followed_artists: A partir de tes artistes suivis
 
 # Discover
 discover_h1: Découvre de nouveaux artistes
@@ -20,6 +23,14 @@ discover_playlistSave: Enregistrer dans la playlist
 discover_playlistSaveToolTip: Commence par générer ta playlist personnalisée
 discover_playlistSaveSucessFeedback: La playlist a bien été enregistrée
 
+# Discover from artists
+discover_fa_h1: Ecoute les meilleurs titres de tes groupes préférés
+discover_fa_p1: Fait ta sélection d'artistes puis enregistre leurs chansons les plus connus dans une playlist
+discover_fa_fill_artist: Entrer le nom d'un groupe
+discover_fa_playlist_choice: Choix de la playlist
+discover_fa_nb_songs: Nombre de chansons par groupe
+discover_fa_add_song_to_playlist: Ajouter les chansons dans cette playlist
+discover_fa_playlist_add: Ajouter les titres dans la playlist
 
 #SEO
 seo_description: Découvre de nouvelles musiques et enregistre les dans une playlist spotify !

@@ -1,7 +1,9 @@
 {% for artist in artists %}<a class="artistBloc" title="Ajouter à la sélection" data-information="{{ artist|json_encode() }}">
-	<span class="removeArtist">X</span>
-	{% if artist.image is not empty %}
-		<img src="{{ artist.image }}" /> <br>
-	{% endif %}
-    {{ artist.name }}
-</a>{% endfor %}
+<button type="button" data-dismiss="modal" aria-label="Close" class="close removeArtist">
+    <span aria-hidden="true">×</span>
+</button>
+{% if artist.image is not empty %}
+	<img src="{{ artist.image }}" /> <br>
+{% endif %}
+{{ artist.name }}
+</a><hr>{% endfor %}

@@ -12,14 +12,17 @@ use App\Repository\GenreRepository;
 use \Sonata\SeoBundle\Seo\SeoPageInterface as Seo;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Psr\Log\LoggerInterface;
 
 class DiscoverController extends AbstractController
 {
     /**
      * @Route("/", name="discover")
      */
-    public function displayDiscover(Request $request, GenreRepository $genreRepository, Seo $seo, TranslatorInterface $translator)
+    public function displayDiscover(Request $request, GenreRepository $genreRepository, Seo $seo, TranslatorInterface $translator, LoggerInterface $logger)
     {
+        $logger->info('petit message de log');
+        
         $seo->addMeta('property', 'og:url',  $this->generateUrl('discover', [], UrlGeneratorInterface::ABSOLUTE_URL));
         if ($request->getLocale() !== 'fr') {
             $seo->addMeta('name', 'description',    $translator->trans('seo_description'));

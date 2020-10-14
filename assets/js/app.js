@@ -185,12 +185,11 @@ global.genreManager = function(config) {
 					setTimeout(function() {
 						$('.inputSearchGenre').removeClass('hover');
 					}, 650);
-
-				}
-			}, function() {
-				if (generateButton.is(':disabled')) {
+				} else {
 					$(this).popover('hide');
 				}
+			}, function() {
+				$(this).popover('hide');
 			}
 		);
 		// Popover sur le bouton d'enregistrement de la playlist dans spotfiy
@@ -198,11 +197,11 @@ global.genreManager = function(config) {
 			function() {
 				if (saveIntoPlaylistButton.is(':disabled')) {
 					$(this).popover('show');
-				}
-			}, function() {
-				if (saveIntoPlaylistButton.is(':disabled')) {
+				} else {
 					$(this).popover('hide');
 				}
+			}, function() {
+				$(this).popover('hide');
 			}
 		);
 	}

@@ -21,3 +21,12 @@ monolog:
             handler: deprecation
             max_level: info
             channels: ["php"]
+        jojo_filter:
+            type: filter
+            handler: jojo_info
+            accepted_levels: [info]
+        jojo_info:
+            type: stream
+            action_level: info
+            path: "%kernel.logs_dir%/jojo_info.log"
+            formatter: 'monolog.formatter.info'

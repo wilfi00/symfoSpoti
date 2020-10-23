@@ -10,6 +10,7 @@ require('../css/app.scss');
 require('../css/nice-select.scss');
 
 // Need jQuery? Install it with "yarn add jquery", then uncomment to require it.
+
 jQuery = $ = require('jquery');
 require('../js/jquery.nice-select.min.js');
 require('bootstrap');
@@ -342,11 +343,11 @@ $('#modalePlaylists .btn-primary').on('click', function() {
 	$('form[name="playlist_selection"]').submit();
 });
 
-function showLoader()
+global.showLoader = function()
 {
 	$('#loader').show();
 }
-function hideLoader()
+global.hideLoader = function()
 {
 	$('#loader').hide();
 }
@@ -419,3 +420,4 @@ global.changeLanguage = function(defaultLanguage)
 		$('#changeLanguage').submit();
 	});
 }
+

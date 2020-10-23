@@ -187,7 +187,6 @@ class Request
         $currentUserId = $this->api->me()->id;
 
         $playlists          = [];
-        $playlistsRequest   = [];
         $tmpPlaylistRequest = [];
         $maxLimit           = 50;
         $offset             = 0;
@@ -295,5 +294,43 @@ class Request
     {
         $this->setBasicSession();
         return $this->api->getArtist($id);
+    }
+    
+    public function getAllFollowedArtists()
+    {
+        $this->setUserSession();
+        
+        $artists           = [];
+        $lastArtistId      = null;
+        $tmpArtistsRequest = [];
+        $maxLimit          = 50;
+        $offset            = 0;
+        
+        $security = 0;
+        
+        do {
+            $security++;
+            
+            // Requête à l'API
+            $tmpArtistsRequest = $this->api->getUserFollowedArtists([
+                'limit'  => $maxLimit,
+                'after'  => $lastArtistId,
+            ])->artists;
+            $currentArtists = $tmpArtistsRequest->items;
+
+            // Stocke des infos
+            $artists = array_merge($artists, $currentArtists);
+            $lastArtistId = $tmpArtistsRequest->cursors->after;
+    
+            $offset += $maxLimit;
+        } while($security < 5 && (sizeof($currentArtists) >= $maxLimit));
+
+        return $artists;
+    }
+    
+    public function getUserInformations()
+    {
+        $this->setUserSession();
+        return $this->api->me();
     }
 }

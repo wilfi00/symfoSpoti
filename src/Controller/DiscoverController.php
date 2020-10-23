@@ -14,6 +14,8 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Psr\Log\LoggerInterface;
 use App\Services\InfoFormatter;
+use Symfony\Bridge\Monolog\Processor\RouteProcessor;
+use Symfony\Bridge\Monolog\Processor\WebProcessor;
 
 class DiscoverController extends AbstractController
 {
@@ -22,8 +24,6 @@ class DiscoverController extends AbstractController
      */
     public function displayDiscover(Request $request, GenreRepository $genreRepository, Seo $seo, TranslatorInterface $translator, LoggerInterface $logger)
     {
-        $logger->info(InfoFormatter::KEYWORD . 'petit message de log');
-        
         $seo->addMeta('property', 'og:url',  $this->generateUrl('discover', [], UrlGeneratorInterface::ABSOLUTE_URL));
         if ($request->getLocale() !== 'fr') {
             $seo->addMeta('name', 'description',    $translator->trans('seo_description'));

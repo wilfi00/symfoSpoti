@@ -4,12 +4,14 @@ namespace App\SpotiImplementation;
 
 use \App\SpotifyWebAPI\Session as SpotiSession;
 use Symfony\Component\HttpFoundation\Session\Session;
+use \App\SpotiImplementation\Request as SpotiRequest;
 
 class Auth
 {
-    CONST CLIENT_ID               = '0526d569b3284692b26e01909d76b53d'; // Your client id
+    const CLIENT_ID               = '0526d569b3284692b26e01909d76b53d'; // Your client id
     const SESSION_APISESSION      = 'api_session';
     const SESSION_BASICAPISESSION = 'api_basic_session';
+    const SESSION_INFORMATION     = 'spotify_user_information';
     const CALLBACK_URL            = 'callback_url';
     const CALLBACK_DATA           = 'callback_data';
 
@@ -36,7 +38,9 @@ class Auth
         $options = [
             'scope' => [
                 'playlist-modify-public',
-                'playlist-modify-private'
+                'playlist-modify-private',
+                'user-top-read',
+                'user-follow-read',
             ],
         ];
 
@@ -54,7 +58,8 @@ class Auth
         // Request a access token using the code from Spotify
         $session->requestAccessToken($_GET['code']);
 
-        static::saveApiSession($session);
+        $sessionPhp = static::saveApiSession($session);
+        static::saveUserSession($sessionPhp);
     }
 
     public static function isUserAuthenticated($session = null)
@@ -110,8 +115,18 @@ class Auth
     {
         $session = new Session();
         $session->set(static::SESSION_APISESSION, serialize($sessionValue));
+        return $session;
     }
 
+    protected static function saveUserSession($session)
+    {
+        if (static::isUserAuthenticated($session)) {
+            $request  = SpotiRequest::factory();
+            dump($request->getUserInformations());
+            $session->set(static::SESSION_INFORMATION, serialize($request->getUserInformations()));
+        }
+    }
+    
     public static function getBasicApiSession($session = null)
     {
         if ($session === null) {
@@ -139,6 +154,7 @@ class Auth
     {
         $session = new Session();
         $session->set(static::SESSION_BASICAPISESSION, serialize($sessionValue));
+        // ici stocker les infos de l'utilisateur courant : https://developer.spotify.com/documentation/web-api/reference/users-profile/
     }
 
     protected static function getSecret()

@@ -13,6 +13,8 @@ use \App\SpotiImplementation\Auth as SpotiAuth;
 use \App\SpotiImplementation\Tools as SpotiTools;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Psr\Log\LoggerInterface;
+use App\Services\InfoFormatter;
 
 class DiscoverFromArtistsController extends AbstractController
 {
@@ -45,8 +47,9 @@ class DiscoverFromArtistsController extends AbstractController
     /**
      * @Route("/artistsSelection", name="artist_selection")
      */
-    public function artistSelection(Request $request, TranslatorInterface $translator)
+    public function artistSelection(Request $request, TranslatorInterface $translator, LoggerInterface $logger)
     {
+        $logger->info(InfoFormatter::KEYWORD . 'petit message de log', ['test' => 'value']);
         $session = $request->getSession();
 
         if (!SpotiAuth::isUserAuthenticated($session)) {
@@ -107,8 +110,9 @@ class DiscoverFromArtistsController extends AbstractController
     /**
      * @Route("/addArtistToSelection", name="addArtist")
      */
-    public function addArtistToSelection(Request $request)
+    public function addArtistToSelection(Request $request, LoggerInterface $logger)
     {
+        $logger->info(InfoFormatter::KEYWORD . 'petit message de log', ['test' => 'value']);
         SpotiTools::saveArtistSelectionInSession(json_decode($request->getContent(), true));
 
         return new Response();

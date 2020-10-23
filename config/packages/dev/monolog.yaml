@@ -17,13 +17,3 @@ monolog:
             type: console
             process_psr_3_messages: false
             channels: ["!event", "!doctrine", "!console"]
-        jojo_filter:
-            type: filter
-            handler: jojo_info
-            accepted_levels: [info]
-        jojo_info:
-            type: stream
-            action_level: info
-            path: "%kernel.logs_dir%/jojo_info.log"
-            formatter: 'monolog.formatter.info'
-

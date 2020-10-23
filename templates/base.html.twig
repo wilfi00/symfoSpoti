@@ -7,17 +7,19 @@
 
         {{ sonata_seo_title() }}
         {{ sonata_seo_metadatas() }}
-        <!-- Global site tag (gtag.js) - Google Analytics -->
-        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-179780767-1"></script>
-        <script>
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
-
-          gtag('config', 'UA-179780767-1');
-        </script>
+        {% if app.environment == 'prod' %}
+          <!-- Global site tag (gtag.js) - Google Analytics -->
+          <script async src="https://www.googletagmanager.com/gtag/js?id=UA-179780767-1"></script>
+          <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+  
+            gtag('config', 'UA-179780767-1');
+          </script>
+        {% endif %}
     </head>
-    <body class="test">
+    <body class="{{app.request.attributes.get('_route')}}">
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
           <a class="navbar-brand" href="{{ path('discover') }}">{% trans %}brand_name{% endtrans %} :</a>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -32,8 +34,8 @@
               <li class="nav-item {% if app.request.attributes.get('_route') == 'artist_selection' %}active{% endif %}">
                 <a class="nav-link" href="{{ path('artist_selection') }}">{% trans %}from_selected_artists{% endtrans %}</a>
               </li>
-              <li class="nav-item {% if app.request.attributes.get('_route') == 'artist_followed' %}active{% endif %}">
-                <a class="nav-link" href="{{ path('artist_selection') }}">{% trans %}from_followed_artists{% endtrans %}</a>
+              <li class="nav-item {% if app.request.attributes.get('_route') == 'artists_followed' %}active{% endif %}">
+                <a class="nav-link" href="{{ path('artists_followed') }}">{% trans %}from_followed_artists{% endtrans %}</a>
               </li>
             </ul>
           </div>
@@ -54,6 +56,7 @@
         </div>
         <footer>
             {{ encore_entry_script_tags('app') }}
+            {{ encore_entry_script_tags('appVue') }}
             {% block footer %}{% endblock %}
             <script>changeLanguage("{{ app.request.locale }}");</script>
         </footer>

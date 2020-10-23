@@ -44,6 +44,10 @@ class InfoProcessor
     protected function addRequestInformations()
     {
         $request = $this->requestStack->getCurrentRequest();
+        if (empty($request)) {
+            return;
+        }
+        
         $content = $request->getContent();
         if (Utils::isJson($content)) {
             $content = json_decode($content, true);

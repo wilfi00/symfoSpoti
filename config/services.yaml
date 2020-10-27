@@ -32,3 +32,8 @@ services:
 
     monolog.formatter.info:
         class: App\Services\InfoFormatter
+        arguments: [~, ~, true]
+
+    App\Services\InfoProcessor:
+        tags:
+            - { name: monolog.processor }

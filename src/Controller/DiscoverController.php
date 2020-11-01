@@ -29,7 +29,7 @@ class DiscoverController extends AbstractController
             $seo->addMeta('name', 'description',    $translator->trans('seo_description'));
             $seo->addMeta('property', 'og:description', $translator->trans('seo_description'));
         }
-dump($genreRepository->findAllGetArray());
+
         return $this->render('pages/discover.html.twig', [
             'jsConfig' => [
                 'generatePlaylistUrl' => $this->generateUrl('generatePlaylist'),

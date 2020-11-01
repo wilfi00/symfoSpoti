@@ -123,8 +123,7 @@ class DiscoverController extends AbstractController
         shuffle($tracksId);
         $tracksId = array_slice($tracksId, 0, $nbSongs);
 
-        $requestSpoti = SpotiRequest::factory();
-        $spotiTracks  = $requestSpoti->getTracks($tracksId);
+        $spotiTracks  = $request->getTracks($tracksId);
 
         foreach ($spotiTracks as $spotiTrack) {
             $tmpImg      = '';
@@ -140,6 +139,42 @@ class DiscoverController extends AbstractController
                 'artistName' => $spotiTrack->artists[0]->name,
                 'image'      => $tmpImg,
                 'genres'     => $tracksRequest[$spotiTrack->id],
+            ];
+        }
+        return $this->render('spotiTemplates/_tracks.html.twig', ['tracks' => $tracks]);
+    }
+    
+    /**
+     * @Route("/generateBetterPlaylist", name="generateBetterPlaylist")
+     */
+    public function generateBetterPlaylist(Request $request, GenreRepository $genreRepository)
+    {
+        $data = $this->isValidDatasForDiscover($request, $genreRepository);
+        if ($data === false) {
+            throw new \Exception('Something went wrong!');
+        }
+        
+        $nbSongs       = $data['nbSongs'];
+        $genreEntities = $data['genres'];
+        
+        $requestSpoti = SpotiRequest::factory();
+        $response = $requestSpoti->getBestRecommendations($genreEntities, $nbSongs);
+        $spotiTracks   = $response;
+        
+        foreach ($spotiTracks as $spotiTrack) {
+            $tmpImg      = '';
+            $tmpImgArray = $spotiTrack->album->images;
+
+            if (!empty($tmpImgArray)) {
+                $tmpImg = $tmpImgArray[0]->url;
+            }
+
+            $tracks[] = [
+                'id'         => $spotiTrack->id,
+                'name'       => $spotiTrack->name,
+                'artistName' => $spotiTrack->artists[0]->name,
+                'image'      => $tmpImg,
+                'genres'     => [],
             ];
         }
         return $this->render('spotiTemplates/_tracks.html.twig', ['tracks' => $tracks]);

@@ -151,7 +151,7 @@ h1 {
 .artistBloc {
 	position: relative;
 	display: inline-block;
-	width: 200px;
+	width: 140px;
 	height: 150px;
 	text-align: center;
 
@@ -163,12 +163,22 @@ h1 {
         position: absolute;
         right: 0;
     }
-    &:not(.artistFollowedBloc) {
- 	   cursor: pointer;
-    }
-    &.artistFollowedBloc {
- 	   margin-bottom: 20px;
-    }
+    &:not(.artistFollowedBloc) { cursor: pointer; }
+    &.artistFollowedBloc { margin-bottom: 20px; }
+}
+.artistsFollowed {
+ 	overflow: hidden;
+	max-height: 150px;
+	transition: max-height 0.2s ease-out;
+	
+	&.displayAll {
+		max-height: 2000px;
+		transition: max-height 0.3s ease-in;
+	}
+}
+.displayLink {
+	text-align: right;
+	margin-bottom: 20px;
 }
 .search-result {
 	.artistBloc { margin-bottom: 40px; }

@@ -5,36 +5,67 @@
     <h1>{% trans %}discover_fwa_h1{% endtrans %}</h1>
     <p>{% trans %}discover_fwa_p1{% endtrans %}</p>
     <div id="app">
-		{{ artists|length }}
-		<div class="select-discover">
-	        <select id="nbTracks">
-	        	<option value="1">1 {% trans %}fwa_discover_songs{% endtrans %}</option>
-				<option value="2">2 {% trans %}fwa_discover_songs{% endtrans %}</option>
-				<option value="3">3 {% trans %}fwa_discover_songs{% endtrans %}</option>
-				<option value="4">4 {% trans %}fwa_discover_songs{% endtrans %}</option>
-				<option value="5">5 {% trans %}fwa_discover_songs{% endtrans %}</option>
-				<option value="6">6 {% trans %}fwa_discover_songs{% endtrans %}</option>
-				<option value="7">7 {% trans %}fwa_discover_songs{% endtrans %}</option>
-				<option value="8">8 {% trans %}fwa_discover_songs{% endtrans %}</option>
-				<option value="9">9 {% trans %}fwa_discover_songs{% endtrans %}</option>
-				<option value="10">10 {% trans %}fwa_discover_songs{% endtrans %}</option>
-			</select>
-	    </div>
-	    <input name="nbTracks" type="hidden"/>
-	    <input v-model="playlistName" name="playlistName" type="text" class="playlistName" placeholder="{% trans %}discover_playlistName{% endtrans %}" required><br>
-	    <button v-on:click="submitData" class="btn btn-primary generate" data-content="{% trans %}discover_generateToolTip{% endtrans %}">{% trans %}discover_generate{% endtrans %}</button>
-	    <div v-if="seen" class="row artistsFollowed">
-			<div class="col-12">
-				 <artist-item
-					v-for="item in vueArtists"
-					v-bind:artist="item"
-					v-bind:key="item.id"
-					></artist-item>
-			</div>
-		</div>
-    	<div id="loader"></div>
-		<div class="feedback">
-	        <div class="alert alert-success"></div>
+    	<div class="row">
+    		<div class="col-9">
+    			<div class="displayLink">
+	    			<a class="displayAll" href="#">{% trans %}discover_fwa_display{% endtrans %}</a>
+	    			<a class="hideAll d-none" href="#">{% trans %}discover_fwa_hide{% endtrans %}</a>
+    			</div>
+    			<div class="row artistsFollowed">
+					<div class="col-12">
+						 <artist-item
+							v-for="item in vueArtists"
+							v-bind:artist="item"
+							v-bind:key="item.id"
+						></artist-item>
+					</div>
+				</div>
+				<hr>
+				<h2>{% trans %}filters{% endtrans %}</h2>
+				<p>{% trans %}discover_fwa_filter_genres{% endtrans %} :</p>
+				<input type="text" class="inputSearchGenre" placeholder="{% trans %}discover_searchPlaceholder{% endtrans %}">
+				<div class="selection"></div>
+				<ul class="genreResult">
+                    <li v-for="genre in genres" v-on:click="addSelectedGenres" :data-name="genre" class="genre">${ genre }</li>
+	            </ul>
+				<hr>
+				<!--<h2>Je ne souhaite pas ces genres : </h2>
+				<div class="genres" v-for="genre in genres">
+					<span class="genre" v-on:click="addUnwantedGenres" :data-name="genre">${ genre }</span>
+				</div>-->
+    		</div>
+    		<div class="col-3">
+    			<div class="row justify-content-around">
+    				<div class="col-5">
+	    				<div class="select-discover">
+					        <select id="nbTracks">
+					        	<option value="1">1 {% trans %}fwa_discover_songs{% endtrans %}</option>
+								<option value="2">2 {% trans %}fwa_discover_songs{% endtrans %}</option>
+								<option value="3">3 {% trans %}fwa_discover_songs{% endtrans %}</option>
+								<option value="4">4 {% trans %}fwa_discover_songs{% endtrans %}</option>
+								<option value="5">5 {% trans %}fwa_discover_songs{% endtrans %}</option>
+								<option value="6">6 {% trans %}fwa_discover_songs{% endtrans %}</option>
+								<option value="7">7 {% trans %}fwa_discover_songs{% endtrans %}</option>
+								<option value="8">8 {% trans %}fwa_discover_songs{% endtrans %}</option>
+								<option value="9">9 {% trans %}fwa_discover_songs{% endtrans %}</option>
+								<option value="10">10 {% trans %}fwa_discover_songs{% endtrans %}</option>
+							</select>
+					    </div>
+					    <input name="nbTracks" type="hidden"/>
+	    			</div>
+	    			<div class="col-7">
+	    				<span class="important">{{ artists|length }}</span> {% trans %}discover_fwa_selected_artists{% endtrans %}
+	    			</div>
+				</div>
+				<div class="save">
+				    <input v-model="playlistName" name="playlistName" type="text" class="playlistName" placeholder="{% trans %}discover_playlistName{% endtrans %}" required><br>
+				    <button v-on:click="submitData" class="btn btn-primary saveIntoPlaylist">{% trans %}discover_playlistSave{% endtrans %}</button>
+				</div>
+    		</div>
+	    	<div id="loader"></div>
+			<div class="feedback">
+		        <div class="alert alert-success"></div>
+		    </div>
 	    </div>
     </div>
 {% endblock %}
@@ -42,5 +73,6 @@
 	<script>
 		var url        = "{{ url }}";
 		var vueArtists = {{ vueArtists|json_encode|raw }};
+		var genres     = {{ genres|json_encode|raw }};
     </script>
 {% endblock %}

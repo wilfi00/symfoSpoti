@@ -35,7 +35,6 @@ class InfoFormatter extends LineFormatter
     {
         $message = '';
         foreach ($records as $record) {
-            dump($record);
             $message .= $this->format($record);
         }
 

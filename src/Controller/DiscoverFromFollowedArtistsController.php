@@ -34,11 +34,18 @@ class DiscoverFromFollowedArtistsController extends AbstractController
         usort($artists, function($a, $b) {
             return strtolower($a->name) > strtolower($b->name);
         });
-        dump($artists);
+        
+        $genres = [];
+        foreach ($artists as $artist) {
+            $artist->active = true;
+            $genres = array_merge($genres, $artist->genres);
+        }
+        $genres = array_unique($genres);
         
         return $this->render('pages/discover_from_followed_artists.html.twig', [
             'artists'    => $artists,
             'vueArtists' => $artists,
+            'genres'     => $genres,
             'url'        => $this->generateUrl('generate_playlist_followed_artists'),
         ]);
     }

@@ -18,6 +18,7 @@ require('bootstrap');
 // Nice select
 $('select').niceSelect();
 
+// Selection artists
 global.artistManager = function(config) {
 	var sidebarSelection = $('.artistSelection');
 	init();
@@ -122,6 +123,7 @@ global.artistManager = function(config) {
 	});
 };
 
+// Discover
 global.genreManager = function(config) {
 	var genres                   = config.genres;
 	const generateButton         = $('.generate');
@@ -145,26 +147,29 @@ global.genreManager = function(config) {
 			// Nettoyage de l'url
 			window.history.replaceState({}, document.title, location.protocol + "//" + location.host + location.pathname);
 		}
+		
+		// Initialisation de la recherche de genres
+		searchGenres(
+			genres, 
+			function() {
+				generateButton.prop('disabled', false);
+			},
+			function() {
+				// Si c'était le dernier genre alors on désactive le bouton de génération de playlist
+				if ($('.selection').html() == '') {
+					generateButton.prop('disabled', true);
+				}
+			}
+		);
 	}
 
 	function addEvents()
 	{
-		// Champ de recherche
-		addInputSearchEvent();
-
-		// Sélection d'un genre
-		$('.genreResult .genre').each(function() {
-			$(this).off('click').on('click', function() {
-				$('.selection').show();
-				addGenreToSelection($(this));
-			});
-		});
-
 		// Bouton de génération de la playlist
 		generateButton.off('click').on('click', function() {
 			generatePlaylist();
 		});
-
+		
 		$('#saveIntoPlaylist').off('submit').on('submit', function(event) {
 			saveIntoPlaylist(event);
 		});
@@ -205,92 +210,6 @@ global.genreManager = function(config) {
 				$(this).popover('hide');
 			}
 		);
-	}
-
-	function addInputSearchEvent()
-	{
-		var typingTimer; // Timer
-		var doneTypingInterval = 10;
-		var input = $('.inputSearchGenre');
-
-	 	input.off('click keyup').on('click keyup', function () {
-			$('.genreResult').css('height', '220px');
-	        clearTimeout(typingTimer);
-			typingTimer = setTimeout(function() {
-				// Recherche exact (uk metalcore matchera uk metalcore)
-				var regex = '';
-				regex +=  '\\b(\\w*' +  $.trim(input.val()) + '\\w*)\\b';
-				var genres1 = genres.filter(genre => genre.name.search(regex) >= 0);
-
-				// Recherche inversée exact (exemple, uk metalcore matchera metalcore uk)
-				var regex = '';
-				regex +=  '\\b(\\w*' +  $.trim(input.val().split(' ').reverse().join(' ')) + '\\w*)\\b';
-				var genres2 = genres.filter(genre => genre.name.search(regex) >= 0);
-
-				// Recherche très générale en mode OU (uk metalcore renverra tous les uk et tous les metalcore)
-				var regex = '';
-				input.val().split(' ').forEach(function(value) {
-				   regex += '\\b(\\w*' + value + '\\w*)\\b|';
-				});
-				// Supression du dernier caractère de la chaine pour enlever le ou |
-				regex = regex.substring(0, regex.length - 1);
-				var genres3 = genres.filter(genre => genre.name.search(regex) >= 0);
-
-				// On concatène tout et on enlève les genres dupliqués
-				displayResultGenres(genres1.concat(genres2).concat(genres3).unique());
-		   }, doneTypingInterval);
-	    });
-	    input.off('keydown').on('keydown', function () {
-			clearTimeout(typingTimer);
-	    });
-	}
-
-	function displayResultGenres(genres)
-	{
-		if (genres.length === 0) {
-			return;
-		}
-		cleanResults();
-		var ids = '';
-		genres.forEach(function(genre) {
-			ids += '#genre' + genre.id + ', ';
-		});
-		ids = ids.substring(0, ids.length - 2);
-		var jsElements = document.querySelectorAll(ids);
-		jsElements.forEach(function(element) {
-			element.style.display = '';
-		});
-	}
-
-	function cleanResults()
-	{
-		document.querySelectorAll('.genreResult .genre').forEach(function(element) {
-			element.style.display = 'none';
-		});
-	}
-
-	function addGenreToSelection(genre)
-	{
-		var test = '<button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
-		genre.clone().append(test).appendTo($('.selection'));
-		genre.remove();
-		// Ajout de l'event pour supprimer un genre
-		$('.selection .genre').each(function() {
-			var genre = $(this);
-			$(this).find('.close').off('click').on('click', function() {
-				genre.remove();
-
-				// Si c'était le dernier genre alors on désactive le bouton de génération de playlist
-				if ($('.selection').html() == '') {
-					generateButton.prop('disabled', true);
-				}
-			});
-		});
-
-		// A l'ajout d'un genre on nettoie la barre de recherche et on active le bouton de génération de playlist
-		$('.inputSearchGenre').val("");
-		generateButton.prop('disabled', false);
-		const index = genres.indexOf(5);
 	}
 
 	function generatePlaylist()
@@ -342,6 +261,11 @@ global.genreManager = function(config) {
 $('#modalePlaylists .btn-primary').on('click', function() {
 	$('form[name="playlist_selection"]').submit();
 });
+
+// Artistes follow
+global.artistFollowManager = function() {
+	searchGenres(genres);
+};
 
 global.showLoader = function()
 {
@@ -421,3 +345,105 @@ global.changeLanguage = function(defaultLanguage)
 	});
 }
 
+// Gestion du champ de recherche de genres
+global.searchGenres = function(genres, callbackAddGenre, callbackLastGenre) {
+	addSearchGenresEvents(genres);
+	function addSearchGenresEvents(genres)
+	{
+		// Champ de recherche
+		addInputSearchEvent(genres);
+		// Sélection d'un genre
+		$('.genreResult .genre').each(function() {
+			$(this).off('click').on('click', function() {
+				$('.selection').show();
+				addGenreToSelection($(this), callbackAddGenre, callbackLastGenre);
+			});
+		});
+	}
+	
+	function addInputSearchEvent(genres)
+	{
+		var typingTimer; // Timer
+		var doneTypingInterval = 10;
+		var input = $('.inputSearchGenre');
+	
+	 	input.off('click keyup').on('click keyup', function () {
+			$('.genreResult').css('height', '220px');
+	        clearTimeout(typingTimer);
+			typingTimer = setTimeout(function() {
+				// Recherche exact (uk metalcore matchera uk metalcore)
+				var regex = '';
+				regex +=  '\\b(\\w*' +  $.trim(input.val()) + '\\w*)\\b';
+				var genres1 = genres.filter(genre => genre.name.search(regex) >= 0);
+	
+				// Recherche inversée exact (exemple, uk metalcore matchera metalcore uk)
+				var regex = '';
+				regex +=  '\\b(\\w*' +  $.trim(input.val().split(' ').reverse().join(' ')) + '\\w*)\\b';
+				var genres2 = genres.filter(genre => genre.name.search(regex) >= 0);
+	
+				// Recherche très générale en mode OU (uk metalcore renverra tous les uk et tous les metalcore)
+				var regex = '';
+				input.val().split(' ').forEach(function(value) {
+				   regex += '\\b(\\w*' + value + '\\w*)\\b|';
+				});
+				// Supression du dernier caractère de la chaine pour enlever le ou |
+				regex = regex.substring(0, regex.length - 1);
+				var genres3 = genres.filter(genre => genre.name.search(regex) >= 0);
+	
+				// On concatène tout et on enlève les genres dupliqués
+				displayResultGenres(genres1.concat(genres2).concat(genres3).unique());
+		   }, doneTypingInterval);
+	    });
+	    input.off('keydown').on('keydown', function () {
+			clearTimeout(typingTimer);
+	    });
+	}
+	
+	function displayResultGenres(genres)
+	{
+		if (genres.length === 0) {
+			return;
+		}
+		cleanResults();
+		var ids = '';
+		genres.forEach(function(genre) {
+			ids += '#genre' + genre.id + ', ';
+		});
+		ids = ids.substring(0, ids.length - 2);
+		var jsElements = document.querySelectorAll(ids);
+		jsElements.forEach(function(element) {
+			element.style.display = '';
+		});
+	}
+	
+	function cleanResults()
+	{
+		document.querySelectorAll('.genreResult .genre').forEach(function(element) {
+			element.style.display = 'none';
+		});
+	}
+
+	function addGenreToSelection(genre, callbackAddGenre = null, callbackLastGenre = null)
+	{
+		var test = '<button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
+		genre.clone().append(test).appendTo($('.selection'));
+		genre.remove();
+		// Ajout de l'event pour supprimer un genre
+		$('.selection .genre').each(function() {
+			var genre = $(this);
+			$(this).find('.close').off('click').on('click', function() {
+				genre.remove();
+				if (callbackLastGenre instanceof Function) {
+					callbackLastGenre();
+				}
+			});
+		});
+
+		// A l'ajout d'un genre on nettoie la barre de recherche et on active le bouton de génération de playlist
+		$('.inputSearchGenre').val("");
+		if (callbackAddGenre !== null) {
+			callbackAddGenre();
+		}
+		const index = genres.indexOf(5);
+	}
+}

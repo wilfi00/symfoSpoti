@@ -3,6 +3,7 @@ feedbackError: Une erreur est survenue
 save: Enregistrer
 reset: Réinitialiser
 back: Retour
+filters: Filtres
 
 # Base
 brand_name: Génère une playlist
@@ -14,7 +15,7 @@ from_followed_artists: A partir de tes artistes suivis
 discover_h1: Découvre de nouveaux artistes
 discover_p1: Ajoute tes genres de musiques favoris pour générer une playlist personnalisée. Ajoute la ensuite à ton compte Spotify pour pouvoir l'écouter !
 discover_p1Warning: Attention, la génération d'une playlist peut prendre un peu de temps...
-discover_searchPlaceholder: Rechercher un genre
+discover_searchPlaceholder: Rechercher un genre...
 discover_songs: chansons
 discover_generate: Générer
 discover_generateToolTip: Ajoute d'abord des genres pour générer ta playlist
@@ -31,6 +32,15 @@ discover_fa_playlist_choice: Choix de la playlist
 discover_fa_nb_songs: Nombre de chansons par groupe
 discover_fa_add_song_to_playlist: Ajouter les chansons dans cette playlist
 discover_fa_playlist_add: Ajouter les titres dans la playlist
+
+# Discover from followed artists
+discover_fwa_h1: Ecoute les meilleurs titres de tes groupes suivis
+discover_fwa_p1: Créé une playlist à partir de tes artistes suivis
+discover_fwa_selected_artists: artistes sélectionnés
+discover_fwa_display: Afficher tous les artistes
+discover_fwa_hide: Afficher moins d'artistes
+discover_fwa_filter_genres: Je souhaite seulement ces genres
+
 
 #SEO
 seo_description: Découvre de nouvelles musiques et enregistre les dans une playlist spotify !

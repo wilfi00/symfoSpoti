@@ -41,6 +41,7 @@ class Auth
                 'playlist-modify-private',
                 'user-top-read',
                 'user-follow-read',
+                'user-library-read',
             ],
         ];
 
@@ -122,7 +123,6 @@ class Auth
     {
         if (static::isUserAuthenticated($session)) {
             $request  = SpotiRequest::factory();
-            dump($request->getUserInformations());
             $session->set(static::SESSION_INFORMATION, serialize($request->getUserInformations()));
         }
     }

@@ -333,4 +333,123 @@ class Request
         $this->setUserSession();
         return $this->api->me();
     }
+    
+    public function getGenreSeeds()
+    {
+        $this->setBasicSession();
+        return $this->api->getGenreSeeds();
+    }
+    
+    public function getBestRecommendations(array $genresEntities, int $nbTracks = 50, $includeFollowedArtits = false, $includeLikedSongs = false)
+    {
+        $uniqArtists = [];
+        $cpt    = 0;
+        $maxTry = 50;
+        $tracks = [];
+        $this->setBasicSession();
+        $genres = $this->translateGenresToSeeds($genresEntities);
+        $artists = $this->getFollowedArtistsByGenres($genresEntities);
+        $likedTracks  = [];
+        while ((count($tracks) < $nbTracks) && ($cpt <= $maxTry)) {
+            $recos = $this->api->getRecommendations([
+                'seed_artists' => $artists,
+                'seed_genres'  => $genres,
+                'seed_tracks'  => $likedTracks,
+            ])->tracks;
+            
+            foreach ($recos as $reco) {
+                foreach ($reco->artists as $recoArtist) {
+                    $uniqArtists[] = $recoArtist->id;
+                }
+                $tracks[$reco->id] = $reco;
+                
+            }
+            $cpt++;    
+        }
+        
+        shuffle($tracks);
+        return array_slice($tracks, 0, $nbTracks);
+    }
+    
+    protected function translateGenresToSeeds(array $genresEntities)
+    {
+        $perfects     = [];
+        $genresSeeds  = [];
+        $seeds        = $this->api->getGenreSeeds()->genres;
+        
+        foreach ($seeds as $seed) {
+            foreach ($genresEntities as $genre) {
+                $name = strtolower($genre->getName());
+                if ((strpos($name, strtolower($seed)) !== false)
+                    || (strpos($seed, strtolower($name)) !== false)) {
+                        
+                    if ($seed == $name) {
+                        $perfects[] = $seed;
+                    } else {
+                        $genresSeeds[] = $seed;
+                    }
+                }
+            }
+        }
+        
+        foreach ($perfects as $perfect) {
+            array_unshift($genresSeeds, $perfect);
+        }
+        $genresSeeds = array_unique($genresSeeds);
+        
+        return array_slice($genresSeeds, 0, 2);
+    }
+    
+    protected function getFollowedArtistsByGenres($genresEntities)
+    {
+        $artists = [];
+        $artistsFollowed = $this->getAllFollowedArtists();
+        foreach ($artistsFollowed as $artist) {
+            foreach ($genresEntities as $genre) {
+                if (in_array($genre->getName(), $artist->genres)) {
+                    $artists[] = $artist->id;
+                }
+            }
+        }
+        shuffle($artists);
+        return array_slice($artists, 0, 3);
+    }
+    
+    protected function getAllLikedTracks()
+    {
+       // getMySavedTracks
+        
+        $this->setUserSession();
+        
+        $tracks           = [];
+        $tmpTracksRequest = [];
+        $maxLimit          = 50;
+        $offset            = 0;
+        
+        $security = 0;
+        
+        do {
+            $security++;
+            
+            // Requête à l'API
+            $currentTracks = $this->api->getMySavedTracks([
+                'limit'   => $maxLimit,
+                'offset'  => $offset,
+            ])->items;
+            
+            foreach ($currentTracks as $currentTrack) {
+                $tracks[] = $currentTrack->track;
+            }
+
+    
+            $offset += $maxLimit;
+        } while($security < 10 && (sizeof($currentTracks) >= $maxLimit));
+
+        return $tracks;
+    }
+    
+    protected function getLikedTracks($genresEntities)
+    {
+        $this->getAllLikedTracks();
+    }
 }

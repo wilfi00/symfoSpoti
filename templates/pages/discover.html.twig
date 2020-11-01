@@ -47,5 +47,6 @@
     </div>
 {% endblock %}
 {% block footer %}
+    {{ encore_entry_script_tags('discoverFromGenres') }}
 	<script>genreManager({{ jsConfig|json_encode|raw }});</script>
 {% endblock %}

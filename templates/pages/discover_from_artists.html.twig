@@ -28,6 +28,7 @@
     </div>
 {% endblock %}
 {% block footer %}
+	{{ encore_entry_script_tags('discoverFromSelectedArtist') }}
 	<script>artistManager({{ jsConfig|json_encode|raw }});</script>
 <!-- Pour la modale : petit plus à droite du sélecteur de playlist, fait descendre une champ texte en dessous pour remplir le nom de la playlist -->
 <!-- ou alors remplace le sélecteur de playlist par le champ de texte -->

@@ -24,6 +24,9 @@ Encore
      * and one CSS file (e.g. app.css) if your JavaScript imports CSS.
      */
     .addEntry('app', './assets/js/app.js')
+    .addEntry('discoverFromGenres', './assets/js/discoverFromGenres.js')
+    .addEntry('discoverFromSelectedArtist', './assets/js/discoverFromSelectedArtist.js')
+    .addEntry('discoverFromFollowedArtist', './assets/js/discoverFromFollowedArtist.js')
     .addEntry('appVue', './assets/js/appVue.js')
     .addEntry('SpotiBlack', './assets/img/Spotify_Icon_RGB_Black.png')
     //.addEntry('page1', './assets/js/page1.js')

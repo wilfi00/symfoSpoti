@@ -26,7 +26,7 @@
 				<input type="text" class="inputSearchGenre" placeholder="{% trans %}discover_searchPlaceholder{% endtrans %}">
 				<div class="selection"></div>
 				<ul class="genreResult">
-                    <li v-for="genre in genres" v-on:click="addSelectedGenres" :data-name="genre" class="genre">${ genre }</li>
+                    <li v-for="genre in genres" v-on:click="addSelectedGenres" :data-name="genre.name" :id="'genre' + genre.id" class="genre">${ genre.name }</li>
 	            </ul>
 				<hr>
 				<!--<h2>Je ne souhaite pas ces genres : </h2>
@@ -70,9 +70,12 @@
     </div>
 {% endblock %}
 {% block footer %}
+	{{ encore_entry_script_tags('discoverFromFollowedArtist') }}
+    {{ encore_entry_script_tags('appVue') }}
 	<script>
 		var url        = "{{ url }}";
 		var vueArtists = {{ vueArtists|json_encode|raw }};
 		var genres     = {{ genres|json_encode|raw }};
+		artistFollowManager(genres);
     </script>
 {% endblock %}

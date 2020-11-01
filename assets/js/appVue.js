@@ -27,7 +27,7 @@ setTimeout(function() {
   	  </div>`,
   })
   
-  var app = new Vue({
+  app = new Vue({
     el: '#app',
     delimiters: ['${', '}'],
     data: {
@@ -58,6 +58,10 @@ setTimeout(function() {
       addSelectedGenres: function(event) {
         this.selectedGenres.push(event.srcElement.dataset.name);
         this.refreshVueArtists();
+      },
+      deleteSelectedGenre: function(genre) {
+        console.log(genre);
+        //console.log(this.selectedGenres);
       },
       addUnwantedGenres: function(event) {
         this.unwantedGenres.push(event.srcElement.dataset.name);
@@ -92,24 +96,3 @@ setTimeout(function() {
     } 
   })
 }, 50);
-
-setTimeout(function() { 
-	$('.artists_followed .nice-select .option').click(function() {
-		nbTracksState.inputVal = $(this).attr('data-value');
-	});
-	
-	var displayLink = $('.displayAll');
-	var hideLink    = $('.hideAll');
-	var artists     = $('.artistsFollowed');
-	// Liens afficher/cacher tous les artistes
-	displayLink.click(function() {
-	  artists.addClass('displayAll');
-	  $(this).addClass('d-none');
-	  hideLink.removeClass('d-none');
-	});
-	hideLink.click(function() {
-	  artists.removeClass('displayAll');
-	  $(this).addClass('d-none');
-	  displayLink.removeClass('d-none');
-	});
-}, 100);

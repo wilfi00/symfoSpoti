@@ -164,7 +164,7 @@ h1 {
         right: 0;
     }
     &:not(.artistFollowedBloc) { cursor: pointer; }
-    &.artistFollowedBloc { margin-bottom: 20px; }
+    &.artistFollowedBloc { margin-bottom: 20px; transition: opacity 0.2s ease-out }
 }
 .artistsFollowed {
  	overflow: hidden;
@@ -443,4 +443,16 @@ body {
 	#loader {
 		top: 12%!important;
 	}
+	.select-container .select-discover { width: 185px; }
+	.nb-followed-container .important { margin-right: 4px; }
+}
+
+.important {
+	color: $color1;
+	font-size: 20px;
+}
+
+.disabled {
+    pointer-events: none;
+    opacity: 0.3;
 }

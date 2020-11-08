@@ -6,7 +6,7 @@
     <p>{% trans %}discover_fwa_p1{% endtrans %}</p>
     <div id="app">
     	<div class="row">
-    		<div class="col-9">
+    		<div class="col-lg-8">
     			<div class="displayLink">
 	    			<a class="displayAll" href="#">{% trans %}discover_fwa_display{% endtrans %}</a>
 	    			<a class="hideAll d-none" href="#">{% trans %}discover_fwa_hide{% endtrans %}</a>
@@ -34,9 +34,9 @@
 					<span class="genre" v-on:click="addUnwantedGenres" :data-name="genre">${ genre }</span>
 				</div>-->
     		</div>
-    		<div class="col-3">
-    			<div class="row justify-content-around">
-    				<div class="col-5">
+    		<div class="col-lg-4">
+    			<div class="row justify-content-around align-items-center">
+    				<div class="col-5 select-container">
 	    				<div class="select-discover">
 					        <select id="nbTracks">
 					        	<option value="1">1 {% trans %}fwa_discover_songs{% endtrans %}</option>
@@ -53,8 +53,8 @@
 					    </div>
 					    <input name="nbTracks" type="hidden"/>
 	    			</div>
-	    			<div class="col-7">
-	    				<span class="important">{{ artists|length }}</span> {% trans %}discover_fwa_selected_artists{% endtrans %}
+	    			<div class="col-7 nb-followed-container">
+	    				<span class="important">${ nbActiveArtists }</span> {% trans %}discover_fwa_selected_artists{% endtrans %}
 	    			</div>
 				</div>
 				<div class="save">

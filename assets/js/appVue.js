@@ -20,7 +20,7 @@ setTimeout(function() {
   	props: {
   	  artist: Object,
   	},
-  	template: `<div class="artistBloc artistFollowedBloc">
+  	template: `<div class="artistBloc artistFollowedBloc" :class="{ 'disabled' : artist.active == false}">
     	  <img v-bind:src="artist.images[0].url" />
     	  <br>
     	  {{ artist.name }} 
@@ -39,6 +39,8 @@ setTimeout(function() {
       url: url,
       nbTracksState,
       playlistName: '',
+      active: true,
+      nbActiveArtists: this.vueArtists.length
     },
     methods: {
       submitData: function () {
@@ -59,9 +61,9 @@ setTimeout(function() {
         this.selectedGenres.push(event.srcElement.dataset.name);
         this.refreshVueArtists();
       },
-      deleteSelectedGenre: function(genre) {
-        console.log(genre);
-        //console.log(this.selectedGenres);
+      deleteSelectedGenre: function(genreName) {
+        this.selectedGenres.remove(genreName);
+        this.refreshVueArtists();
       },
       addUnwantedGenres: function(event) {
         this.unwantedGenres.push(event.srcElement.dataset.name);
@@ -69,28 +71,44 @@ setTimeout(function() {
       },
       // Rafraichis les artistes en fonction des filtres
       refreshVueArtists: function() {
-        this.vueArtists = this.refreshVueArtistsByUnwantedGenres(this.refreshVueArtistsByGenres());
+        this.refreshVueArtistsByGenres();
+        //this.vueArtists = this.refreshVueArtistsByUnwantedGenres(this.refreshVueArtistsByGenres());
       },
       // Ressort les artistes qui ont les genres sélectionnés
       refreshVueArtistsByGenres: function() {
-        return this.saveVueArtists.filter(function(artist) {
+        this.nbActiveArtists = 0;
+        // Active à true pour les genres sélectionnés
+        this.vueArtists.forEach(function(artist) {
+          if (app.selectedGenres.length <= 0) {
+            artist.active = true;
+            app.nbActiveArtists++;
+            return;
+          }
+          
+          artist.active = false;
           for (const genre of artist.genres) {
             if (app.selectedGenres.includes(genre)) {
-              return true;
+              app.nbActiveArtists++;
+              artist.active = true;
+              return;
             }
           }
-          return false;
         });
-      },
-      // Ressort les artistes qui n'ont pas les genres sélectionnés
-      refreshVueArtistsByUnwantedGenres: function(filterdArtists) {
-        return filterdArtists.filter(function(artist) {
-          for (const genre of artist.genres) {
-            if (app.unwantedGenres.includes(genre)) {
-              return false;
+        // Tri pour mettre les active en premier
+        this.vueArtists.sort(function(a, b) {
+          if (a.active && !b.active) {
+            return -1;
+          } else if (b.active && !a.active) {
+            return 1;
+          }
+          
+          if ((a.active && b.active) || (!a.active && !b.active)) {
+            if (a.name < b.name) {
+              return -1;
+            } else {
+              return 1;
             }
           }
-          return true;
         });
       }
     } 

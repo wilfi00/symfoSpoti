@@ -11,7 +11,6 @@ global.genreManager = function(config) {
 	const generateButton         = $('.generate');
 	const saveIntoPlaylistButton = $('.saveIntoPlaylist');
 
-	console.log(genres);
 	init();
 	addEvents();
 
@@ -37,7 +36,7 @@ global.genreManager = function(config) {
 			function() {
 				generateButton.prop('disabled', false);
 			},
-			function() {
+			function(genre) {
 				// Si c'était le dernier genre alors on désactive le bouton de génération de playlist
 				if ($('.selection').html() == '') {
 					generateButton.prop('disabled', true);

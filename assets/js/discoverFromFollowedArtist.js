@@ -11,8 +11,9 @@ global.artistFollowManager = function(genres) {
 		// Search genres
 		searchGenres(
 			genres, 
-			function() {
-				app.deleteSelectedGenre()	
+			null,
+			function(genre) {
+				app.deleteSelectedGenre(genre.data('name'));
 			}
 		);
 		

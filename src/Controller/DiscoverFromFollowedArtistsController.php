@@ -42,13 +42,14 @@ class DiscoverFromFollowedArtistsController extends AbstractController
             $tmpGenres = array_merge($tmpGenres, $artist->genres);
         }
         $tmpGenres = array_unique($tmpGenres);
+        sort($tmpGenres);
         foreach ($tmpGenres as $key => $genre) {
             $genres[] = [
                 'name' => $genre,
                 'id'   => $key,
             ];
         }
-dump($genres);
+
         return $this->render('pages/discover_from_followed_artists.html.twig', [
             'artists'    => $artists,
             'vueArtists' => $artists,

@@ -82,7 +82,7 @@ Array.prototype.remove = function() {
 };
 
 // Gestion du champ de recherche de genres
-global.searchGenres = function(genres, callbackAddGenre = null, callbackLastGenre = null) {
+global.searchGenres = function(genres, callbackAddGenre = null, callbackDeleteGenre = null) {
 	addSearchGenresEvents(genres);
 	
 	function addSearchGenresEvents(genres)
@@ -93,7 +93,7 @@ global.searchGenres = function(genres, callbackAddGenre = null, callbackLastGenr
 		$('.genreResult .genre').each(function() {
 			$(this).off('click').on('click', function() {
 				$('.selection').show();
-				addGenreToSelection($(this), callbackAddGenre, callbackLastGenre);
+				addGenreToSelection($(this), callbackAddGenre, callbackDeleteGenre);
 			});
 		});
 	}
@@ -164,7 +164,7 @@ global.searchGenres = function(genres, callbackAddGenre = null, callbackLastGenr
 		});
 	}
 
-	function addGenreToSelection(genre, callbackAddGenre = null, callbackLastGenre = null)
+	function addGenreToSelection(genre, callbackAddGenre = null, callbackDeleteGenre = null)
 	{
 		var test = '<button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
 		genre.clone().append(test).appendTo($('.selection'));
@@ -174,8 +174,8 @@ global.searchGenres = function(genres, callbackAddGenre = null, callbackLastGenr
 			var genre = $(this);
 			$(this).find('.close').off('click').on('click', function() {
 				genre.remove();
-				if (callbackLastGenre instanceof Function) {
-					callbackLastGenre();
+				if (callbackDeleteGenre instanceof Function) {
+					callbackDeleteGenre(genre);
 				}
 			});
 		});

@@ -11,14 +11,14 @@
 	    			<a class="displayAll" href="#">{% trans %}discover_fwa_display{% endtrans %}</a>
 	    			<a class="hideAll d-none" href="#">{% trans %}discover_fwa_hide{% endtrans %}</a>
     			</div>
-    			<div class="row artistsFollowed">
-					<div class="col-12">
-						 <artist-item
-							v-for="item in vueArtists"
-							v-bind:artist="item"
-							v-bind:key="item.id"
-						></artist-item>
-					</div>
+    			<div class="artistsFollowed">
+					 <artist-item
+						v-for="item in vueArtists"
+						v-bind:artist="item"
+						v-bind:key="item.id"
+						v-on:lower-active-artists="nbActiveArtists --"
+						v-on:increase-active-artists="nbActiveArtists ++"
+					></artist-item>
 				</div>
 				<hr>
 				<h2>{% trans %}filters{% endtrans %}</h2>
@@ -59,7 +59,7 @@
 				</div>
 				<div class="save">
 				    <input v-model="playlistName" name="playlistName" type="text" class="playlistName" placeholder="{% trans %}discover_playlistName{% endtrans %}" required><br>
-				    <button v-on:click="submitData" class="btn btn-primary saveIntoPlaylist">{% trans %}discover_playlistSave{% endtrans %}</button>
+				    <button :class="{ 'disabled' : nbActiveArtists <= 0}" v-on:click="submitData" class="btn btn-primary saveIntoPlaylist">{% trans %}discover_playlistSave{% endtrans %}</button>
 				</div>
     		</div>
 	    	<div id="loader"></div>

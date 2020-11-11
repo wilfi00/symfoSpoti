@@ -112,6 +112,8 @@ global.searchGenres = function(genres, callbackAddGenre = null, callbackDeleteGe
 			$('.genreResult').css('height', '220px');
 	        clearTimeout(typingTimer);
 			typingTimer = setTimeout(function() {
+				var genres0 = genres.filter(genre => genre.name == input.val());
+				
 				// Recherche exact (uk metalcore matchera uk metalcore)
 				var regex = '';
 				regex +=  '\\b(\\w*' +  $.trim(input.val()) + '\\w*)\\b';
@@ -130,9 +132,9 @@ global.searchGenres = function(genres, callbackAddGenre = null, callbackDeleteGe
 				// Supression du dernier caractère de la chaine pour enlever le ou |
 				regex = regex.substring(0, regex.length - 1);
 				var genres3 = genres.filter(genre => genre.name.search(regex) >= 0);
-	
+
 				// On concatène tout et on enlève les genres dupliqués
-				displayResultGenres(genres1.concat(genres2).concat(genres3).unique());
+				displayResultGenres(genres0.concat(genres1).concat(genres2).concat(genres3).unique());
 		   }, doneTypingInterval);
 	    });
 	    input.off('keydown').on('keydown', function () {

@@ -164,9 +164,16 @@ h1 {
         right: 0;
     }
     &:not(.artistFollowedBloc) { cursor: pointer; }
-    &.artistFollowedBloc { margin-bottom: 20px; transition: opacity 0.2s ease-out }
+    &.artistFollowedBloc { 
+    	margin-bottom: 20px; 
+    	img, span {
+    		transition: opacity 0.2s ease-out;
+    	}
+    }
 }
 .artistsFollowed {
+	display: flex;
+	flex-wrap: wrap;
  	overflow: hidden;
 	max-height: 150px;
 	transition: max-height 0.2s ease-out;
@@ -387,6 +394,9 @@ input::placeholder, .nice-select {
 			box-shadow: 0 0 5px darken($color3, 10%);
 		}
 	}
+}
+.select-discover {
+	width: 100%;
 }
 
 .changeLanguageSelector {

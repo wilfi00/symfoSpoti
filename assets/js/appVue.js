@@ -46,22 +46,32 @@ setTimeout(function() {
       nbTracksState,
       playlistName: '',
       active: true,
-      nbActiveArtists: this.vueArtists.length
+      nbActiveArtists: this.vueArtists.length,
+      text: [],
     },
     methods: {
       submitData: function () {
+        let artistsActive = [];
+        this.vueArtists.forEach(function(artist) {
+          if (artist.active) {
+            artistsActive.push(artist);
+          }
+        });
+        showLoader();
         axios
           .post(this.url, {
-            artists: this.vueArtists,
+            artists: artistsActive,
             nbTracks: nbTracksState.inputVal,
             playlistName: this.playlistName
           })
-          .then(
-            //showLoader
-          )
-          .done(
-            showLoader()
-          )
+          .then(function(response) {
+            hideLoader();
+            if (response.data.success) {
+              feedbackSuccess(text.playlistSaveSucessFeedback);
+            } else {
+              feedbackError(text.feedbackError);
+            }
+          });
       },
       addSelectedGenres: function(event) {
         this.selectedGenres.push(event.srcElement.dataset.name);

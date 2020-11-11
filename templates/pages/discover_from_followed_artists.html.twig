@@ -76,6 +76,7 @@
 		var url        = "{{ url }}";
 		var vueArtists = {{ vueArtists|json_encode|raw }};
 		var genres     = {{ genres|json_encode|raw }};
+		var text       = {{ text|json_encode|raw }};
 		artistFollowManager(genres);
     </script>
 {% endblock %}

@@ -55,6 +55,10 @@ class DiscoverFromFollowedArtistsController extends AbstractController
             'vueArtists' => $artists,
             'genres'     => $genres,
             'url'        => $this->generateUrl('generate_playlist_followed_artists'),
+            'text'                => [
+                'playlistSaveSucessFeedback' => $translator->trans('discover_playlistSaveSucessFeedback'),
+                'feedbackError'              => $translator->trans('feedbackError'),
+            ]
         ]);
     }
     
@@ -71,9 +75,14 @@ class DiscoverFromFollowedArtistsController extends AbstractController
         );
         
         $request  = SpotiRequest::factory();
-       // $playlist = $request->createNewPlaylist($requestContent['playlistName']);
-        //$request->addTracksToPlaylist(array_keys($tracksRequest), $playlist->id);
-        // Succès de l'opération, feedback vert \o/
-        $success = true;
+        $playlist = $request->createNewPlaylist($requestContent['playlistName']);
+        $request->addTracksToPlaylist(array_keys($tracksRequest), $playlist->id);
+        
+        $response = new Response();
+        $response->setContent(json_encode([
+            'success' => true,
+        ]));
+        $response->headers->set('Content-Type', 'application/json');
+        return $response;
     }
 }

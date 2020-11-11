@@ -25,20 +25,19 @@ $('#modalePlaylists .btn-primary').on('click', function() {
 global.showLoader = function()
 {
 	$('#loader').show();
-}
+};
 global.hideLoader = function()
 {
 	$('#loader').hide();
-}
-
-function feedbackSuccess(msg = '')
+};
+global.feedbackSuccess = function(msg = '')
 {
 	showFeedback(msg, 'alert-success');
-}
-function feedbackError(msg)
+};
+global.feedbackError = function(msg)
 {
 	showFeedback(msg, 'alert-danger');
-}
+};
 
 function showFeedback(msg, classname, size = 220)
 {

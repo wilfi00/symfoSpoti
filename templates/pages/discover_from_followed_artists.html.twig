@@ -26,8 +26,12 @@
 				<input type="text" class="inputSearchGenre" placeholder="{% trans %}discover_searchPlaceholder{% endtrans %}">
 				<div class="selection"></div>
 				<ul class="genreResult">
-                    <li v-for="genre in genres" v-on:click="addSelectedGenres" :data-name="genre.name" :id="'genre' + genre.id" class="genre">${ genre.name }</li>
-	            </ul>
+					<genre-item
+						v-for="item in activeVueGenres"
+						v-bind:genre="item"
+						v-bind:key="item.id"
+					></genre-item>
+				</ul>
 				<hr>
 				<!--<h2>Je ne souhaite pas ces genres : </h2>
 				<div class="genres" v-for="genre in genres">
@@ -75,6 +79,7 @@
 	<script>
 		var url        = "{{ url }}";
 		var vueArtists = {{ vueArtists|json_encode|raw }};
+		var vueGenres  = {{ genres|json_encode|raw }};
 		var genres     = {{ genres|json_encode|raw }};
 		var text       = {{ text|json_encode|raw }};
 		artistFollowManager(genres);

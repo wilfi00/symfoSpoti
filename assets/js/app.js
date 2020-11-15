@@ -82,20 +82,7 @@ Array.prototype.remove = function() {
 
 // Gestion du champ de recherche de genres
 global.searchGenres = function(genres, callbackAddGenre = null, callbackDeleteGenre = null) {
-	addSearchGenresEvents(genres);
-	
-	function addSearchGenresEvents(genres)
-	{
-		// Champ de recherche
-		addInputSearchEvent(genres);
-		// Sélection d'un genre
-		$('.genreResult .genre').each(function() {
-			$(this).off('click').on('click', function() {
-				$('.selection').show();
-				addGenreToSelection($(this), callbackAddGenre, callbackDeleteGenre);
-			});
-		});
-	}
+	addInputSearchEvent(genres);
 	
 	function addInputSearchEvent(genres)
 	{
@@ -133,7 +120,8 @@ global.searchGenres = function(genres, callbackAddGenre = null, callbackDeleteGe
 				var genres3 = genres.filter(genre => genre.name.search(regex) >= 0);
 
 				// On concatène tout et on enlève les genres dupliqués
-				displayResultGenres(genres0.concat(genres1).concat(genres2).concat(genres3).unique());
+				app.activeVueGenres = genres0.concat(genres1).concat(genres2).concat(genres3).unique();
+				addEventToGenre(callbackAddGenre, callbackDeleteGenre);
 		   }, doneTypingInterval);
 	    });
 	    input.off('keydown').on('keydown', function () {
@@ -141,35 +129,19 @@ global.searchGenres = function(genres, callbackAddGenre = null, callbackDeleteGe
 	    });
 	}
 	
-	function displayResultGenres(genres)
+	function addEventToGenre(callbackAddGenre, callbackDeleteGenre)
 	{
-		if (genres.length === 0) {
-			return;
-		}
-		cleanResults();
-		var ids = '';
-		genres.forEach(function(genre) {
-			ids += '#genre' + genre.id + ', ';
-		});
-		ids = ids.substring(0, ids.length - 2);
-		var jsElements = document.querySelectorAll(ids);
-		jsElements.forEach(function(element) {
-			element.style.display = '';
-		});
-	}
-	
-	function cleanResults()
-	{
-		document.querySelectorAll('.genreResult .genre').forEach(function(element) {
-			element.style.display = 'none';
+		$('.genreResult .genre').off('click').on('click', function() {
+			addGenreToSelection($(this), callbackAddGenre, callbackDeleteGenre);
 		});
 	}
 
 	function addGenreToSelection(genre, callbackAddGenre = null, callbackDeleteGenre = null)
 	{
-		var test = '<button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
-		genre.clone().append(test).appendTo($('.selection'));
-		genre.remove();
+		$('.selection').show();
+		
+		var button = '<button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
+		genre.clone().append(button).appendTo($('.selection'));
 		// Ajout de l'event pour supprimer un genre
 		$('.selection .genre').each(function() {
 			var genre = $(this);

@@ -7,7 +7,7 @@
 
 // Artistes follow
 global.artistFollowManager = function(genres) {
-	setTimeout(function() { 
+	setTimeout(function() {
 		// Search genres
 		searchGenres(
 			genres, 
@@ -16,10 +16,6 @@ global.artistFollowManager = function(genres) {
 				app.deleteSelectedGenre(genre.data('name'));
 			}
 		);
-		
-		$('.artists_followed .nice-select .option').click(function() {
-			nbTracksState.inputVal = $(this).attr('data-value');
-		});
 		
 		var displayLink = $('.displayAll');
 		var hideLink    = $('.hideAll');

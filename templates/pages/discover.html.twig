@@ -2,45 +2,49 @@
 {% block content %}
     <h1>{% trans %}discover_h1{% endtrans %}</h1>
     <p>{% trans %}discover_p1{% endtrans %}<br>{% trans %}discover_p1Warning{% endtrans %}</p>
-    <div class="row">
-		<div class="col-lg-8">
-			<input type="text" class="inputSearchGenre" placeholder="{% trans %}discover_searchPlaceholder{% endtrans %}">
-			<div class="selection"></div>
-			<ul class="genreResult">
-                {% for genre in jsConfig.genres %}
-                    <li class="genre" id="genre{{ genre.id }}" data-id="{{ genre.id }}">{{ genre.name }}</li>
-                {% endfor %}
-            </ul>
-		    <div id="loader"></div>
-		    <div class="playlistResult"></div>
-		</div>
-		<div class="col-lg-4">
-			<!-- https://codepen.io/Aoyue/pen/rLExYX -->
-            <div class="row justify-content-around">
-                <div class="col-xl-5">
-                    <div class="select-discover">
-                        <select id="nbTracks">
-                			<option value="25">25 {% trans %}discover_songs{% endtrans %}</option>
-                			<option value="50">50 {% trans %}discover_songs{% endtrans %}</option>
-                			<option value="100">100 {% trans %}discover_songs{% endtrans %}</option>
-                			<option value="150">150 {% trans %}discover_songs{% endtrans %}</option>
-                			<option value="200">200 {% trans %}discover_songs{% endtrans %}</option>
-                		</select>
+    <div id="app">
+        <div class="row">
+    		<div class="col-lg-8">
+    			<input type="text" class="inputSearchGenre" placeholder="{% trans %}discover_searchPlaceholder{% endtrans %}">
+    			<div class="selection"></div>
+    			<ul class="genreResult">
+    			    <genre-item
+    					v-for="item in activeVueGenres"
+    					v-bind:genre="item"
+    					v-bind:key="item.id"
+    				></genre-item>
+                </ul>
+    		    <div id="loader"></div>
+    		    <div class="playlistResult"></div>
+    		</div>
+    		<div class="col-lg-4">
+    			<!-- https://codepen.io/Aoyue/pen/rLExYX -->
+                <div class="row justify-content-around">
+                    <div class="col-xl-5">
+                        <div class="select-discover">
+                            <select id="nbTracks">
+                    			<option value="25">25 {% trans %}discover_songs{% endtrans %}</option>
+                    			<option value="50">50 {% trans %}discover_songs{% endtrans %}</option>
+                    			<option value="100">100 {% trans %}discover_songs{% endtrans %}</option>
+                    			<option value="150">150 {% trans %}discover_songs{% endtrans %}</option>
+                    			<option value="200">200 {% trans %}discover_songs{% endtrans %}</option>
+                    		</select>
+                        </div>
+                    </div>
+                    <div class="col-xl-7">
+        	             <button class="btn btn-primary generate" disabled data-content="{% trans %}discover_generateToolTip{% endtrans %}">{% trans %}discover_generate{% endtrans %}</button>
                     </div>
                 </div>
-                <div class="col-xl-7">
-    	             <button class="btn btn-primary generate" disabled data-content="{% trans %}discover_generateToolTip{% endtrans %}">{% trans %}discover_generate{% endtrans %}</button>
-                </div>
-            </div>
-			<div class="save">
-                <form action="{{ saveIntoPlaylistUrl }}" id="saveIntoPlaylist" method="POST">
-    				<input name="playlistName" type="text" class="playlistName" placeholder="{% trans %}discover_playlistName{% endtrans %}" required><br>
-    				<button type="submit" class="btn btn-primary saveIntoPlaylist" data-content="{% trans %}discover_playlistSaveToolTip{% endtrans %}" disabled>
-                        <img src="{{ asset('build/images/Spotify_Icon_RGB_Black.png') }}" alt="Spotify logo">{% trans %}discover_playlistSave{% endtrans %}
-    				</button>
-                </form>
-			</div>
-		</div>
+    			<div class="save">
+                    <form action="{{ saveIntoPlaylistUrl }}" id="saveIntoPlaylist" method="POST">
+        				<input name="playlistName" type="text" class="playlistName" placeholder="{% trans %}discover_playlistName{% endtrans %}" required><br>
+        				<button type="submit" class="btn btn-primary saveIntoPlaylist" data-content="{% trans %}discover_playlistSaveToolTip{% endtrans %}" disabled>
+                            <img src="{{ asset('build/images/Spotify_Icon_RGB_Black.png') }}" alt="Spotify logo">{% trans %}discover_playlistSave{% endtrans %}
+        				</button>
+                    </form>
+    			</div>
+    		</div>
+    	</div>
 	</div>
     <div class="feedback">
         <div class="alert alert-success"></div>
@@ -48,5 +52,12 @@
 {% endblock %}
 {% block footer %}
     {{ encore_entry_script_tags('discoverFromGenres') }}
-	<script>genreManager({{ jsConfig|json_encode|raw }});</script>
+    {{ encore_entry_script_tags('appVue') }}
+	<script>
+	    genreManager({{ jsConfig|json_encode|raw }});
+	    var url = '';
+	    var vueGenres = {{ jsConfig.genres|json_encode|raw }};
+	    var genres = {{ jsConfig.genres|json_encode|raw }};
+	    var vueArtists = [];
+	</script>
 {% endblock %}

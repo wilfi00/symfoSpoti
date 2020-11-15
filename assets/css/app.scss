@@ -54,6 +54,7 @@ $text-color: #fff;
 // $color2: #fe8c00;
 
 a { 
+	cursor: pointer;
 	color: $color1 !important;
 	&:hover, &:focus {
 		text-decoration: none;

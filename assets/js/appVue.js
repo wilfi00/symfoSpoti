@@ -33,13 +33,13 @@ setTimeout(function() {
   	  </div>`,
   })
   
-  app = new Vue({
+  let app = new Vue({
     el: '#app',
     delimiters: ['${', '}'],
     data: {
       vueArtists: vueArtists,
       vueGenres: vueGenres,
-      activeVueGenres: [],
+      activeVueGenres: this.vueGenres,
       selectedGenres: [],
       unwantedGenres: [],
       url: url,
@@ -49,13 +49,6 @@ setTimeout(function() {
       text: [],
     },
     methods: {
-      created: function () {
-        console.log('created');
-        if (this.activeVueGenres.length === 0) {
-          console.log('init');
-          this.activeVueGenres = this.vueGenres;
-        }
-      },
       submitData: function () {
         let artistsActive = [];
         this.vueArtists.forEach(function(artist) {

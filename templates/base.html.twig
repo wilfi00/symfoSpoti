@@ -43,13 +43,17 @@
         {% block sidebarLeft %}
         {% endblock %}
         <div class="container">
-            <div class="changeLanguageSelector">
-                <form action="/changeLanguage" id="changeLanguage" method="POST">
-                    <select name="language">
-                        <option value="fr">Français</option>
-                        <option value="en">English</option>
-                    </select>
-                </form>
+            <div class="header">
+              {% block title %}
+              {% endblock %}
+              <div class="changeLanguageSelector">
+                  <form action="/changeLanguage" id="changeLanguage" method="POST">
+                      <select name="language">
+                          <option value="fr">Français</option>
+                          <option value="en">English</option>
+                      </select>
+                  </form>
+              </div>
             </div>
             {% block content %}
             {% endblock %}

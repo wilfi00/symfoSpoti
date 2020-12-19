@@ -54,6 +54,12 @@ $text-color: #fff;
 // $color1: #f83600;
 // $color2: #fe8c00;
 
+.header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
 a { 
 	cursor: pointer;
 	color: $color1 !important;
@@ -166,7 +172,7 @@ h1 {
         position: absolute;
         right: 0;
     }
-    &:not(.artistFollowedBloc) { cursor: pointer; display:block; } 
+    &:not(.artistFollowedBloc) { cursor: pointer; } 
     &.artistFollowedBloc { 
     	margin-bottom: 20px; 
     	img, span {
@@ -402,11 +408,6 @@ input::placeholder, .nice-select {
 	width: 100%;
 }
 
-.changeLanguageSelector {
-	position: absolute;
-	right: 15px;
-}
-
 .feedback {
 	position: absolute;
 	top: 0;
@@ -456,7 +457,6 @@ body {
 	#loader {
 		top: 12%!important;
 	}
-	.select-container .select-discover { width: 185px; }
 	.nb-followed-container .important { margin-right: 4px; }
 }
 

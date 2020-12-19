@@ -33,7 +33,7 @@ class DiscoverController extends AbstractController
         return $this->render('pages/discover.html.twig', [
             'jsConfig' => [
                 'generatePlaylistUrl' => $this->generateUrl('generatePlaylist'),
-                'genres'              => array_slice($genreRepository->findAllGetArray(), 0, 10),
+                'genres'              => $genreRepository->findAllGetArray(),
                 'success'             => $request->query->get('success'),
                 'text'                => [
                     'playlistSaveSucessFeedback' => $translator->trans('discover_playlistSaveSucessFeedback'),

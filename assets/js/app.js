@@ -143,10 +143,6 @@ global.searchGenres = function(genres, callbackAddGenre = null, callbackDeleteGe
 
 		// A l'ajout d'un genre on nettoie la barre de recherche et on active le bouton de génération de playlist
 		$('.inputSearchGenre').val("");
-		if (callbackAddGenre !== null) {
-			callbackAddGenre();
-		}
-		const index = genres.indexOf(5);
 	}
 }
 

@@ -1,3 +1,4 @@
+@import "custom-bootstrap-variables";
 @import "~bootstrap/scss/bootstrap";
 @import "nice-select";
 
@@ -142,8 +143,9 @@ h1 {
 		padding: 2px;
 	}
 	hr {
-		display: inline-block;
-		width: 208px;
+	    display: block;
+    width: 60%;
+    margin: 15px auto;
 		&:last {
 			display: none;
 		}
@@ -153,7 +155,7 @@ h1 {
 	position: relative;
 	display: inline-block;
 	width: 140px;
-	height: 150px;
+/*	height: 150px;*/
 	text-align: center;
 
     img {
@@ -164,7 +166,7 @@ h1 {
         position: absolute;
         right: 0;
     }
-    &:not(.artistFollowedBloc) { cursor: pointer; }
+    &:not(.artistFollowedBloc) { cursor: pointer; display:block; } 
     &.artistFollowedBloc { 
     	margin-bottom: 20px; 
     	img, span {

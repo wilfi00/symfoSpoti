@@ -142,3 +142,13 @@ Comportement souhaité pour le changement de langue :
 minecraft
 fichier service : /etc/systemd/system/minecraftserver.service
 commande service : systemctl start minecraftserver.service
+
+j'avais commencé un appVueGenre mais pas utilisé pour le moment qui sert au components genre, voir si utile ou non
+v-on:click="addSelectedGenres" => je n'ai plus ça sur le component genre ;)
+
+=> appVueGenre utile pour appeler juste ce fichier sur la page d'accueil
+et appeler appVue pour follow 
+
+yarn add select2
+yarn add select2-bootstrap-theme
+require('select2')

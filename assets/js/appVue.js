@@ -6,7 +6,14 @@ setTimeout(function() {
   	props: {
   	  genre: Object,
   	},
-  	template: `<li class="genre" v-bind:id="'genre' + genre.id" v-bind:data-id="genre.id" style="">{{ genre.name }}</li>`,
+  	template: `<li @click="$emit('clickgenre', genre)" class="genre" v-bind:id="'genre' + genre.id" v-bind:data-id="genre.id">{{ genre.name }}</li>`,
+  })
+  
+  Vue.component('selected-genre-item', {
+  	props: {
+  	  genre: Object,
+  	},
+  	template: `<li class="genre" v-bind:id="'genre' + genre.id" v-bind:data-id="genre.id">{{ genre.name }}<button @click="$emit('deletegenre', genre)" type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button></li>`,
   })
   
   Vue.component('artist-item', {
@@ -32,8 +39,7 @@ setTimeout(function() {
     data: {
       vueArtists: vueArtists,
       vueGenres: vueGenres,
-      activeVueGenres: this.vueGenres,
-      genres: genres,
+      activeVueGenres: [],
       selectedGenres: [],
       unwantedGenres: [],
       url: url,
@@ -43,6 +49,13 @@ setTimeout(function() {
       text: [],
     },
     methods: {
+      created: function () {
+        console.log('created');
+        if (this.activeVueGenres.length === 0) {
+          console.log('init');
+          this.activeVueGenres = this.vueGenres;
+        }
+      },
       submitData: function () {
         let artistsActive = [];
         this.vueArtists.forEach(function(artist) {
@@ -66,12 +79,12 @@ setTimeout(function() {
             }
           });
       },
-      addSelectedGenres: function(event) {
-        this.selectedGenres.push(event.srcElement.dataset.name);
+      addSelectedGenres: function(genre) {
+        this.selectedGenres.push(genre);
         this.refreshVueArtists();
       },
-      deleteSelectedGenre: function(genreName) {
-        this.selectedGenres.remove(genreName);
+      deleteSelectedGenre: function(genre) {
+        this.selectedGenres.remove(genre);
         this.refreshVueArtists();
       },
       addUnwantedGenres: function(event) {
@@ -85,6 +98,10 @@ setTimeout(function() {
       },
       // Ressort les artistes qui ont les genres sélectionnés
       refreshVueArtistsByGenres: function() {
+        if (this.vueArtists.length == 0) {
+          return;
+        }
+        
         this.nbActiveArtists = 0;
         // Active à true pour les genres sélectionnés
         this.vueArtists.forEach(function(artist) {
@@ -96,7 +113,7 @@ setTimeout(function() {
           
           artist.active = false;
           for (const genre of artist.genres) {
-            if (app.selectedGenres.includes(genre)) {
+            if (app.selectedGenres.map(value => value.name).includes(genre)) {
               app.nbActiveArtists++;
               artist.active = true;
               return;

@@ -16,7 +16,8 @@ require('../js/jquery.nice-select.min.js');
 require('bootstrap');
 
 // Nice select
-$('select').niceSelect();
+$('select:not(.searchSelect)').niceSelect();
+
 
 $('#modalePlaylists .btn-primary').on('click', function() {
 	$('form[name="playlist_selection"]').submit();
@@ -139,9 +140,11 @@ global.searchGenres = function(genres, callbackAddGenre = null, callbackDeleteGe
 	function addGenreToSelection(genre, callbackAddGenre = null, callbackDeleteGenre = null)
 	{
 		$('.selection').show();
+		//var button = '<button v-on:click="deleteSelectedGenre(\'' + test + '\')" type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
+		/*let clone = genre.clone();
+		clone.children('.close').removeClass('d-none');
+		clone.appendTo($('.selection'));
 		
-		var button = '<button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
-		genre.clone().append(button).appendTo($('.selection'));
 		// Ajout de l'event pour supprimer un genre
 		$('.selection .genre').each(function() {
 			var genre = $(this);
@@ -151,7 +154,7 @@ global.searchGenres = function(genres, callbackAddGenre = null, callbackDeleteGe
 					callbackDeleteGenre(genre);
 				}
 			});
-		});
+		});*/
 
 		// A l'ajout d'un genre on nettoie la barre de recherche et on active le bouton de génération de playlist
 		$('.inputSearchGenre').val("");
@@ -160,4 +163,34 @@ global.searchGenres = function(genres, callbackAddGenre = null, callbackDeleteGe
 		}
 		const index = genres.indexOf(5);
 	}
+}
+
+// Changement de langue
+global.changeLanguage = function(defaultLanguage)
+{
+	var select = $('#changeLanguage select');
+
+	// Langage courant
+	if (defaultLanguage === 'en') {
+		// Html select
+		var option = select.find('option[value="en"]');
+		option.attr('selected', true);
+		// Nice select
+		$('#changeLanguage').find('.nice-select .current').html(option.html());
+		$('#changeLanguage').find('.nice-select li[data-value="en"]').addClass('selected focus');
+		$('#changeLanguage').find('.nice-select li[data-value="fr"]').removeClass('selected focus');
+	} else {
+		// Html select
+		var option = select.find('option[value="fr"]');
+		option.attr('selected', true);
+		// Nice select
+		$('#changeLanguage').find('.nice-select .current').html(option.html());
+		$('#changeLanguage').find('.nice-select li[data-value="en"]').removeClass('selected focus');
+		$('#changeLanguage').find('.nice-select li[data-value="fr"]').addClass('selected focus');
+	}
+
+	// Si on sélectionne une langue, on recharge la page avec la langue choisie
+	select.change(function(eventData) {
+		$('#changeLanguage').submit();
+	});
 }

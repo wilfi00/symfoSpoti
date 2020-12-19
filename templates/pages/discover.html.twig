@@ -6,13 +6,21 @@
         <div class="row">
     		<div class="col-lg-8">
     			<input type="text" class="inputSearchGenre" placeholder="{% trans %}discover_searchPlaceholder{% endtrans %}">
-    			<div class="selection"></div>
+    			<div class="selection">
+					<selected-genre-item
+						v-for="item in selectedGenres"
+						v-bind:genre="item"
+						v-bind:key="item.id"
+						@deletegenre="deleteSelectedGenre"
+					></selected-genre-item>
+				</div>
     			<ul class="genreResult">
     			    <genre-item
-    					v-for="item in activeVueGenres"
-    					v-bind:genre="item"
-    					v-bind:key="item.id"
-    				></genre-item>
+						v-for="item in activeVueGenres"
+						v-bind:genre="item"
+						v-bind:key="item.id"
+						@clickgenre="addSelectedGenres"
+					></genre-item>
                 </ul>
     		    <div id="loader"></div>
     		    <div class="playlistResult"></div>
@@ -57,7 +65,6 @@
 	    genreManager({{ jsConfig|json_encode|raw }});
 	    var url = '';
 	    var vueGenres = {{ jsConfig.genres|json_encode|raw }};
-	    var genres = {{ jsConfig.genres|json_encode|raw }};
 	    var vueArtists = [];
 	</script>
 {% endblock %}

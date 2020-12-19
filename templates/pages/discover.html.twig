@@ -1,6 +1,8 @@
 {% extends "base.html.twig" %}
+{% block title %}
+<h1>{% trans %}discover_h1{% endtrans %}</h1>
+{% endblock %}
 {% block content %}
-    <h1>{% trans %}discover_h1{% endtrans %}</h1>
     <p>{% trans %}discover_p1{% endtrans %}<br>{% trans %}discover_p1Warning{% endtrans %}</p>
     <div id="app">
         <div class="row">
@@ -29,7 +31,7 @@
     			<!-- https://codepen.io/Aoyue/pen/rLExYX -->
                 <div class="row justify-content-around">
                     <div class="col-xl-5">
-                        <div class="select-discover">
+                        <div class="select-discover mb-4 mb-xl-0">
                             <select id="nbTracks">
                     			<option value="25">25 {% trans %}discover_songs{% endtrans %}</option>
                     			<option value="50">50 {% trans %}discover_songs{% endtrans %}</option>

@@ -19,7 +19,6 @@ global.genreManager = function(config) {
 		{
 			// Désactivation par défaut des boutons :)
 			saveIntoPlaylistButton.prop('disabled', true);
-			generateButton.prop('disabled', true);
 	
 			if (config.success === '1') {
 				feedbackSuccess(config.text.playlistSaveSucessFeedback);
@@ -32,18 +31,7 @@ global.genreManager = function(config) {
 			}
 			
 			// Initialisation de la recherche de genres
-			searchGenres(
-				genres, 
-				function() {
-					generateButton.prop('disabled', false);
-				},
-				function(genre) {
-					// Si c'était le dernier genre alors on désactive le bouton de génération de playlist
-					if ($('.selection').html() == '') {
-						generateButton.prop('disabled', true);
-					}
-				}
-			);
+			searchGenres(genres);
 		}
 	
 		function addEvents()
@@ -58,33 +46,31 @@ global.genreManager = function(config) {
 			});
 	
 			// Popover sur le bouton de génération de playlist
-			generateButton.hover(
-				function() {
-					if (generateButton.is(':disabled')) {
-						$(this).popover('show');
-						$('.inputSearchGenre').addClass('hover');
-						setTimeout(function() {
-							$('.inputSearchGenre').removeClass('hover');
-						}, 650);
-					} else {
-						$(this).popover('hide');
-					}
-				}, function() {
+			generateButton.mouseenter(function() {
+				if (generateButton.is(':disabled')) {
+					$(this).popover('show');
+					$('.inputSearchGenre').addClass('hover');
+					setTimeout(function() {
+						$('.inputSearchGenre').removeClass('hover');
+					}, 650);
+				} else {
 					$(this).popover('hide');
 				}
-			);
+			}).mouseleave(function() {
+				$(this).popover('hide');
+			});
+			
+	
 			// Popover sur le bouton d'enregistrement de la playlist dans spotfiy
-			saveIntoPlaylistButton.hover(
-				function() {
-					if (saveIntoPlaylistButton.is(':disabled')) {
-						$(this).popover('show');
-					} else {
-						$(this).popover('hide');
-					}
-				}, function() {
+			saveIntoPlaylistButton.mouseenter(function() {
+				if (saveIntoPlaylistButton.is(':disabled')) {
+					$(this).popover('show');
+				} else {
 					$(this).popover('hide');
 				}
-			);
+			}).mouseleave(function() {
+				$(this).popover('hide');
+			});
 		}
 	
 		function generatePlaylist()

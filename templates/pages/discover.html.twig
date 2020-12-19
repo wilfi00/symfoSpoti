@@ -40,7 +40,7 @@
                         </div>
                     </div>
                     <div class="col-xl-7">
-        	             <button class="btn btn-primary generate" disabled data-content="{% trans %}discover_generateToolTip{% endtrans %}">{% trans %}discover_generate{% endtrans %}</button>
+        	             <button :disabled="selectedGenres.length <= 0" class="btn btn-primary generate" data-content="{% trans %}discover_generateToolTip{% endtrans %}">{% trans %}discover_generate{% endtrans %}</button>
                     </div>
                 </div>
     			<div class="save">

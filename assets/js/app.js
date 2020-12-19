@@ -140,21 +140,6 @@ global.searchGenres = function(genres, callbackAddGenre = null, callbackDeleteGe
 	function addGenreToSelection(genre, callbackAddGenre = null, callbackDeleteGenre = null)
 	{
 		$('.selection').show();
-		//var button = '<button v-on:click="deleteSelectedGenre(\'' + test + '\')" type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
-		/*let clone = genre.clone();
-		clone.children('.close').removeClass('d-none');
-		clone.appendTo($('.selection'));
-		
-		// Ajout de l'event pour supprimer un genre
-		$('.selection .genre').each(function() {
-			var genre = $(this);
-			$(this).find('.close').off('click').on('click', function() {
-				genre.remove();
-				if (callbackDeleteGenre instanceof Function) {
-					callbackDeleteGenre(genre);
-				}
-			});
-		});*/
 
 		// A l'ajout d'un genre on nettoie la barre de recherche et on active le bouton de génération de playlist
 		$('.inputSearchGenre').val("");

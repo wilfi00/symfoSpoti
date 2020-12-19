@@ -33,7 +33,7 @@ setTimeout(function() {
   	  </div>`,
   })
   
-  let app = new Vue({
+  window.app = new Vue({
     el: '#app',
     delimiters: ['${', '}'],
     data: {

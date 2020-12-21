@@ -1,0 +1,42 @@
+{% extends "base.html.twig" %}
+{% block title %}
+<h1>{% trans %}discover_fa_h1{% endtrans %}</h1>
+{% endblock %}
+
+{% block content %}
+    <p>{% trans %}discover_fa_p1{% endtrans %}</p>
+    <div class="row">
+	    <div class="col-8">
+		    {{ form(form) }}
+			<div id="loader"></div>
+			<div class="search-result animate-bottom">
+			    {{ render(controller(
+		            'App\\Controller\\Display::displayArtists', {artists: artistsSearch }
+		        )) }}
+			</div>
+		</div>
+		<div class="col-4">
+			<button type="button" class="btn btn-primary saveFromArtists" data-toggle="modal" data-target="#modalePlaylists">{% trans %}save{% endtrans %}</button>
+			<button class="btn btn-secondary removeAll">{% trans %}reset{% endtrans %}</button>
+			<div class="artistSelection">{{ render(controller(
+				'App\\Controller\\Display::displayArtists', {artists: artistsInit }
+			)) }}</div>
+		</div>
+	</div>
+	{{ render(controller('App\\Controller\\Display::displayPlaylists')) }}
+	<div class="feedback">
+        <div class="alert alert-success"></div>
+    </div>
+{% endblock %}
+{% block footer %}
+	{{ encore_entry_script_tags('discoverFromSelectedArtist') }}
+	<script>artistManager({{ jsConfig|json_encode|raw }});</script>
+<!-- Pour la modale : petit plus à droite du sélecteur de playlist, fait descendre une champ texte en dessous pour remplir le nom de la playlist -->
+<!-- ou alors remplace le sélecteur de playlist par le champ de texte -->
+<!-- ou alors au clique sur le + ça "grise" la sélection d'une playlist existante, il faut valider la création de la playlist puis on rafraichit -->
+<!-- le sélecteur de playlist en mettant en premier la nouvelle playlist crée -->
+<!-- ou faire une tabulation avec un OU avec en haut le sélecteur de playlist et en bas le champ texte -->
+
+<!-- de manière générale : contextualiser, pas de place au doute -->
+<!-- privilégier des verbes / actions -->
+{% endblock %}

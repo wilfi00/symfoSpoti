@@ -17,11 +17,13 @@ class PlaylistSelection extends AbstractType
 
         $builder
             ->add('nbSongs', ChoiceType::class,  [
-                'choices' => ['5' => '5', '10' => '10'],
-                'label'   => 'Nombre de chansons par groupe : ',])
-            ->add('playlist', ChoiceType::class, [
-                'choices' => $playlists,
-                'label'   => 'Ajouter les chansons dans cette playlist : ',])
-        ;
+                'choices'                   => ['5' => '5', '10' => '10'],
+                'label'                     => 'discover_fa_nb_songs',
+                'choice_translation_domain' => false,
+            ])->add('playlist', ChoiceType::class, [
+                'choices'                   => $playlists,
+                'label'                     => 'discover_fa_add_song_to_playlist',
+                'choice_translation_domain' => false,
+            ]);
     }
 }

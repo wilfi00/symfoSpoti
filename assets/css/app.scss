@@ -1,37 +1,45 @@
+@import "custom-bootstrap-variables";
 @import "~bootstrap/scss/bootstrap";
 @import "nice-select";
 
-$primary-color:  #eee;
+$color1:  #eee;
 
-$primary-color:  #97e891; // boutons
-$secondary-color:  #97e891; // border-color
-$background-color: #e3dc85; // fond du site
+$color1:  #97e891; // boutons
+$color2:  #97e891; // border-color
+$color3: #e3dc85; // fond du site
 $text-color: #333; // texte
 
-$primary-color:  #e7c3f2 ;
-$secondary-color:  #f4c9e8;
-$background-color: #cbbdef;
+$color1:  #e7c3f2 ;
+$color2:  #f4c9e8;
+$color3: #cbbdef;
 
-$primary-color:  #f8ecfb ;
-$secondary-color:  #ebe5f9;
-$background-color: white;
+$color1:  #f8ecfb ;
+$color2:  #ebe5f9;
+$color3: white;
 
 // Pas mal 2
-$primary-color:  #ad9ce8;
-$secondary-color:  #ebe5f9;
-$background-color: white;
+$color1:  #ad9ce8;
+$color2:  #ebe5f9;
+$color3: white;
 // $text-color: #d7a2ea;
 
 // Pas mal
-$primary-color:   #c72b3c;
-$secondary-color: #de606e;
-$background-color: #fefcfc;
+$color1:   #c72b3c;
+$color2: #de606e;
+$color3: #fefcfc;
 $text-color: #333;
 
 
-// $primary-color:   #bc4a28;
-// $secondary-color: #d755a4;
-// $background-color: #fefcfc;
+//test ivann
+
+$color1: #ff4f00;
+$color2: #fe7a03;
+$color3: #252525;
+$text-color: #fff;
+
+// $color1:   #bc4a28;
+// $color2: #d755a4;
+// $color3: #fefcfc;
 // $text-color: #333;
 
 
@@ -40,20 +48,36 @@ $text-color: #333;
 
 // $text-color: #eee;
 
-// $primary-color:  #fc4a1a;
-// $secondary-color: #f7b733;
+// $color1:  #fc4a1a;
+// $color2: #f7b733;
 //
-// $primary-color: #f83600;
-// $secondary-color: #fe8c00;
+// $color1: #f83600;
+// $color2: #fe8c00;
+
+.header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+a { 
+	cursor: pointer;
+	color: $color1 !important;
+	&:hover, &:focus {
+		text-decoration: none;
+		color: darken($color1, 10%) !important;
+	}
+}
+button:focus { outline: none; }
 
 .btn-primary {
-	background-color: $primary-color!important;
-	border-color: $secondary-color!important;
+	background-color: $color1!important;
+	border-color: $color2!important;
 
 	 &:hover, &:focus, &:active &:enabled {
 		  &:enabled {
-			background-color: darken($primary-color, 5%)!important;
-			border-color: darken($secondary-color, 15%)!important;
+			background-color: lighten($color1, 5%)!important;
+			border-color: lighten($color2, 15%)!important;
 		  }
 
 		  box-shadow: none!important;
@@ -64,9 +88,44 @@ $text-color: #333;
 	}
 }
 
+.btn-secondary {
+	background-color: #444!important;
+	border-color: #555!important;
+
+	 &:hover, &:focus, &:active &:enabled {
+		  &:enabled {
+			background-color: lighten(#444, 5%)!important;
+			border-color: lighten(#555, 15%)!important;
+		  }
+
+		  box-shadow: none!important;
+	}
+
+	&:disabled {
+		cursor: auto;
+	}
+}
+
+.navbar {
+	padding: 0!important;
+	background-color: $color2!important;
+	
+	a { 
+		padding: 15px;
+		color: white!important; 
+		transition: background-color 0.3s;
+	}
+	li.active a, a:hover:not(.navbar-brand) { background-color: $color1!important; }
+}
+
+.navbar-nav .nav-link {
+    padding-right: 15px!important;
+    padding-left: 15px!important;
+}
+
 .popover {
-	border-color: $secondary-color;
-	.arrow::before { border-right-color: $secondary-color;}
+	border-color: $color2;
+	.arrow::before { border-right-color: $color2;}
 }
 
 .select-discover select {
@@ -77,36 +136,76 @@ h1 {
 	margin: 30px 0 30px 0;
 }
 
-.artistBloc {
-	display: inline-block;
-    cursor: pointer;
+// Discover from artists
+.saveFromArtists {
 	width: 200px;
-	height: 200px;
+	height: 58px;
+	margin-bottom: 50px;
+}
+.removeAll {
+	margin-bottom: 50px;
+}
+#form_artist { margin-bottom: 50px; }
+.artistSelection {
+	.artistBloc {
+		cursor: inherit;
+	}
+	.removeArtist {
+		cursor: pointer;
+		padding: 2px;
+	}
+	hr {
+	    display: block;
+    width: 60%;
+    margin: 15px auto;
+		&:last {
+			display: none;
+		}
+	}
+}
+.artistBloc {
+	position: relative;
+	display: inline-block;
+	width: 140px;
+/*	height: 150px;*/
 	text-align: center;
 
     img {
     	width: 100px;
+    	height: 100px;
     }
-    .hiddenArtistId, .removeArtist {
-        display: none;
-    }
-}
-
-.sidebar-left {
-    float: left;
-    margin: 40px 20px 0 0;
-
     .removeArtist {
-        display: inline-block;
-        cursor: pointer;
+        position: absolute;
+        right: 0;
     }
-
-    .artistBloc {
-        cursor: auto;
+    &:not(.artistFollowedBloc) { cursor: pointer; } 
+    &.artistFollowedBloc { 
+    	margin-bottom: 20px; 
+    	img, span {
+    		transition: opacity 0.2s ease-out;
+    	}
     }
 }
-.sidebar-left > a {
-    display: block;
+.artistsFollowed {
+	display: flex;
+	flex-wrap: wrap;
+ 	overflow: hidden;
+	max-height: 150px;
+	transition: max-height 0.2s ease-out;
+	
+	&.displayAll {
+		max-height: 200000px;
+		transition: max-height 0.3s ease-in;
+	}
+}
+.displayLink {
+	text-align: right;
+	margin-bottom: 20px;
+}
+.search-result {
+	.artistBloc { margin-bottom: 40px; }
+	hr { display: none; }
+	.removeArtist { display: none; }
 }
 
 #loader {
@@ -119,10 +218,10 @@ h1 {
     height: 150px;
     margin: -75px 0 0 -75px;
     border: 16px solid #f3f3f3;
-	border: 16px solid darken($background-color, 10%);
+	border: 16px solid darken($color3, 10%);
     border-radius: 50%;
     border-top: 16px solid #3498db;
-	border-top: 16px solid $primary-color;
+	border-top: 16px solid $color1;
     width: 120px;
     height: 120px;
     -webkit-animation: spin 2s linear infinite;
@@ -176,13 +275,17 @@ h1 {
 
 hr {
     background: linear-gradient(90deg, rgba(255,94,98,1) 0%, rgba(255,153,102,1) 35%);
-	background: lighten($secondary-color, 15%);
+	background: lighten($color2, 15%);
 }
 .container hr:last-child { display: none; }
 
 .content {
 	// display: flex;
 	// justify-content: space-between;
+}
+
+.containerSelected{
+	position : relative;
 }
 
 .genreResult {
@@ -192,6 +295,11 @@ hr {
 	padding: 0;
 	box-shadow: -8px 0 8px -10px rgba(0,0,0,0.75);
 	transition: height 0.3s ease-in-out;
+	position:absolute;
+	top : 60px;
+	background-color: #252525;
+    width: 100%;
+    z-index : 100;
 
 	.genre {
 		padding: 8px 0 8px 44px;
@@ -199,15 +307,15 @@ hr {
 		list-style-type: none;
 
 		&:hover {
-			background-color: $secondary-color;
+			background-color: $color2;
 		}
 	}
 }
 input {
 	width: 100%;
-	font-weight: 300;
-	color: $text-color;
-	border: 1px solid $secondary-color;
+	font-weight: normal;
+	color: $color3;
+	border: 1px solid $color2;
 	transition: border-color 0.3s ease-in-out;
 	transition: box-shadow 0.3s ease-in-out;
 	border-radius: 4px;
@@ -216,10 +324,16 @@ input {
 	margin-right: 10px;
 
 	&:focus, &:hover, &:active, &.hover {
-		border-color: darken($secondary-color, 20%);
-		box-shadow: 0 0 5px darken($background-color, 10%);
+		border-color: darken($color2, 20%);
+		box-shadow: 0 0 5px darken($color3, 10%);
 	}
+
 }
+
+input::placeholder, .nice-select {
+	color : $color3;
+}
+	
 .generate {
 	width: 100%;
 	height: 100%;
@@ -231,11 +345,12 @@ input {
 	display: flex;
 	flex-wrap: wrap;
 }
+
 .selection, .genres {
 	.genre {
 		position: relative;
 		list-style-type: none;
-		border: 1px solid $secondary-color;
+		border: 1px solid $color2;
 		border-radius: 4px;
 		padding: 10px;
 		margin: 10px 10px 0 0;
@@ -255,13 +370,13 @@ input {
 	flex-wrap: wrap;
 
 	.genre {
-		border: 1px solid lighten($secondary-color, 25%);
+		border: 1px solid lighten($color2, 25%);
 	}
 }
 
 .playlistResult { margin-top: 20px; }
 .save {
-	border: 1px solid $secondary-color;
+	border: 1px solid $color2;
 	margin-top: 20px;
 	padding: 10px;
 	text-align: center;
@@ -278,10 +393,12 @@ input {
 }
 
 .close {
+	color : #fff;
+	font-weight : 500;
 	line-height: 0.9;
 
 	&:hover {
-		color: lighten($primary-color, 8%);
+		color: lighten($color1, 8%);
 	}
 }
 
@@ -295,18 +412,16 @@ input {
 		height: auto!important;
 		transition: border-color 0.3s ease-in-out;
 		transition: box-shadow 0.3s ease-in-out;
-		border-color: $secondary-color;
+		border-color: $color2;
 
 		&:focus, &:hover, &:active {
-			border-color: darken($secondary-color, 20%);
-			box-shadow: 0 0 5px darken($background-color, 10%);
+			border-color: darken($color2, 20%);
+			box-shadow: 0 0 5px darken($color3, 10%);
 		}
 	}
 }
-
-.changeLanguageSelector {
-	position: absolute;
-	right: 15px;
+.select-discover {
+	width: 100%;
 }
 
 .feedback {
@@ -324,31 +439,57 @@ input {
 }
 
 // .btn  {
-// 	background: $primary-color;  /* fallback for old browsers */
-// 	background: -webkit-linear-gradient(to right, $primary-color, $secondary-color);  /* Chrome 10-25, Safari 5.1-6 */
-// 	background: linear-gradient(to right, $primary-color, $secondary-color); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-// 	border-color: darken($primary-color, 10%);
+// 	background: $color1;  /* fallback for old browsers */
+// 	background: -webkit-linear-gradient(to right, $color1, $color2);  /* Chrome 10-25, Safari 5.1-6 */
+// 	background: linear-gradient(to right, $color1, $color2); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+// 	border-color: darken($color1, 10%);
 //
 // 	&:hover {
-// 		border-color: darken($primary-color, 30%);
+// 		border-color: darken($color1, 30%);
 // 	}
 // }
 // .btn {
 // 	background: #fc4a1a;  /* fallback for old browsers */
-// 	background: -webkit-linear-gradient(to right, lighten($primary-color, 8%), lighten($secondary-color, 0%));  /* Chrome 10-25, Safari 5.1-6 */
-// 	background: linear-gradient(to right, lighten($primary-color, 10%), lighten($secondary-color, 0%)); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+// 	background: -webkit-linear-gradient(to right, lighten($color1, 8%), lighten($color2, 0%));  /* Chrome 10-25, Safari 5.1-6 */
+// 	background: linear-gradient(to right, lighten($color1, 10%), lighten($color2, 0%)); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 //
-// 	border-color: $secondary-color;
+// 	border-color: $color2;
 //
 // 	&:hover {
-// 		border-color: darken($secondary-color, 10%);
+// 		border-color: darken($color2, 10%);
 //
-// 		background: -webkit-linear-gradient(to right, darken($primary-color, 2%), darken($secondary-color, 10%));  /* Chrome 10-25, Safari 5.1-6 */
-// 		background: linear-gradient(to right, $primary-color, darken($secondary-color, 10%)); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+// 		background: -webkit-linear-gradient(to right, darken($color1, 2%), darken($color2, 10%));  /* Chrome 10-25, Safari 5.1-6 */
+// 		background: linear-gradient(to right, $color1, darken($color2, 10%)); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 // 	}
 // }
 //
 body {
-	background-color: $background-color;
+	background-color: $color3;
 	color: $text-color;
+}
+
+// Page artiste follow
+.artists_followed {
+	#loader {
+		top: 12%!important;
+	}
+	.nb-followed-container .important { margin-right: 4px; }
+}
+
+.important {
+	color: $color1;
+	font-size: 20px;
+}
+
+.disabled {
+    pointer-events: none;
+    opacity: 0.3;
+}
+
+a#link svg {
+    height: 40px;
+    width: 40px;
+    position:fixed;
+    bottom: 40px;
+    right: 40px;
 }

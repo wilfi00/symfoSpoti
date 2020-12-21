@@ -1,3 +1,7 @@
+mise à jour symfony : https://symfony.com/doc/current/setup/upgrade_minor.html
+
+bootstrap : node_modules/bootstrap/scss/_variables
+
 php bin/console make:migration
 => met à jour la DB par rapport aux entity
  php bin/console doctrine:migrations:migrate
@@ -132,3 +136,19 @@ Comportement souhaité pour le changement de langue :
     - discovernewmusic.fr/en/action => anglais
 - si locale inconnue => anglais exemple :
     - discovernewmusic.fr/de/action => anglais
+
+
+----- 
+minecraft
+fichier service : /etc/systemd/system/minecraftserver.service
+commande service : systemctl start minecraftserver.service
+
+j'avais commencé un appVueGenre mais pas utilisé pour le moment qui sert au components genre, voir si utile ou non
+v-on:click="addSelectedGenres" => je n'ai plus ça sur le component genre ;)
+
+=> appVueGenre utile pour appeler juste ce fichier sur la page d'accueil
+et appeler appVue pour follow 
+
+yarn add select2
+yarn add select2-bootstrap-theme
+require('select2')

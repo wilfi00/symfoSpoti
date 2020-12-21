@@ -10,6 +10,7 @@ sonata_seo:
                 keywords:             Discover music spotify
                 description:          Découvre de nouvelles musiques et enregistre les dans une playlist spotify !
                 robots:               index, follow
+                viewport:             width=device-width
 
             property:
                 # Facebook application settings

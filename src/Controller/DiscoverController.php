@@ -12,13 +12,17 @@ use App\Repository\GenreRepository;
 use \Sonata\SeoBundle\Seo\SeoPageInterface as Seo;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Psr\Log\LoggerInterface;
+use App\Services\InfoFormatter;
+use Symfony\Bridge\Monolog\Processor\RouteProcessor;
+use Symfony\Bridge\Monolog\Processor\WebProcessor;
 
 class DiscoverController extends AbstractController
 {
     /**
      * @Route("/", name="discover")
      */
-    public function displayDiscover(Request $request, GenreRepository $genreRepository, Seo $seo, TranslatorInterface $translator)
+    public function displayDiscover(Request $request, GenreRepository $genreRepository, Seo $seo, TranslatorInterface $translator, LoggerInterface $logger)
     {
         $seo->addMeta('property', 'og:url',  $this->generateUrl('discover', [], UrlGeneratorInterface::ABSOLUTE_URL));
         if ($request->getLocale() !== 'fr') {
@@ -38,18 +42,6 @@ class DiscoverController extends AbstractController
             ],
             'tracks' => [],
             'saveIntoPlaylistUrl' => $this->generateUrl('saveTracksIntoPlaylist'),
-            'text' => [
-                'h1'                  => $translator->trans('discover_h1'),
-                'p1'                  => $translator->trans('discover_p1'),
-                'p1Warning'           => $translator->trans('discover_p1Warning'),
-                'searchPlaceholder'   => $translator->trans('discover_searchPlaceholder'),
-                'songs'               => $translator->trans('discover_songs'),
-                'generate'            => $translator->trans('discover_generate'),
-                'generateToolTip'     => $translator->trans('discover_generateToolTip'),
-                'playlistName'        => $translator->trans('discover_playlistName'),
-                'playlistSave'        => $translator->trans('discover_playlistSave'),
-                'playlistSaveToolTip' => $translator->trans('discover_playlistSaveToolTip'),
-            ]
         ]);
     }
 
@@ -131,8 +123,7 @@ class DiscoverController extends AbstractController
         shuffle($tracksId);
         $tracksId = array_slice($tracksId, 0, $nbSongs);
 
-        $requestSpoti = SpotiRequest::factory();
-        $spotiTracks  = $requestSpoti->getTracks($tracksId);
+        $spotiTracks  = $request->getTracks($tracksId);
 
         foreach ($spotiTracks as $spotiTrack) {
             $tmpImg      = '';
@@ -148,6 +139,42 @@ class DiscoverController extends AbstractController
                 'artistName' => $spotiTrack->artists[0]->name,
                 'image'      => $tmpImg,
                 'genres'     => $tracksRequest[$spotiTrack->id],
+            ];
+        }
+        return $this->render('spotiTemplates/_tracks.html.twig', ['tracks' => $tracks]);
+    }
+    
+    /**
+     * @Route("/generateBetterPlaylist", name="generateBetterPlaylist")
+     */
+    public function generateBetterPlaylist(Request $request, GenreRepository $genreRepository)
+    {
+        $data = $this->isValidDatasForDiscover($request, $genreRepository);
+        if ($data === false) {
+            throw new \Exception('Something went wrong!');
+        }
+        
+        $nbSongs       = $data['nbSongs'];
+        $genreEntities = $data['genres'];
+        
+        $requestSpoti = SpotiRequest::factory();
+        $response = $requestSpoti->getBestRecommendations($genreEntities, $nbSongs);
+        $spotiTracks   = $response;
+        
+        foreach ($spotiTracks as $spotiTrack) {
+            $tmpImg      = '';
+            $tmpImgArray = $spotiTrack->album->images;
+
+            if (!empty($tmpImgArray)) {
+                $tmpImg = $tmpImgArray[0]->url;
+            }
+
+            $tracks[] = [
+                'id'         => $spotiTrack->id,
+                'name'       => $spotiTrack->name,
+                'artistName' => $spotiTrack->artists[0]->name,
+                'image'      => $tmpImg,
+                'genres'     => [],
             ];
         }
         return $this->render('spotiTemplates/_tracks.html.twig', ['tracks' => $tracks]);

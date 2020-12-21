@@ -4,3 +4,7 @@ controllers:
     prefix:
         fr: ''
         en: '/en'
+
+kernel:
+    resource: ../../src/Kernel.php
+    type: annotation

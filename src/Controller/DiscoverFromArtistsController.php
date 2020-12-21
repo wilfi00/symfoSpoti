@@ -12,8 +12,11 @@ use \App\SpotiImplementation\Request as SpotiRequest;
 use \App\SpotiImplementation\Auth as SpotiAuth;
 use \App\SpotiImplementation\Tools as SpotiTools;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Contracts\Translation\TranslatorInterface;
+use Psr\Log\LoggerInterface;
+use App\Services\InfoFormatter;
 
-class SolennController extends AbstractController
+class DiscoverFromArtistsController extends AbstractController
 {
     public function initArtists($session)
     {
@@ -42,10 +45,11 @@ class SolennController extends AbstractController
     }
 
     /**
-     * @Route("/testAreaSolenn", name="solenn")
+     * @Route("/artistsSelection", name="artist_selection")
      */
-    public function testAreaSolenn(Request $request)
+    public function artistSelection(Request $request, TranslatorInterface $translator, LoggerInterface $logger)
     {
+        $logger->info(InfoFormatter::KEYWORD . 'petit message de log', ['test' => 'value']);
         $session = $request->getSession();
 
         if (!SpotiAuth::isUserAuthenticated($session)) {
@@ -55,7 +59,7 @@ class SolennController extends AbstractController
         $artists = [];
 
         $form = $this->createFormBuilder(null, ['attr' => ['id' => 'search-form']])
-            ->add('artist', TextType::class,   ['label' => 'Entrez le nom d\'un groupe : '])
+            ->add('artist', TextType::class,   ['label' => false, 'attr' => ['placeholder' => 'discover_fa_fill_artist']])
             ->getForm();
 
         $form->handleRequest($request);
@@ -86,7 +90,7 @@ class SolennController extends AbstractController
            ]);
         }
 
-        return $this->render('pages/solenn.html.twig', [
+        return $this->render('pages/discover_from_artists.html.twig', [
            'form'          => $form->createView(),
            'artistsSearch' => $artists,
            'artistsInit'   => $this->initArtists($session),
@@ -94,15 +98,21 @@ class SolennController extends AbstractController
                'addArtistToSelectionUrl'    => $this->generateUrl('addArtist'),
                'removeArtistToSelectionUrl' => $this->generateUrl('removeArtist'),
                'removeAllSelectionUrl'      => $this->generateUrl('emptyArtistsSelection'),
-           ]
+               'success'       => $request->query->get('success'),
+               'text'          => [
+                    'playlistSaveSucessFeedback' => $translator->trans('discover_playlistSaveSucessFeedback'),
+                    'feedbackError'              => $translator->trans('feedbackError'),
+                ],
+           ],
        ]);
     }
 
     /**
      * @Route("/addArtistToSelection", name="addArtist")
      */
-    public function addArtistToSelection(Request $request)
+    public function addArtistToSelection(Request $request, LoggerInterface $logger)
     {
+        $logger->info(InfoFormatter::KEYWORD . 'petit message de log', ['test' => 'value']);
         SpotiTools::saveArtistSelectionInSession(json_decode($request->getContent(), true));
 
         return new Response();

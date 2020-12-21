@@ -1,0 +1,98 @@
+{% extends "base.html.twig" %}
+{% block title %}
+<h1>{% trans %}discover_fwa_h1{% endtrans %}</h1>
+{% endblock %}
+
+{% block content %}
+    <p>{% trans %}discover_fwa_p1{% endtrans %}</p>
+    <div id="app">
+    	<div class="row">
+    		<div class="col-lg-8">
+    			<div class="displayLink">
+	    			<a class="displayAll" href="#">{% trans %}discover_fwa_display{% endtrans %}</a>
+	    			<a class="hideAll d-none" href="#">{% trans %}discover_fwa_hide{% endtrans %}</a>
+    			</div>
+    			<div class="artistsFollowed">
+					 <artist-item
+						v-for="item in vueArtists"
+						v-bind:artist="item"
+						v-bind:key="item.id"
+						v-on:lower-active-artists="nbActiveArtists --"
+						v-on:increase-active-artists="nbActiveArtists ++"
+					></artist-item>
+				</div>
+				<hr>
+				<h2>{% trans %}filters{% endtrans %}</h2>
+				<p>{% trans %}discover_fwa_filter_genres{% endtrans %} :</p>
+				<div class="containerSelected">
+					<input type="text" class="inputSearchGenre" placeholder="{% trans %}discover_searchPlaceholder{% endtrans %}">
+					<div class="selection">
+						<selected-genre-item
+							v-for="item in selectedGenres"
+							v-bind:genre="item"
+							v-bind:key="item.id"
+							@deletegenre="deleteSelectedGenre"
+						></selected-genre-item>
+					</div>
+					<ul class="genreResult">
+						<genre-item
+							v-for="item in activeVueGenres"
+							v-bind:genre="item"
+							v-bind:key="item.id"
+							@clickgenre="addSelectedGenres"
+						></genre-item>
+					</ul>
+				</div>
+				<hr>
+				<!--<h2>Je ne souhaite pas ces genres : </h2>
+				<div class="genres" v-for="genre in genres">
+					<span class="genre" v-on:click="addUnwantedGenres" :data-name="genre">${ genre }</span>
+				</div>-->
+    		</div>
+    		<div class="col-lg-4">
+    			<div class="row justify-content-around align-items-center">
+    				<div class="mb-4 mb-lg-0 mt-4 mt-lg-0 col-xl-7 select-container text-center">
+	    				<div class="select-discover">
+					        <select id="nbTracks">
+					        	<option value="1">1 {% trans %}fwa_discover_songs{% endtrans %}</option>
+								<option value="2">2 {% trans %}fwa_discover_songs{% endtrans %}</option>
+								<option value="3">3 {% trans %}fwa_discover_songs{% endtrans %}</option>
+								<option value="4">4 {% trans %}fwa_discover_songs{% endtrans %}</option>
+								<option value="5">5 {% trans %}fwa_discover_songs{% endtrans %}</option>
+								<option value="6">6 {% trans %}fwa_discover_songs{% endtrans %}</option>
+								<option value="7">7 {% trans %}fwa_discover_songs{% endtrans %}</option>
+								<option value="8">8 {% trans %}fwa_discover_songs{% endtrans %}</option>
+								<option value="9">9 {% trans %}fwa_discover_songs{% endtrans %}</option>
+								<option value="10">10 {% trans %}fwa_discover_songs{% endtrans %}</option>
+							</select>
+					    </div>
+					    <input name="nbTracks" type="hidden"/>
+	    			</div>
+	    			<div class="col-xl-5 nb-followed-container text-center">
+	    				<span class="important">${ nbActiveArtists }</span> {% trans %}discover_fwa_selected_artists{% endtrans %}
+	    			</div>
+				</div>
+				<div class="save">
+				    <input v-model="playlistName" name="playlistName" type="text" class="playlistName" placeholder="{% trans %}discover_playlistName{% endtrans %}" required><br>
+				    <button :class="{ 'disabled' : nbActiveArtists <= 0}" v-on:click="submitData" class="btn btn-primary saveIntoPlaylist">{% trans %}discover_playlistSave{% endtrans %}</button>
+				</div>
+    		</div>
+	    	<div id="loader"></div>
+			<div class="feedback">
+		        <div class="alert alert-success"></div>
+		    </div>
+	    </div>
+    </div>
+{% endblock %}
+{% block footer %}
+	{{ encore_entry_script_tags('discoverFromFollowedArtist') }}
+    {{ encore_entry_script_tags('appVue') }}
+	<script>
+		var url        = "{{ url }}";
+		var vueArtists = {{ vueArtists|json_encode|raw }};
+		var vueGenres  = {{ genres|json_encode|raw }};
+		var genres     = {{ genres|json_encode|raw }};
+		var text       = {{ text|json_encode|raw }};
+		artistFollowManager(genres);
+    </script>
+{% endblock %}

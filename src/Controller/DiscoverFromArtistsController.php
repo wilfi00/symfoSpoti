@@ -79,9 +79,9 @@ class DiscoverFromArtistsController extends AbstractController
                     $tmpImg = $tmpImgArray[0]->url;
                 }
                 $artists[] = [
-                    'image' => $tmpImg,
-                    'name'  => $artist->name,
-                    'id'    => $artist->id,
+                    'image'  => $tmpImg,
+                    'name'   => $artist->name,
+                    'id'     => $artist->id,
                     'genres' => $artist->genres,
                 ];
             }

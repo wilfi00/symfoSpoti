@@ -323,7 +323,7 @@ class Request
             $lastArtistId = $tmpArtistsRequest->cursors->after;
     
             $offset += $maxLimit;
-        } while($security < 5 && (sizeof($currentArtists) >= $maxLimit));
+        } while($security < 50 && (sizeof($currentArtists) >= $maxLimit));
 
         return $artists;
     }

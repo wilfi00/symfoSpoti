@@ -35,7 +35,7 @@ discover_fa_playlist_add: Ajouter les titres dans la playlist
 
 # Discover from followed artists
 discover_fwa_h1: Ecoute les meilleurs titres de tes groupes suivis
-discover_fwa_p1: Créé une playlist à partir de tes artistes suivis
+discover_fwa_p1: Crée une playlist à partir de tes artistes suivis
 discover_fwa_selected_artists: artistes sélectionnés
 discover_fwa_display: Afficher tous les artistes
 discover_fwa_hide: Afficher moins d'artistes

@@ -39,7 +39,6 @@ global.artistFollowManager = function(genres) {
 			content: function() {
 				return $(this).parent().find('.popover-content').html();
 			}
-			
 		});
 	}, 100);
 };

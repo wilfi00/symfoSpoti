@@ -46,7 +46,6 @@ global.artistManager = function(config) {
 			removeAllSelection();
 		});
 		
-		
 		// Popover artistes genres
 		$('.artistBloc .picto-info').popover({ trigger: 'hover', html: true });
 	}

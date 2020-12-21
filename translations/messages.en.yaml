@@ -3,6 +3,7 @@ feedbackError: An error has occurred
 save: Save
 reset: Reset
 back: Back
+filters: Filters
 
 # Base
 brand_name: Generate playlist
@@ -27,11 +28,19 @@ discover_playlistSaveSucessFeedback: The playlist has been saved
 discover_fa_h1: Listen to the best songs of your favorites artists
 discover_fa_p1: Select artists and save their famous songs into a playlist
 discover_fa_fill_artist: Enter the name of a group
-
 discover_fa_playlist_choice: Playlist choice
 discover_fa_nb_songs: Number of songs per band
 discover_fa_add_song_to_playlist: Add songs in this playlist
 discover_fa_playlist_add: Add songs in the playlist
+
+# Discover from followed artists
+discover_fwa_h1: Listen to the best tracks from your followed bands 
+discover_fwa_p1: Create a playlist from your artists bands 
+discover_fwa_selected_artists: selected artists
+discover_fwa_display: Show all artists
+discover_fwa_hide: Show less artists
+discover_fwa_filter_genres: I only wish these genres
+fwa_discover_songs: song(s) by artist
 
 #SEO
 seo_description: Discover new songs and save them in a Spotify playlist !

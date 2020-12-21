@@ -65,6 +65,7 @@ a {
 	color: $color1 !important;
 	&:hover, &:focus {
 		text-decoration: none;
+		color: darken($color1, 10%) !important;
 	}
 }
 button:focus { outline: none; }
@@ -450,6 +451,10 @@ input::placeholder, .nice-select {
 body {
 	background-color: $color3;
 	color: $text-color;
+}
+
+footer {
+	margin-top: 40px;
 }
 
 // Page artiste follow

@@ -31,5 +31,15 @@ global.artistFollowManager = function(genres) {
 		  $(this).addClass('d-none');
 		  displayLink.removeClass('d-none');
 		});
+		
+		// Popover artistes genres
+		$('.artistBloc .picto-info').popover({ 
+			trigger: 'hover', 
+			html: true,
+			content: function() {
+				return $(this).parent().find('.popover-content').html();
+			}
+			
+		});
 	}, 100);
 };

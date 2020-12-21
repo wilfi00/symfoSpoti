@@ -45,6 +45,10 @@ global.artistManager = function(config) {
 		$('.removeAll').off('click').on('click', function() {
 			removeAllSelection();
 		});
+		
+		
+		// Popover artistes genres
+		$('.artistBloc .picto-info').popover({ trigger: 'hover', html: true });
 	}
 
 	function addArtistToSelection(artist)

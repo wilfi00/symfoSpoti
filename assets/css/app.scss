@@ -67,6 +67,8 @@ a {
 		text-decoration: none;
 		color: darken($color1, 10%) !important;
 	}
+	
+	svg { color: $color1; }
 }
 button:focus { outline: none; }
 
@@ -167,7 +169,6 @@ h1 {
 	position: relative;
 	display: inline-block;
 	width: 140px;
-/*	height: 150px;*/
 	text-align: center;
 
     img {
@@ -184,6 +185,10 @@ h1 {
     	img, span {
     		transition: opacity 0.2s ease-out;
     	}
+    }
+    .picto-info { 
+    	position: absolute;
+    	right: 0;
     }
 }
 .artistsFollowed {
@@ -492,4 +497,20 @@ a#link svg {
     position:fixed;
     bottom: 40px;
     right: 40px;
+}
+
+.genre-info-container {
+	display: flex;
+	align-items: center;
+	
+	.picto-info {
+		width: 40px;
+		height: 40px;
+	}
+}
+
+svg { color: $color2 };
+
+.popover-header {
+	background-color: $color1;
 }

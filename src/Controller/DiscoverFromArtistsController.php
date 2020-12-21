@@ -81,7 +81,8 @@ class DiscoverFromArtistsController extends AbstractController
                 $artists[] = [
                     'image' => $tmpImg,
                     'name'  => $artist->name,
-                    'id'    => $artist->id
+                    'id'    => $artist->id,
+                    'genres' => $artist->genres,
                 ];
             }
 

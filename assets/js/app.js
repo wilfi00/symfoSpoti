@@ -18,7 +18,6 @@ require('bootstrap');
 // Nice select
 $('select:not(.searchSelect)').niceSelect();
 
-
 $('#modalePlaylists .btn-primary').on('click', function() {
 	$('form[name="playlist_selection"]').submit();
 });

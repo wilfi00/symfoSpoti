@@ -24,16 +24,4 @@ class UtilsController extends AbstractController
         var_dump($request->getArtist('1I9Hqy4QnMyVhZwRM2r41B'));
         exit();
     }
-
-    /**
-     * @Route("/changeLanguage")
-     */
-    public function changeLanguage(Request $request)
-    {
-        if ($request->get('language') === 'en') {
-            return $this->redirect('/en/', 301);
-        } else {
-            return $this->redirect('/', 301);
-        }
-    }
 }

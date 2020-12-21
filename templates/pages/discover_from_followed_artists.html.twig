@@ -24,23 +24,25 @@
 				<hr>
 				<h2>{% trans %}filters{% endtrans %}</h2>
 				<p>{% trans %}discover_fwa_filter_genres{% endtrans %} :</p>
-				<input type="text" class="inputSearchGenre" placeholder="{% trans %}discover_searchPlaceholder{% endtrans %}">
-				<div class="selection">
-					<selected-genre-item
-						v-for="item in selectedGenres"
-						v-bind:genre="item"
-						v-bind:key="item.id"
-						@deletegenre="deleteSelectedGenre"
-					></selected-genre-item>
+				<div class="containerSelected">
+					<input type="text" class="inputSearchGenre" placeholder="{% trans %}discover_searchPlaceholder{% endtrans %}">
+					<div class="selection">
+						<selected-genre-item
+							v-for="item in selectedGenres"
+							v-bind:genre="item"
+							v-bind:key="item.id"
+							@deletegenre="deleteSelectedGenre"
+						></selected-genre-item>
+					</div>
+					<ul class="genreResult">
+						<genre-item
+							v-for="item in activeVueGenres"
+							v-bind:genre="item"
+							v-bind:key="item.id"
+							@clickgenre="addSelectedGenres"
+						></genre-item>
+					</ul>
 				</div>
-				<ul class="genreResult">
-					<genre-item
-						v-for="item in activeVueGenres"
-						v-bind:genre="item"
-						v-bind:key="item.id"
-						@clickgenre="addSelectedGenres"
-					></genre-item>
-				</ul>
 				<hr>
 				<!--<h2>Je ne souhaite pas ces genres : </h2>
 				<div class="genres" v-for="genre in genres">

@@ -107,7 +107,7 @@ button:focus { outline: none; }
 }
 
 .navbar {
-	padding: 0 1rem!important;
+	padding: 0!important;
 	background-color: $color2!important;
 	
 	a { 
@@ -116,6 +116,11 @@ button:focus { outline: none; }
 		transition: background-color 0.3s;
 	}
 	li.active a, a:hover:not(.navbar-brand) { background-color: $color1!important; }
+}
+
+.navbar-nav .nav-link {
+    padding-right: 15px!important;
+    padding-left: 15px!important;
 }
 
 .popover {
@@ -279,6 +284,10 @@ hr {
 	// justify-content: space-between;
 }
 
+.containerSelected{
+	position : relative;
+}
+
 .genreResult {
 	height: 0;
 	overflow-y:: scroll;
@@ -286,6 +295,11 @@ hr {
 	padding: 0;
 	box-shadow: -8px 0 8px -10px rgba(0,0,0,0.75);
 	transition: height 0.3s ease-in-out;
+	position:absolute;
+	top : 60px;
+	background-color: #252525;
+    width: 100%;
+    z-index : 100;
 
 	.genre {
 		padding: 8px 0 8px 44px;
@@ -331,6 +345,7 @@ input::placeholder, .nice-select {
 	display: flex;
 	flex-wrap: wrap;
 }
+
 .selection, .genres {
 	.genre {
 		position: relative;
@@ -453,10 +468,6 @@ body {
 	color: $text-color;
 }
 
-footer {
-	margin-top: 40px;
-}
-
 // Page artiste follow
 .artists_followed {
 	#loader {
@@ -473,4 +484,12 @@ footer {
 .disabled {
     pointer-events: none;
     opacity: 0.3;
+}
+
+a#link svg {
+    height: 40px;
+    width: 40px;
+    position:fixed;
+    bottom: 40px;
+    right: 40px;
 }

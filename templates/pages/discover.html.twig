@@ -7,23 +7,25 @@
     <div id="app">
         <div class="row">
     		<div class="col-lg-8">
-    			<input type="text" class="inputSearchGenre" placeholder="{% trans %}discover_searchPlaceholder{% endtrans %}">
-    			<div class="selection">
-					<selected-genre-item
-						v-for="item in selectedGenres"
-						v-bind:genre="item"
-						v-bind:key="item.id"
-						@deletegenre="deleteSelectedGenre"
-					></selected-genre-item>
-				</div>
-    			<ul class="genreResult">
-    			    <genre-item
-						v-for="item in activeVueGenres"
-						v-bind:genre="item"
-						v-bind:key="item.id"
-						@clickgenre="addSelectedGenres"
-					></genre-item>
-                </ul>
+    		    <div class="containerSelected">
+        			<input type="text" class="inputSearchGenre" placeholder="{% trans %}discover_searchPlaceholder{% endtrans %}">
+        			<div class="selection">
+    					<selected-genre-item
+    						v-for="item in selectedGenres"
+    						v-bind:genre="item"
+    						v-bind:key="item.id"
+    						@deletegenre="deleteSelectedGenre"
+    					></selected-genre-item>
+    				</div>
+        			<ul class="genreResult">
+        			    <genre-item
+    						v-for="item in activeVueGenres"
+    						v-bind:genre="item"
+    						v-bind:key="item.id"
+    						@clickgenre="addSelectedGenres"
+    					></genre-item>
+                    </ul>
+                </div>
     		    <div id="loader"></div>
     		    <div class="playlistResult"></div>
     		</div>

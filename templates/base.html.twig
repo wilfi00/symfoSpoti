@@ -1,12 +1,25 @@
 <!doctype html>
 <html lang="{{ app.request.locale }}">
     <head>
+        {# Variables twig #}
+        {% set route = app.request.attributes.get('_route') %}
+        {% set route_params = app.request.attributes.get('_route_params') %}
+        {% set params = route_params|merge(app.request.query.all) %}
+        
         {% block stylesheets %}
             {{ encore_entry_link_tags('app') }}
         {% endblock %}
 
         {{ sonata_seo_title() }}
         {{ sonata_seo_metadatas() }}
+        
+        {% for locale in locales %}
+          {% if locale != app.request.locale %}
+            <link rel="alternate" hreflang="{{ locale}} " href="{{ path(route, params|merge({ _locale: locale })) }}" />
+          {% endif %}
+        {% endfor %}
+        
+        <!-- <link rel="alternate" hreflang="{{ app.request.locale }}" href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) }}" /> -->
         {% if app.environment == 'prod' %}
           <!-- Global site tag (gtag.js) - Google Analytics -->
           <script async src="https://www.googletagmanager.com/gtag/js?id=UA-179780767-1"></script>
@@ -42,15 +55,15 @@
         </nav>
         {% block sidebarLeft %}
         {% endblock %}
-        <div class="container">
-            <div class="header">
+        <div class="container mb-0 mb-sm-5">
+            <div class="header flex-column-reverse flex-md-row mt-2 mt-md-0">
               {% block title %}
               {% endblock %}
               <div class="changeLanguageSelector">
                   <form action="/changeLanguage" id="changeLanguage" method="POST">
                       <select name="language">
-                          <option value="fr">Français</option>
-                          <option value="en">English</option>
+                          <option data-lang="fr" value="{{ path(route, params|merge({ _locale: 'fr' })) }}">Français</option>
+                          <option data-lang="en" value="{{ path(route, params|merge({ _locale: 'en' })) }}">English</option>
                       </select>
                   </form>
               </div>
@@ -59,6 +72,9 @@
             {% endblock %}
         </div>
         <footer>
+          <a id="link"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-up-circle-fill" viewBox="0 0 16 16">
+  <path fill-rule="evenodd" d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-7.5 3.5a.5.5 0 0 1-1 0V5.707L5.354 7.854a.5.5 0 1 1-.708-.708l3-3a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 5.707V11.5z"/>
+</svg></a>
             {{ encore_entry_script_tags('app') }}
             {% block footer %}{% endblock %}
             <script>changeLanguage("{{ app.request.locale }}");</script>

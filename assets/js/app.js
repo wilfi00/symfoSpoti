@@ -130,14 +130,14 @@ global.searchGenres = function(genres, callbackAddGenre = null, callbackDeleteGe
 	    });
 	}
 	
-	function addEventToGenre(callbackAddGenre, callbackDeleteGenre)
+	function addEventToGenre()
 	{
 		$('.genreResult .genre').off('click').on('click', function() {
-			addGenreToSelection($(this), callbackAddGenre, callbackDeleteGenre);
+			addGenreToSelection($(this));
 		});
 	}
-
-	function addGenreToSelection(genre, callbackAddGenre = null, callbackDeleteGenre = null)
+	
+	function addGenreToSelection(genre)
 	{
 		$('.selection').show();
 
@@ -150,28 +150,34 @@ global.searchGenres = function(genres, callbackAddGenre = null, callbackDeleteGe
 global.changeLanguage = function(defaultLanguage)
 {
 	var select = $('#changeLanguage select');
+	
+	$('#changeLanguage').find('.nice-select li').removeClass('selected focus');
 
 	// Langage courant
 	if (defaultLanguage === 'en') {
 		// Html select
-		var option = select.find('option[value="en"]');
+		var option = select.find('option[data-lang="en"]');
 		option.attr('selected', true);
 		// Nice select
 		$('#changeLanguage').find('.nice-select .current').html(option.html());
-		$('#changeLanguage').find('.nice-select li[data-value="en"]').addClass('selected focus');
-		$('#changeLanguage').find('.nice-select li[data-value="fr"]').removeClass('selected focus');
 	} else {
 		// Html select
-		var option = select.find('option[value="fr"]');
+		var option = select.find('option[data-lang="fr"]');
 		option.attr('selected', true);
 		// Nice select
 		$('#changeLanguage').find('.nice-select .current').html(option.html());
-		$('#changeLanguage').find('.nice-select li[data-value="en"]').removeClass('selected focus');
-		$('#changeLanguage').find('.nice-select li[data-value="fr"]').addClass('selected focus');
 	}
 
 	// Si on sélectionne une langue, on recharge la page avec la langue choisie
 	select.change(function(eventData) {
-		$('#changeLanguage').submit();
+		window.location.replace(eventData.currentTarget.value);
 	});
 }
+
+//fonction scroll top
+$('#link').click(function(e){
+	window.scrollTo({
+	  top: 0,
+	  behavior: 'smooth'
+	});
+});

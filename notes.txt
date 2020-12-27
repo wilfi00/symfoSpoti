@@ -11,7 +11,7 @@ composer update
 yarn upgrade (il faut que yarn ne tourne pas !)
 
 yarn encore dev --watch
-
+f
 composer install
 yarn encore production && php bin/console cache:clear --env=prod --no-debug
 => il faut que johan soit le proprio de var

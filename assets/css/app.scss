@@ -203,7 +203,7 @@ h1 {
 	display: flex;
 	flex-wrap: wrap;
  	overflow: hidden;
-	max-height: 150px;
+	max-height: 160px;
 	transition: max-height 0.2s ease-out;
 	
 	&.displayAll {
@@ -508,6 +508,8 @@ a#link svg {
     right: 40px;
 }
 
+.artistLabel { margin-left: -7px; }
+
 .genre-info-container {
 	display: flex;
 	align-items: center;
@@ -522,4 +524,8 @@ svg { color: $color2 };
 
 .popover-header {
 	background-color: $color1;
+}
+
+.checkbox-artist {
+	display: inline-block;
 }

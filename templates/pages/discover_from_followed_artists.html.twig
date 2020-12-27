@@ -21,8 +21,8 @@
 						v-for="item in vueArtists"
 						v-bind:artist="item"
 						v-bind:key="item.id"
-						v-on:lower-active-artists="nbActiveArtists --"
-						v-on:increase-active-artists="nbActiveArtists ++"
+						v-on:lower-active-artists="nbActiveArtists --; $event.active = false;"
+						v-on:increase-active-artists="nbActiveArtists ++; $event.active = true;"
 					></artist-item>
 				</div>
 				<hr>

@@ -38,7 +38,6 @@ setTimeout(function() {
     data: {
       vueArtists: vueArtists,
       vueGenres: vueGenres,
-      activeVueGenres: this.vueGenres,
       selectedGenres: [],
       unwantedGenres: [],
       url: url,
@@ -66,7 +65,8 @@ setTimeout(function() {
               search: this.inputSearchGenre,
             })
             .then((response) => {
-              this.activeVueGenres = response.data;
+              this.vueGenres = response.data;
+              this.updateActiveGenres();
             })
             .catch(() => {
               feedbackError(text.feedbackError);
@@ -102,11 +102,13 @@ setTimeout(function() {
           });
       },
       addSelectedGenres: function(genre) {
+        genre.active = false;
         this.selectedGenres.push(genre);
         this.checkAllArtistsIndeterminate = true;
         this.refreshVueArtists();
       },
       deleteSelectedGenre: function(genre) {
+        genre.active = true;
         this.selectedGenres.remove(genre);
         this.refreshVueArtists();
       },
@@ -116,25 +118,24 @@ setTimeout(function() {
       },
       // Rafraichis les artistes en fonction des filtres
       refreshVueArtists: function(event) {
-        this.refreshVueArtistsByGenres(document.getElementById('checkAll').checked);
+        if (this.vueArtists.length > 0) {
+          this.refreshVueArtistsByGenres(document.getElementById('checkAll').checked);
+        }
         //this.vueArtists = this.refreshVueArtistsByUnwantedGenres(this.refreshVueArtistsByGenres());
       },
       // Ressort les artistes qui ont les genres sélectionnés
       refreshVueArtistsByGenres: function(checkAll) {
         if (this.vueArtists.length == 0) {
-          console.log('pas de vue artist !');
           return;
         }
         
         // Active à true pour les genres sélectionnés
         this.vueArtists.forEach(function(artist) {
           if ((checkAll && !app.checkAllArtistsIndeterminate) || (app.selectedGenres.length <= 0 && checkAll)) {
-            console.log('on active tout direct');
             artist.active = true;
             app.checkAllArtistsIndeterminate = true;
             return;
           } else if (!checkAll) {
-            console.log('on désactive tout direct');
             artist.active = false;
             return;
           }
@@ -166,6 +167,14 @@ setTimeout(function() {
       },
       getNbActiveArtists: function() {
         return this.vueArtists.filter(artist => artist.active).length;
+      },
+      getActiveGenres: function() {
+        return this.vueGenres.filter(genre => genre.active);
+      },
+      updateActiveGenres: function() {
+        this.vueGenres.forEach(function(genre) {
+          genre.active = app.selectedGenres.filter(selectedGenre => selectedGenre.id === genre.id).length === 0;
+        });
       },
     } 
   })

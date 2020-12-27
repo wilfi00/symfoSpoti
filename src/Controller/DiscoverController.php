@@ -30,12 +30,17 @@ class DiscoverController extends AbstractController
             $seo->addMeta('name', 'description',    $translator->trans('seo_description'));
             $seo->addMeta('property', 'og:description', $translator->trans('seo_description'));
         }
+        
+        $genres = array_slice($genreRepository->findAllGetArray(), 0, 60);
+        foreach ($genres as &$genre) {
+            $genre['active'] = true;
+        }
 
         return $this->render('pages/discover.html.twig', [
             'urlSearchGenre'      => $this->generateUrl('searchGenres'),
             'jsConfig'            => [
                 'generatePlaylistUrl' => $this->generateUrl('generatePlaylist'),
-                'genres'              => array_slice($genreRepository->findAllGetArray(), 0, 100),
+                'genres'              => $genres,
                 'success'             => $request->query->get('success'),
                 'text'                => [
                     'playlistSaveSucessFeedback' => $translator->trans('discover_playlistSaveSucessFeedback'),
@@ -57,10 +62,13 @@ class DiscoverController extends AbstractController
     public function searchGenres(Request $request, GenreManager $genreManager)
     {
         $search   = json_decode($request->getContent(), true)['search'];
+        $genres   = array_slice($genreManager->findAllBySearch($search), 0, 60);
+        foreach ($genres as &$genre) {
+            $genre['active'] = true;
+        }
+        
         $response = new Response();
-        $response->setContent(json_encode(
-            array_slice($genreManager->findAllBySearch($search), 0, 50)
-        ));
+        $response->setContent(json_encode($genres));
         $response->headers->set('Content-Type', 'application/json');
         return $response;
     }

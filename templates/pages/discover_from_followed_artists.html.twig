@@ -38,7 +38,7 @@
 					</div>
 					<ul class="genreResult">
 						<genre-item
-							v-for="item in activeVueGenres"
+							v-for="item in getActiveGenres()"
 							v-bind:genre="item"
 							v-bind:key="item.id"
 							@clickgenre="addSelectedGenres"

@@ -60,6 +60,14 @@ $text-color: #fff;
 	align-items: center;
 }
 
+.custom-control-input:checked ~ .custom-control-label::before, .custom-checkbox .custom-control-input:indeterminate ~ .custom-control-label::before {
+	border-color: $color1;
+	background-color: $color1;
+}
+.custom-checkbox .custom-control-input:checked:focus ~ .custom-control-label::before {
+  box-shadow: none;
+}
+
 a { 
 	cursor: pointer;
 	color: $color1 !important;
@@ -204,7 +212,8 @@ h1 {
 	}
 }
 .displayLink {
-	text-align: right;
+	display: flex;
+	justify-content: space-between;
 	margin-bottom: 20px;
 }
 .search-result {

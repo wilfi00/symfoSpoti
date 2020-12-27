@@ -9,6 +9,10 @@
     	<div class="row">
     		<div class="col-lg-8">
     			<div class="displayLink">
+					<div class="custom-control custom-checkbox">
+					  <input @click="refreshVueArtists" :checked="nbActiveArtists > 0" v-indeterminate="nbActiveArtists > 0 && nbActiveArtists < this.vueArtists.length" type="checkbox" class="custom-control-input" id="checkAll">
+					  <label class="custom-control-label" for="checkAll">{% trans %}discover_fwa_select_all_artists{% endtrans %}</label>
+					</div>
 	    			<a class="displayAll" href="#">{% trans %}discover_fwa_display{% endtrans %}</a>
 	    			<a class="hideAll d-none" href="#">{% trans %}discover_fwa_hide{% endtrans %}</a>
     			</div>

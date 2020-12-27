@@ -65,6 +65,12 @@ setTimeout(function() {
       nbActiveArtists: this.vueArtists.length,
       inputSearchGenre: '',
       timer: '',
+      checkAllArtistsIndeterminate: false,
+    },
+    directives: {
+      indeterminate: function(el, binding) {
+       el.indeterminate = Boolean(binding.value)
+      }
     },
     methods: {
       searchGenres: function(event) {
@@ -115,6 +121,7 @@ setTimeout(function() {
       },
       addSelectedGenres: function(genre) {
         this.selectedGenres.push(genre);
+        this.checkAllArtistsIndeterminate = true;
         this.refreshVueArtists();
       },
       deleteSelectedGenre: function(genre) {
@@ -126,22 +133,30 @@ setTimeout(function() {
         this.refreshVueArtists();
       },
       // Rafraichis les artistes en fonction des filtres
-      refreshVueArtists: function() {
-        this.refreshVueArtistsByGenres();
+      refreshVueArtists: function(event) {
+        this.refreshVueArtistsByGenres(document.getElementById('checkAll').checked);
         //this.vueArtists = this.refreshVueArtistsByUnwantedGenres(this.refreshVueArtistsByGenres());
       },
       // Ressort les artistes qui ont les genres sélectionnés
-      refreshVueArtistsByGenres: function() {
+      refreshVueArtistsByGenres: function(checkAll) {
         if (this.vueArtists.length == 0) {
+          console.log('pas de vue artist !');
           return;
         }
         
         this.nbActiveArtists = 0;
         // Active à true pour les genres sélectionnés
         this.vueArtists.forEach(function(artist) {
-          if (app.selectedGenres.length <= 0) {
+          if ((checkAll && !app.checkAllArtistsIndeterminate) || (app.selectedGenres.length <= 0 && checkAll)) {
+            console.log('on active tout direct');
             artist.active = true;
             app.nbActiveArtists++;
+            app.checkAllArtistsIndeterminate = true;
+            return;
+          } else if (!checkAll) {
+            console.log('on désactive tout direct');
+            artist.active = false;
+            app.nbActiveArtists = 0;
             return;
           }
           

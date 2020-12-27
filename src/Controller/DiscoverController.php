@@ -16,6 +16,7 @@ use Psr\Log\LoggerInterface;
 use App\Services\InfoFormatter;
 use Symfony\Bridge\Monolog\Processor\RouteProcessor;
 use Symfony\Bridge\Monolog\Processor\WebProcessor;
+use \App\Manager\GenreManager as GenreManager;
 
 class DiscoverController extends AbstractController
 {
@@ -31,18 +32,35 @@ class DiscoverController extends AbstractController
         }
 
         return $this->render('pages/discover.html.twig', [
-            'jsConfig' => [
+            'urlSearchGenre' => $this->generateUrl('searchGenres'),
+            'jsConfig'       => [
                 'generatePlaylistUrl' => $this->generateUrl('generatePlaylist'),
-                'genres'              => $genreRepository->findAllGetArray(),
+                'genres'              => array_slice($genreRepository->findAllGetArray(), 0, 100),
                 'success'             => $request->query->get('success'),
                 'text'                => [
                     'playlistSaveSucessFeedback' => $translator->trans('discover_playlistSaveSucessFeedback'),
                     'feedbackError'              => $translator->trans('feedbackError'),
                 ]
             ],
-            'tracks' => [],
+            'tracks'         => [],
             'saveIntoPlaylistUrl' => $this->generateUrl('saveTracksIntoPlaylist'),
         ]);
+    }
+    
+    
+    /**
+     * @Route("/searchGenres", name="searchGenres")
+     */
+    public function searchGenres(Request $request, GenreManager $genreManager)
+    {
+        $search = json_decode($request->getContent(), true)['search'];
+        
+        $response = new Response();
+        $response->setContent(json_encode(
+            array_slice($genreManager->findAllBySearch($search), 0, 50)
+        ));
+        $response->headers->set('Content-Type', 'application/json');
+        return $response;
     }
 
     /**

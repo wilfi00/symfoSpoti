@@ -96,7 +96,9 @@ global.searchGenres = function(genres, callbackAddGenre = null, callbackDeleteGe
 	
 	 	input.off('click keyup').on('click keyup', function () {
 			$('.genreResult').css('height', '220px');
-	        clearTimeout(typingTimer);
+			
+			// Code JS pour la recherche de genres en mode JS
+	        /*clearTimeout(typingTimer);
 			typingTimer = setTimeout(function() {
 				var genres0 = genres.filter(genre => genre.name == input.val());
 				
@@ -122,7 +124,7 @@ global.searchGenres = function(genres, callbackAddGenre = null, callbackDeleteGe
 				// On concatène tout et on enlève les genres dupliqués
 				app.activeVueGenres = genres0.concat(genres1).concat(genres2).concat(genres3).unique();
 				addEventToGenre(callbackAddGenre, callbackDeleteGenre);
-		   }, doneTypingInterval);
+		   }, doneTypingInterval);*/
 	    });
 	    input.off('keydown').on('keydown', function () {
 			clearTimeout(typingTimer);

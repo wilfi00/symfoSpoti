@@ -59,12 +59,30 @@ setTimeout(function() {
       selectedGenres: [],
       unwantedGenres: [],
       url: url,
+      urlSearchGenre: urlSearchGenre,
       playlistName: '',
       active: true,
       nbActiveArtists: this.vueArtists.length,
       text: [],
+      inputSearchGenre: '',
+      timer: '',
     },
     methods: {
+      searchGenres: function(event) {
+        if (this.timer) {
+            clearTimeout(this.timer);
+            this.timer = null;
+        }
+        this.timer = setTimeout(() => {
+          axios
+            .post(this.urlSearchGenre, {
+              search: this.inputSearchGenre,
+            })
+            .then((response) => {
+              this.activeVueGenres = response.data;
+            });
+        }, 150);
+      },
       submitData: function () {
         let artistsActive = [];
         this.vueArtists.forEach(function(artist) {

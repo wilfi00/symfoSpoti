@@ -88,11 +88,12 @@
 	{{ encore_entry_script_tags('discoverFromFollowedArtist') }}
     {{ encore_entry_script_tags('appVue') }}
 	<script>
-		var url        = "{{ url }}";
-		var vueArtists = {{ vueArtists|json_encode|raw }};
-		var vueGenres  = {{ genres|json_encode|raw }};
-		var genres     = {{ genres|json_encode|raw }};
-		var text       = {{ text|json_encode|raw }};
+		var url            = "{{ url }}";
+		var urlSearchGenre = "";
+		var vueArtists     = {{ vueArtists|json_encode|raw }};
+		var vueGenres      = {{ genres|json_encode|raw }};
+		var genres         = {{ genres|json_encode|raw }};
+		var text           = {{ text|json_encode|raw }};
 		artistFollowManager(genres);
     </script>
 {% endblock %}

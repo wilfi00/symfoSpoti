@@ -21,7 +21,7 @@
         <div class="row">
     		<div class="col-lg-8">
     		    <div class="containerSelected">
-        			<input type="text" class="inputSearchGenre" placeholder="{% trans %}discover_searchPlaceholder{% endtrans %}">
+        			<input @keyup="searchGenres" v-model="inputSearchGenre" type="text" class="inputSearchGenre" placeholder="{% trans %}discover_searchPlaceholder{% endtrans %}">
         			<div class="selection">
     					<selected-genre-item
     						v-for="item in selectedGenres"
@@ -80,8 +80,9 @@
     {{ encore_entry_script_tags('appVue') }}
 	<script>
 	    genreManager({{ jsConfig|json_encode|raw }});
-	    var url = '';
-	    var vueGenres = {{ jsConfig.genres|json_encode|raw }};
-	    var vueArtists = [];
+	    var url            = '';
+	    var urlSearchGenre = "{{ urlSearchGenre }}";
+	    var vueGenres      = {{ jsConfig.genres|json_encode|raw }};
+	    var vueArtists     = [];
 	</script>
 {% endblock %}

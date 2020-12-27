@@ -16,17 +16,6 @@ setTimeout(function() {
   	template: `<li class="genre" v-bind:id="'genre' + genre.id" v-bind:data-id="genre.id">{{ genre.name }}<button @click="$emit('deletegenre', genre)" type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button></li>`,
   })
   
-  /*v-for="item in selectedGenres"
-    						v-bind:genre="item"
-    						v-bind:key="item.id"
-    						@deletegenre="deleteSelectedGenre"
-    						
-    						<div v-for="(item, index) in mutableOptions">
-      <h3>{{ index }}<h3>
-      <h4>{{ item.Display }}<h4>
-    </div>
-    						*/
-  
   Vue.component('artist-item', {
   	props: {
   	  artist: Object,
@@ -39,8 +28,7 @@ setTimeout(function() {
       </svg>
   	  <img :class="{ 'disabled' : artist.active == false}" v-bind:src="artist.images[0].url" />
   	  <br>
-	    <p><div class="checkbox-artist custom-control custom-checkbox"><input @click="artist.active ? $emit('lower-active-artists', artist) : $emit('increase-active-artists', artist)" :checked=artist.active type="checkbox" class="custom-control-input" :id=artist.id>  <label class="custom-control-label" :for=artist.id></label></div>
-  	  <span class="artistLabel" :class="{ 'disabled' : artist.active == false}">{{ artist.name }}</span></p>
+	    <p><div class="checkbox-artist custom-control custom-checkbox"><input @click="artist.active ? $emit('lower-active-artists', artist) : $emit('increase-active-artists', artist)" :checked=artist.active type="checkbox" class="custom-control-input" :id=artist.id>  <label class="custom-control-label" :for=artist.id><span class="artistLabel" :class="{ 'disabled' : artist.active == false}">{{ artist.name }}</span></label></div></p>
   	  </div>`,
   })
   
@@ -57,7 +45,6 @@ setTimeout(function() {
       urlSearchGenre: urlSearchGenre,
       playlistName: '',
       active: true,
-      nbActiveArtists: this.vueArtists.length,
       inputSearchGenre: '',
       timer: '',
       checkAllArtistsIndeterminate: false,
@@ -139,26 +126,22 @@ setTimeout(function() {
           return;
         }
         
-        this.nbActiveArtists = 0;
         // Active à true pour les genres sélectionnés
         this.vueArtists.forEach(function(artist) {
           if ((checkAll && !app.checkAllArtistsIndeterminate) || (app.selectedGenres.length <= 0 && checkAll)) {
             console.log('on active tout direct');
             artist.active = true;
-            app.nbActiveArtists++;
             app.checkAllArtistsIndeterminate = true;
             return;
           } else if (!checkAll) {
             console.log('on désactive tout direct');
             artist.active = false;
-            app.nbActiveArtists = 0;
             return;
           }
           
           artist.active = false;
           for (const genre of artist.genres) {
             if (app.selectedGenres.map(value => value.name).includes(genre)) {
-              app.nbActiveArtists++;
               artist.active = true;
               return;
             }
@@ -180,7 +163,10 @@ setTimeout(function() {
             }
           }
         });
-      }
+      },
+      getNbActiveArtists: function() {
+        return this.vueArtists.filter(artist => artist.active).length;
+      },
     } 
   })
 }, 50);

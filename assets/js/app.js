@@ -18,7 +18,6 @@ require('bootstrap');
 // Nice select
 $('select:not(.searchSelect)').niceSelect();
 
-
 $('#modalePlaylists .btn-primary').on('click', function() {
 	$('form[name="playlist_selection"]').submit();
 });
@@ -82,7 +81,7 @@ Array.prototype.remove = function() {
 };
 
 // Gestion du champ de recherche de genres
-global.searchGenres = function(genres, callbackAddGenre = null, callbackDeleteGenre = null) {
+global.searchGenres = function(genres, searchGenreUsingJs = false) {
 	addInputSearchEvent(genres);
 	
 	function addInputSearchEvent(genres)
@@ -97,52 +96,40 @@ global.searchGenres = function(genres, callbackAddGenre = null, callbackDeleteGe
 	
 	 	input.off('click keyup').on('click keyup', function () {
 			$('.genreResult').css('height', '220px');
-	        clearTimeout(typingTimer);
-			typingTimer = setTimeout(function() {
-				var genres0 = genres.filter(genre => genre.name == input.val());
-				
-				// Recherche exact (uk metalcore matchera uk metalcore)
-				var regex = '';
-				regex +=  '\\b(\\w*' +  $.trim(input.val()) + '\\w*)\\b';
-				var genres1 = genres.filter(genre => genre.name.search(regex) >= 0);
+			
+			// Code JS pour la recherche de genres en mode JS
+			if (searchGenreUsingJs) {
+				clearTimeout(typingTimer);
+				typingTimer = setTimeout(function() {
+					var genres0 = genres.filter(genre => genre.name == input.val());
+					
+					// Recherche exact (uk metalcore matchera uk metalcore)
+					var regex = '';
+					regex +=  '\\b(\\w*' +  $.trim(input.val()) + '\\w*)\\b';
+					var genres1 = genres.filter(genre => genre.name.search(regex) >= 0);
+		
+					// Recherche inversée exact (exemple, uk metalcore matchera metalcore uk)
+					var regex = '';
+					regex +=  '\\b(\\w*' +  $.trim(input.val().split(' ').reverse().join(' ')) + '\\w*)\\b';
+					var genres2 = genres.filter(genre => genre.name.search(regex) >= 0);
+		
+					// Recherche très générale en mode OU (uk metalcore renverra tous les uk et tous les metalcore)
+					var regex = '';
+					input.val().split(' ').forEach(function(value) {
+					   regex += '\\b(\\w*' + value + '\\w*)\\b|';
+					});
+					// Supression du dernier caractère de la chaine pour enlever le ou |
+					regex = regex.substring(0, regex.length - 1);
+					var genres3 = genres.filter(genre => genre.name.search(regex) >= 0);
 	
-				// Recherche inversée exact (exemple, uk metalcore matchera metalcore uk)
-				var regex = '';
-				regex +=  '\\b(\\w*' +  $.trim(input.val().split(' ').reverse().join(' ')) + '\\w*)\\b';
-				var genres2 = genres.filter(genre => genre.name.search(regex) >= 0);
-	
-				// Recherche très générale en mode OU (uk metalcore renverra tous les uk et tous les metalcore)
-				var regex = '';
-				input.val().split(' ').forEach(function(value) {
-				   regex += '\\b(\\w*' + value + '\\w*)\\b|';
-				});
-				// Supression du dernier caractère de la chaine pour enlever le ou |
-				regex = regex.substring(0, regex.length - 1);
-				var genres3 = genres.filter(genre => genre.name.search(regex) >= 0);
-
-				// On concatène tout et on enlève les genres dupliqués
-				app.activeVueGenres = genres0.concat(genres1).concat(genres2).concat(genres3).unique();
-				addEventToGenre(callbackAddGenre, callbackDeleteGenre);
-		   }, doneTypingInterval);
+					// On concatène tout et on enlève les genres dupliqués
+					app.vueGenres = genres0.concat(genres1).concat(genres2).concat(genres3).unique();
+			   }, doneTypingInterval);
+			}
 	    });
 	    input.off('keydown').on('keydown', function () {
 			clearTimeout(typingTimer);
 	    });
-	}
-	
-	function addEventToGenre()
-	{
-		$('.genreResult .genre').off('click').on('click', function() {
-			addGenreToSelection($(this));
-		});
-	}
-	
-	function addGenreToSelection(genre)
-	{
-		$('.selection').show();
-
-		// A l'ajout d'un genre on nettoie la barre de recherche et on active le bouton de génération de playlist
-		$('.inputSearchGenre').val("");
 	}
 }
 

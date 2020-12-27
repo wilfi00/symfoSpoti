@@ -45,8 +45,9 @@ class DiscoverFromFollowedArtistsController extends AbstractController
         sort($tmpGenres);
         foreach ($tmpGenres as $key => $genre) {
             $genres[] = [
-                'name' => $genre,
-                'id'   => $key,
+                'name'   => $genre,
+                'id'     => $key,
+                'active' => true,
             ];
         }
 

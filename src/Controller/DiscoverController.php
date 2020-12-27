@@ -32,8 +32,8 @@ class DiscoverController extends AbstractController
         }
 
         return $this->render('pages/discover.html.twig', [
-            'urlSearchGenre' => $this->generateUrl('searchGenres'),
-            'jsConfig'       => [
+            'urlSearchGenre'      => $this->generateUrl('searchGenres'),
+            'jsConfig'            => [
                 'generatePlaylistUrl' => $this->generateUrl('generatePlaylist'),
                 'genres'              => array_slice($genreRepository->findAllGetArray(), 0, 100),
                 'success'             => $request->query->get('success'),
@@ -42,8 +42,11 @@ class DiscoverController extends AbstractController
                     'feedbackError'              => $translator->trans('feedbackError'),
                 ]
             ],
-            'tracks'         => [],
+            'tracks'              => [],
             'saveIntoPlaylistUrl' => $this->generateUrl('saveTracksIntoPlaylist'),
+            'text'                => [
+                'feedbackError'              => $translator->trans('feedbackError'),
+            ]
         ]);
     }
     
@@ -53,8 +56,7 @@ class DiscoverController extends AbstractController
      */
     public function searchGenres(Request $request, GenreManager $genreManager)
     {
-        $search = json_decode($request->getContent(), true)['search'];
-        
+        $search   = json_decode($request->getContent(), true)['search'];
         $response = new Response();
         $response->setContent(json_encode(
             array_slice($genreManager->findAllBySearch($search), 0, 50)

@@ -63,7 +63,6 @@ setTimeout(function() {
       playlistName: '',
       active: true,
       nbActiveArtists: this.vueArtists.length,
-      text: [],
       inputSearchGenre: '',
       timer: '',
     },
@@ -80,10 +79,13 @@ setTimeout(function() {
             })
             .then((response) => {
               this.activeVueGenres = response.data;
+            })
+            .catch(() => {
+              feedbackError(text.feedbackError);
             });
         }, 150);
       },
-      submitData: function () {
+      submitDataFollowedArtists: function () {
         let artistsActive = [];
         this.vueArtists.forEach(function(artist) {
           if (artist.active) {
@@ -98,12 +100,17 @@ setTimeout(function() {
             playlistName: this.playlistName
           })
           .then(function(response) {
-            hideLoader();
             if (response.data.success) {
               feedbackSuccess(text.playlistSaveSucessFeedback);
             } else {
               feedbackError(text.feedbackError);
             }
+          })
+          .catch(function() {
+            feedbackError(text.feedbackError);
+          })
+          .then(function() {
+            hideLoader();
           });
       },
       addSelectedGenres: function(genre) {

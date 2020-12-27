@@ -74,7 +74,7 @@
 				</div>
 				<div class="save">
 				    <input v-model="playlistName" name="playlistName" type="text" class="playlistName" placeholder="{% trans %}discover_playlistName{% endtrans %}" required><br>
-				    <button :class="{ 'disabled' : nbActiveArtists <= 0}" v-on:click="submitData" class="btn btn-primary saveIntoPlaylist">{% trans %}discover_playlistSave{% endtrans %}</button>
+				    <button :class="{ 'disabled' : nbActiveArtists <= 0}" v-on:click="submitDataFollowedArtists" class="btn btn-primary saveIntoPlaylist">{% trans %}discover_playlistSave{% endtrans %}</button>
 				</div>
     		</div>
 	    	<div id="loader"></div>

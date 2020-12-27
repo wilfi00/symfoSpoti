@@ -15,6 +15,8 @@ jQuery = $ = require('jquery');
 require('../js/jquery.nice-select.min.js');
 require('bootstrap');
 
+require('../img/discovernewmusic.png');
+
 // Nice select
 $('select:not(.searchSelect)').niceSelect();
 

@@ -150,7 +150,7 @@ h1 {
 #form_artist { margin-bottom: 50px; }
 .artistSelection {
 	.artistBloc {
-		cursor: inherit;
+		cursor: inherit!important;
 	}
 	.removeArtist {
 		cursor: pointer;

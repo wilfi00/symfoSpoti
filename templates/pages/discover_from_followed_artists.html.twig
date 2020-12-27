@@ -9,6 +9,10 @@
     	<div class="row">
     		<div class="col-lg-8">
     			<div class="displayLink">
+					<div class="custom-control custom-checkbox">
+					  <input @click="refreshVueArtists" :checked="getNbActiveArtists() > 0" v-indeterminate="getNbActiveArtists() > 0 && getNbActiveArtists() < this.vueArtists.length" type="checkbox" class="custom-control-input" id="checkAll">
+					  <label class="custom-control-label" for="checkAll">{% trans %}discover_fwa_select_all_artists{% endtrans %}</label>
+					</div>
 	    			<a class="displayAll" href="#">{% trans %}discover_fwa_display{% endtrans %}</a>
 	    			<a class="hideAll d-none" href="#">{% trans %}discover_fwa_hide{% endtrans %}</a>
     			</div>
@@ -17,8 +21,6 @@
 						v-for="item in vueArtists"
 						v-bind:artist="item"
 						v-bind:key="item.id"
-						v-on:lower-active-artists="nbActiveArtists --"
-						v-on:increase-active-artists="nbActiveArtists ++"
 					></artist-item>
 				</div>
 				<hr>
@@ -36,7 +38,7 @@
 					</div>
 					<ul class="genreResult">
 						<genre-item
-							v-for="item in activeVueGenres"
+							v-for="item in getActiveGenres()"
 							v-bind:genre="item"
 							v-bind:key="item.id"
 							@clickgenre="addSelectedGenres"
@@ -54,7 +56,7 @@
     				<div class="mb-4 mb-lg-0 mt-4 mt-lg-0 col-xl-7 select-container text-center">
 	    				<div class="select-discover">
 					        <select id="nbTracks">
-					        	<option value="1">1 {% trans %}fwa_discover_songs{% endtrans %}</option>
+					        	<option value="1">1 {% trans %}fwa_discover_song{% endtrans %}</option>
 								<option value="2">2 {% trans %}fwa_discover_songs{% endtrans %}</option>
 								<option value="3">3 {% trans %}fwa_discover_songs{% endtrans %}</option>
 								<option value="4">4 {% trans %}fwa_discover_songs{% endtrans %}</option>
@@ -69,12 +71,12 @@
 					    <input name="nbTracks" type="hidden"/>
 	    			</div>
 	    			<div class="col-xl-5 nb-followed-container text-center">
-	    				<span class="important">${ nbActiveArtists }</span> {% trans %}discover_fwa_selected_artists{% endtrans %}
+	    				<span v-cloak class="important">${ getNbActiveArtists() }</span> {% trans %}discover_fwa_selected_artists{% endtrans %}
 	    			</div>
 				</div>
 				<div class="save">
 				    <input v-model="playlistName" name="playlistName" type="text" class="playlistName" placeholder="{% trans %}discover_playlistName{% endtrans %}" required><br>
-				    <button :class="{ 'disabled' : nbActiveArtists <= 0}" v-on:click="submitData" class="btn btn-primary saveIntoPlaylist">{% trans %}discover_playlistSave{% endtrans %}</button>
+				    <button :class="{ 'disabled' : (getNbActiveArtists() <= 0 || playlistName == '')}" v-on:click="submitDataFollowedArtists" class="btn btn-primary saveIntoPlaylist">{% trans %}discover_playlistSave{% endtrans %}</button>
 				</div>
     		</div>
 	    	<div id="loader"></div>
@@ -88,11 +90,12 @@
 	{{ encore_entry_script_tags('discoverFromFollowedArtist') }}
     {{ encore_entry_script_tags('appVue') }}
 	<script>
-		var url        = "{{ url }}";
-		var vueArtists = {{ vueArtists|json_encode|raw }};
-		var vueGenres  = {{ genres|json_encode|raw }};
-		var genres     = {{ genres|json_encode|raw }};
-		var text       = {{ text|json_encode|raw }};
+		var url            = "{{ url }}";
+		var urlSearchGenre = "";
+		var vueArtists     = {{ vueArtists|json_encode|raw }};
+		var vueGenres      = {{ genres|json_encode|raw }};
+		var genres         = {{ genres|json_encode|raw }};
+		var text           = {{ text|json_encode|raw }};
 		artistFollowManager(genres);
     </script>
 {% endblock %}

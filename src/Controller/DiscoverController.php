@@ -16,6 +16,7 @@ use Psr\Log\LoggerInterface;
 use App\Services\InfoFormatter;
 use Symfony\Bridge\Monolog\Processor\RouteProcessor;
 use Symfony\Bridge\Monolog\Processor\WebProcessor;
+use \App\Manager\GenreManager as GenreManager;
 
 class DiscoverController extends AbstractController
 {
@@ -29,20 +30,47 @@ class DiscoverController extends AbstractController
             $seo->addMeta('name', 'description',    $translator->trans('seo_description'));
             $seo->addMeta('property', 'og:description', $translator->trans('seo_description'));
         }
+        
+        $genres = array_slice($genreRepository->findAllGetArray(), 0, 60);
+        foreach ($genres as &$genre) {
+            $genre['active'] = true;
+        }
 
         return $this->render('pages/discover.html.twig', [
-            'jsConfig' => [
+            'urlSearchGenre'      => $this->generateUrl('searchGenres'),
+            'jsConfig'            => [
                 'generatePlaylistUrl' => $this->generateUrl('generatePlaylist'),
-                'genres'              => $genreRepository->findAllGetArray(),
+                'genres'              => $genres,
                 'success'             => $request->query->get('success'),
                 'text'                => [
                     'playlistSaveSucessFeedback' => $translator->trans('discover_playlistSaveSucessFeedback'),
                     'feedbackError'              => $translator->trans('feedbackError'),
                 ]
             ],
-            'tracks' => [],
+            'tracks'              => [],
             'saveIntoPlaylistUrl' => $this->generateUrl('saveTracksIntoPlaylist'),
+            'text'                => [
+                'feedbackError'              => $translator->trans('feedbackError'),
+            ]
         ]);
+    }
+    
+    
+    /**
+     * @Route("/searchGenres", name="searchGenres")
+     */
+    public function searchGenres(Request $request, GenreManager $genreManager)
+    {
+        $search   = json_decode($request->getContent(), true)['search'];
+        $genres   = array_slice($genreManager->findAllBySearch($search), 0, 60);
+        foreach ($genres as &$genre) {
+            $genre['active'] = true;
+        }
+        
+        $response = new Response();
+        $response->setContent(json_encode($genres));
+        $response->headers->set('Content-Type', 'application/json');
+        return $response;
     }
 
     /**

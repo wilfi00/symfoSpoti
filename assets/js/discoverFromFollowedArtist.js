@@ -11,10 +11,7 @@ global.artistFollowManager = function(genres) {
 		// Search genres
 		searchGenres(
 			genres, 
-			null,
-			function(genre) {
-				app.deleteSelectedGenre(genre.data('name'));
-			}
+			true,
 		);
 		
 		var displayLink = $('.displayAll');
@@ -30,6 +27,15 @@ global.artistFollowManager = function(genres) {
 		  artists.removeClass('displayAll');
 		  $(this).addClass('d-none');
 		  displayLink.removeClass('d-none');
+		});
+		
+		// Popover artistes genres
+		$('.artistBloc .picto-info').popover({ 
+			trigger: 'hover', 
+			html: true,
+			content: function() {
+				return $(this).parent().find('.popover-content').html();
+			}
 		});
 	}, 100);
 };

@@ -67,7 +67,6 @@ abstract class AbstractManager
     public function setEntityManager(EntityManagerInterface $entityManager)
     {
         $this->entityManager = $entityManager;
-        dump($this->entityClassName);
         $this->repository = $entityManager->getRepository($this->entityClassName);
     }
 

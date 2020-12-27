@@ -60,6 +60,14 @@ $text-color: #fff;
 	align-items: center;
 }
 
+.custom-control-input:checked ~ .custom-control-label::before, .custom-checkbox .custom-control-input:indeterminate ~ .custom-control-label::before {
+	border-color: $color1;
+	background-color: $color1;
+}
+.custom-checkbox .custom-control-input:checked:focus ~ .custom-control-label::before {
+  box-shadow: none;
+}
+
 a { 
 	cursor: pointer;
 	color: $color1 !important;
@@ -150,7 +158,7 @@ h1 {
 #form_artist { margin-bottom: 50px; }
 .artistSelection {
 	.artistBloc {
-		cursor: inherit;
+		cursor: inherit!important;
 	}
 	.removeArtist {
 		cursor: pointer;
@@ -195,7 +203,7 @@ h1 {
 	display: flex;
 	flex-wrap: wrap;
  	overflow: hidden;
-	max-height: 150px;
+	max-height: 160px;
 	transition: max-height 0.2s ease-out;
 	
 	&.displayAll {
@@ -204,7 +212,8 @@ h1 {
 	}
 }
 .displayLink {
-	text-align: right;
+	display: flex;
+	justify-content: space-between;
 	margin-bottom: 20px;
 }
 .search-result {
@@ -499,6 +508,8 @@ a#link svg {
     right: 40px;
 }
 
+.artistLabel { margin-left: -7px; }
+
 .genre-info-container {
 	display: flex;
 	align-items: center;
@@ -513,4 +524,8 @@ svg { color: $color2 };
 
 .popover-header {
 	background-color: $color1;
+}
+
+.checkbox-artist {
+	display: inline-block;
 }

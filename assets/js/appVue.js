@@ -39,13 +39,8 @@ setTimeout(function() {
       </svg>
   	  <img :class="{ 'disabled' : artist.active == false}" v-bind:src="artist.images[0].url" />
   	  <br>
-	    <p><a v-on:click="$emit('lower-active-artists'); artist.active = false;" v-if="artist.active"><svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-dash-circle-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-        <path fill-rule="evenodd" d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM4.5 7.5a.5.5 0 0 0 0 1h7a.5.5 0 0 0 0-1h-7z"/>
-      </svg></a>
-      <a v-if="!artist.active" v-on:click="$emit('increase-active-artists'); artist.active = true;"><svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-plus-circle-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-        <path fill-rule="evenodd" d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z"/>
-      </svg></a>
-  	  <span :class="{ 'disabled' : artist.active == false}">{{ artist.name }}</span></p>
+	    <p><div class="checkbox-artist custom-control custom-checkbox"><input @click="artist.active ? $emit('lower-active-artists', artist) : $emit('increase-active-artists', artist)" :checked=artist.active type="checkbox" class="custom-control-input" :id=artist.id>  <label class="custom-control-label" :for=artist.id></label></div>
+  	  <span class="artistLabel" :class="{ 'disabled' : artist.active == false}">{{ artist.name }}</span></p>
   	  </div>`,
   })
   
@@ -63,9 +58,14 @@ setTimeout(function() {
       playlistName: '',
       active: true,
       nbActiveArtists: this.vueArtists.length,
-      text: [],
       inputSearchGenre: '',
       timer: '',
+      checkAllArtistsIndeterminate: false,
+    },
+    directives: {
+      indeterminate: function(el, binding) {
+       el.indeterminate = Boolean(binding.value)
+      }
     },
     methods: {
       searchGenres: function(event) {
@@ -80,10 +80,13 @@ setTimeout(function() {
             })
             .then((response) => {
               this.activeVueGenres = response.data;
+            })
+            .catch(() => {
+              feedbackError(text.feedbackError);
             });
         }, 150);
       },
-      submitData: function () {
+      submitDataFollowedArtists: function () {
         let artistsActive = [];
         this.vueArtists.forEach(function(artist) {
           if (artist.active) {
@@ -98,16 +101,22 @@ setTimeout(function() {
             playlistName: this.playlistName
           })
           .then(function(response) {
-            hideLoader();
             if (response.data.success) {
               feedbackSuccess(text.playlistSaveSucessFeedback);
             } else {
               feedbackError(text.feedbackError);
             }
+          })
+          .catch(function() {
+            feedbackError(text.feedbackError);
+          })
+          .then(function() {
+            hideLoader();
           });
       },
       addSelectedGenres: function(genre) {
         this.selectedGenres.push(genre);
+        this.checkAllArtistsIndeterminate = true;
         this.refreshVueArtists();
       },
       deleteSelectedGenre: function(genre) {
@@ -119,22 +128,30 @@ setTimeout(function() {
         this.refreshVueArtists();
       },
       // Rafraichis les artistes en fonction des filtres
-      refreshVueArtists: function() {
-        this.refreshVueArtistsByGenres();
+      refreshVueArtists: function(event) {
+        this.refreshVueArtistsByGenres(document.getElementById('checkAll').checked);
         //this.vueArtists = this.refreshVueArtistsByUnwantedGenres(this.refreshVueArtistsByGenres());
       },
       // Ressort les artistes qui ont les genres sélectionnés
-      refreshVueArtistsByGenres: function() {
+      refreshVueArtistsByGenres: function(checkAll) {
         if (this.vueArtists.length == 0) {
+          console.log('pas de vue artist !');
           return;
         }
         
         this.nbActiveArtists = 0;
         // Active à true pour les genres sélectionnés
         this.vueArtists.forEach(function(artist) {
-          if (app.selectedGenres.length <= 0) {
+          if ((checkAll && !app.checkAllArtistsIndeterminate) || (app.selectedGenres.length <= 0 && checkAll)) {
+            console.log('on active tout direct');
             artist.active = true;
             app.nbActiveArtists++;
+            app.checkAllArtistsIndeterminate = true;
+            return;
+          } else if (!checkAll) {
+            console.log('on désactive tout direct');
+            artist.active = false;
+            app.nbActiveArtists = 0;
             return;
           }
           

@@ -43,7 +43,9 @@ discover_fwa_selected_artists: selected artists
 discover_fwa_display: Show all artists
 discover_fwa_hide: Show less artists
 discover_fwa_filter_genres: I only wish these genres
-fwa_discover_songs: song(s) by artist
+fwa_discover_song: song by artist
+fwa_discover_songs: songs by artist
+discover_fwa_select_all_artists: Select all artists
 
 #SEO
 seo_description: Discover new songs and save them in a Spotify playlist !

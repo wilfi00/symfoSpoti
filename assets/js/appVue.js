@@ -22,12 +22,11 @@ $( document ).ready(function() {
   	},
   	template: `
   	<div class="artistBloc artistFollowedBloc">
-    	<!--<div class="popover-content d-none"><div class='genres'><span v-for='(genre, index) in artist.genres' :key='index' class='genre'>{{ genre }}</span></div></div>-->
     	<div class="popover-content d-none"><ul class="list-group list-group-flush"><li class="list-group-item" v-for='(genre, index) in artist.genres' :key='index'>{{ genre }}</li></ul></div>
       <svg title="Genres de l'artiste" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="picto-info bi bi-info-circle-fill" viewBox="0 0 16 16">
           <path fill-rule="evenodd" d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412l-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM8 5.5a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
       </svg>
-  	  <img :class="{ 'disabled' : artist.active == false}" v-bind:src="artist.images[0].url" />
+  	  <img class="image" :class="{ 'disabled' : artist.active == false}" v-bind:src="artist.images[0].url" />
   	  <br>
 	    <p><div class="checkbox-artist custom-control custom-checkbox"><input @click="artist.active ? artist.active = false :artist.active = true" :checked=artist.active type="checkbox" class="custom-control-input" :id=artist.id>  <label class="custom-control-label" :for=artist.id><span class="artistLabel" :class="{ 'disabled' : artist.active == false}">{{ artist.name }}</span></label></div></p>
   	  </div>`,

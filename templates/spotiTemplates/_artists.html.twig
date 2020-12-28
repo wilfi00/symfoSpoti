@@ -1,6 +1,6 @@
 {% for artist in artists %}<a class="artistBloc" data-information="{{ artist|json_encode() }}">
 {% if artist.genres is defined %}
-<svg title="Genres de l'artiste" data-content="<div class='genres'>{% for genre in artist.genres %}<span class='genre'>{{ genre }}</span>{% endfor %}</div>" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="picto-info bi bi-info-circle-fill" viewBox="0 0 16 16">
+<svg title="Genres de l'artiste" data-content="<ul class='list-group list-group-flush'>{% for genre in artist.genres %}<li class='list-group-item'>{{ genre }}</li>{% endfor %}</ul>" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="picto-info bi bi-info-circle-fill" viewBox="0 0 16 16">
   <path fill-rule="evenodd" d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412l-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM8 5.5a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
 </svg>
 {% endif %}
@@ -8,7 +8,13 @@
     <span aria-hidden="true">×</span>
 </button>
 {% if artist.image is not empty %}
-	<img src="{{ artist.image }}" /> <br>
+	<img class="image" src="{{ artist.image }}" />
+{% else %}
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-image image" viewBox="0 0 16 16">
+  <path d="M8.002 5.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
+  <path d="M12 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zM3 2a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v8l-2.083-2.083a.5.5 0 0 0-.76.063L8 11 5.835 9.7a.5.5 0 0 0-.611.076L3 12V2z"/>
+</svg>
 {% endif %}
+<br>
 {{ artist.name }}
 </a><hr>{% endfor %}

@@ -70,6 +70,9 @@ $text-color: #fff;
 label {
 	display: unset;
 }
+.custom-control.custom-checkbox > * {
+	cursor: pointer;
+}
 
 [v-cloak] { display: none; }
 
@@ -194,10 +197,11 @@ h1 {
 	width: 140px;
 	text-align: center;
 
-    img {
+    .image {
     	width: 100px;
     	height: 100px;
     }
+    svg.image { color: #999; }
     .removeArtist {
         position: absolute;
         right: 0;

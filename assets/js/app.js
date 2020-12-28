@@ -163,10 +163,35 @@ global.changeLanguage = function(defaultLanguage)
 	});
 }
 
-//fonction scroll top
-$('#link').click(function(e){
-	window.scrollTo({
-	  top: 0,
-	  behavior: 'smooth'
+global.addPopover = function(selector) {
+	$(selector).popover({ 
+		trigger: 'manual', 
+		html: true,
+		content: function() {
+			return $(this).parent().find('.popover-content').html();
+		},
+	}).on("mouseenter", function() {
+	    var _this = this;
+	    $(this).popover("show");
+	    $(".popover").on("mouseleave", function() {
+	      $(_this).popover('hide');
+	    });
+	}).on("mouseleave", function() {
+    	var _this = this;
+	    setTimeout(function() {
+	      if (!$(".popover:hover").length) {
+	        $(_this).popover("hide");
+	      }
+	    }, 300);
+	});
+};
+
+$( document ).ready(function() {
+	// Fonction scroll top
+	$('#link').click(function(e){
+		window.scrollTo({
+		  top: 0,
+		  behavior: 'smooth'
+		});
 	});
 });

@@ -83,6 +83,14 @@ a {
 	
 	svg { color: $color1; }
 }
+
+.picto-info { color: #999 };
+
+.picto-info-big {
+	width: 40px;
+	height: 40px;
+}
+
 button:focus { outline: none; }
 
 .btn-primary {
@@ -164,6 +172,8 @@ h1 {
 .artistSelection {
 	.artistBloc {
 		cursor: inherit!important;
+		
+		.picto-info { display: none; }
 	}
 	.removeArtist {
 		cursor: pointer;
@@ -171,8 +181,8 @@ h1 {
 	}
 	hr {
 	    display: block;
-    width: 60%;
-    margin: 15px auto;
+	    width: 60%;
+	    margin: 15px auto;
 		&:last {
 			display: none;
 		}
@@ -516,11 +526,6 @@ a#link svg {
 .genre-info-container {
 	display: flex;
 	align-items: center;
-	
-	.picto-info {
-		width: 40px;
-		height: 40px;
-	}
 }
 
 svg { color: $color2 };

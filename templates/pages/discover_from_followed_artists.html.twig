@@ -76,7 +76,9 @@
 				</div>
 				<div class="save">
 				    <input v-model="playlistName" name="playlistName" type="text" class="playlistName" placeholder="{% trans %}discover_playlistName{% endtrans %}" required><br>
-				    <button :class="{ 'disabled' : (getNbActiveArtists() <= 0 || playlistName == '')}" v-on:click="submitDataFollowedArtists" class="btn btn-primary saveIntoPlaylist">{% trans %}discover_playlistSave{% endtrans %}</button>
+				    <button :class="{ 'disabled' : (getNbActiveArtists() <= 0 || playlistName == '')}" v-on:click="submitDataFollowedArtists" class="btn btn-primary saveIntoPlaylist">
+				    	<img src="{{ asset('build/images/Spotify_Icon_RGB_Black.png') }}" alt="Spotify logo">{% trans %}discover_playlistSave{% endtrans %}
+			    	</button>
 				</div>
     		</div>
 	    	<div id="loader"></div>

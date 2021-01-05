@@ -25,7 +25,7 @@
     "repository": "https://github.com/wilfi00/symfoSpoti.git",
     "author": "Johan Martin <0johan.martin0@gmail.com>",
     "dependencies": {
-        "axios": "^0.19.1",
+        "axios": "^0.21.1",
         "jquery": "^3.4.1",
         "vue": "^2.6.12"
     }

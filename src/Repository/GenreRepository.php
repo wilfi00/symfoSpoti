@@ -23,6 +23,7 @@ class GenreRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('g')
             ->getQuery()
+            //->setMaxResults(50)
             ->getArrayResult()
         ;
     }

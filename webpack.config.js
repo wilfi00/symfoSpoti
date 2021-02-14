@@ -14,6 +14,19 @@ Encore
     // only needed for CDN's or sub-directory deploy
     //.setManifestKeyPrefix('build/')
 
+    .copyFiles({
+        from: './assets/img',
+        
+        // optional target path, relative to the output dir
+        to: 'images/[path][name].[ext]',
+        
+        // if versioning is enabled, add the file hash too
+        //to: 'images/[path][name].[hash:8].[ext]',
+        
+        // only copy files matching this pattern
+        //pattern: /\.(png|jpg|jpeg)$/
+    })
+
     /*
      * ENTRY CONFIG
      *
@@ -28,7 +41,6 @@ Encore
     .addEntry('discoverFromSelectedArtist', './assets/js/discoverFromSelectedArtist.js')
     .addEntry('discoverFromFollowedArtist', './assets/js/discoverFromFollowedArtist.js')
     .addEntry('appVue', './assets/js/appVue.js')
-    .addEntry('SpotiBlack', './assets/img/Spotify_Icon_RGB_Black.png')
     //.addEntry('page1', './assets/js/page1.js')
     //.addEntry('page2', './assets/js/page2.js')
 

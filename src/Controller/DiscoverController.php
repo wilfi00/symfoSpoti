@@ -185,6 +185,8 @@ class DiscoverController extends AbstractController
      */
     public function setPopularityGenres(GenreRepository $genreRepository)
     {
+        set_time_limit(3600);
+        
         $api = new \App\SpotifyWebAPI\SpotifyWebAPI();
         $api->setSession(SpotiAuth::getApiSession());
         $api->setOptions([
@@ -192,13 +194,11 @@ class DiscoverController extends AbstractController
         ]);
         $request = new SpotiRequest($api);
         $request->setGenreRespository($genreRepository);
-        $genres  = $genreRepository->findAll();
-
-$genres = array_slice($genres, 696, 1000);
+        $genres  = $genreRepository->findBy(['tries' => null]);
 
         foreach ($genres as $genre) {
             $request->getRandomArtistsFromGenre($genre, 50);
-            sleep(30);
+            sleep(5);
         }
     }
 

@@ -108,6 +108,22 @@ button:focus { outline: none; }
 	}
 }
 
+.banner a{
+	&:hover, &:focus{
+		color: $color1 !important;;
+	}
+}
+
+.navbar-brand{
+	align-items:center;
+}
+
+.logo{
+	height: 50px;
+	margin: 10px;
+	
+}
+
 .navbar {
 	padding: 0!important;
 	background-color: $color2!important;
@@ -135,7 +151,17 @@ button:focus { outline: none; }
 }
 
 h1 {
-	margin: 30px 0 30px 0;
+	margin: 10px 0;
+	white-space: normal;
+    font-size: 2rem;
+}
+
+@media screen and (min-width: 992px) {
+  h1 {
+	margin: 10px 0;
+	white-space: nowrap;
+    font-size: 2.5rem;
+	}
 }
 
 // Discover from artists
@@ -167,7 +193,7 @@ h1 {
 }
 .artistBloc {
 	position: relative;
-	display: inline-block;
+	float:left;
 	width: 140px;
 	text-align: center;
 
@@ -222,10 +248,8 @@ h1 {
     width: 150px;
     height: 150px;
     margin: -75px 0 0 -75px;
-    border: 16px solid #f3f3f3;
-	border: 16px solid darken($color3, 10%);
+    border: 16px solid #888;
     border-radius: 50%;
-    border-top: 16px solid #3498db;
 	border-top: 16px solid $color1;
     width: 120px;
     height: 120px;
@@ -274,7 +298,6 @@ h1 {
 
 	.artistName {
 		font-size: 18px;
-		margin-right: 10px;
 	}
 }
 
@@ -324,7 +347,7 @@ input {
 	transition: border-color 0.3s ease-in-out;
 	transition: box-shadow 0.3s ease-in-out;
 	border-radius: 4px;
-	padding: 16px;
+	padding: 14px;
 	cursor: auto;
 	margin-right: 10px;
 
@@ -379,17 +402,22 @@ input::placeholder, .nice-select {
 	}
 }
 
+.groupeSave{
+	display: flex;
+}
 .playlistResult { margin-top: 20px; }
 .save {
+	position:relative;
 	border: 1px solid $color2;
 	margin-top: 20px;
 	padding: 10px;
 	text-align: center;
 
+
 	.playlistName { width: 100%; height: 50px; }
 	.saveIntoPlaylist {
-		height: 50px;
-		margin-top: 20px;
+		min-height: 50px;
+		margin: 20px auto 0;
 		img {
 			width: 32px;
 			padding-right: 8px;
@@ -408,12 +436,10 @@ input::placeholder, .nice-select {
 }
 
 .select-discover, .changeLanguageSelector {
-	width: 135px;
-	display: inline-block;
 
 	.nice-select {
-		padding-top: 10px!important;
-		padding-bottom: 10px!important;
+		padding-top: 5px!important;
+		padding-bottom: 5px!important;
 		height: auto!important;
 		transition: border-color 0.3s ease-in-out;
 		transition: box-shadow 0.3s ease-in-out;
@@ -425,6 +451,12 @@ input::placeholder, .nice-select {
 		}
 	}
 }
+
+.formLanguage{
+	width: 135px;
+	float: right;
+}
+
 .select-discover {
 	width: 100%;
 }
@@ -475,8 +507,22 @@ body {
 
 // Page artiste follow
 .artists_followed {
+	.containerLoader{
+		width:25%;
+	}
+	.containerSave{
+		width:75%;
+	}
 	#loader {
-		top: 12%!important;
+		position:relative;
+		float: right;
+		margin : 20px 20px 0 0 ;
+		width: 40px;
+    	height: 40px;
+    	left: 0;
+    	top: 0;
+    	border: 10px solid #888;
+		border-top: 10px solid $color1;
 	}
 	.nb-followed-container .important { margin-right: 4px; }
 }
@@ -491,22 +537,13 @@ body {
     opacity: 0.3;
 }
 
-a#link svg {
+a#link-top svg {
     height: 40px;
     width: 40px;
     position:fixed;
     bottom: 40px;
     right: 40px;
-}
-
-.genre-info-container {
-	display: flex;
-	align-items: center;
-	
-	.picto-info {
-		width: 40px;
-		height: 40px;
-	}
+    display : none;
 }
 
 svg { color: $color2 };

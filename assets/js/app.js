@@ -174,9 +174,21 @@ global.changeLanguage = function(defaultLanguage)
 }
 
 //fonction scroll top
-$('#link').click(function(e){
+$('#link-top').click(function(e){
 	window.scrollTo({
 	  top: 0,
 	  behavior: 'smooth'
 	});
+});
+
+
+//fonction apparition du bouton scroll top
+var heightScreen=screen.availHeight;
+$(window).scroll(function() {
+	if ( heightScreen < window.scrollY ) {
+                $("#link-top svg").css("display","block");}
+    else{
+    	 $("#link-top svg").css("display","none");
+    }
+                
 });

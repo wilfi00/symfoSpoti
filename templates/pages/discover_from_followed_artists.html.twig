@@ -1,6 +1,6 @@
 {% extends "base.html.twig" %}
 {% block title %}
-<h1>{% trans %}discover_fwa_h1{% endtrans %}</h1>
+<h2>{% trans %}discover_fwa_h1{% endtrans %}</h2>
 {% endblock %}
 
 {% block content %}
@@ -74,10 +74,13 @@
 				</div>
 				<div class="save">
 				    <input v-model="playlistName" name="playlistName" type="text" class="playlistName" placeholder="{% trans %}discover_playlistName{% endtrans %}" required><br>
-				    <button :class="{ 'disabled' : nbActiveArtists <= 0}" v-on:click="submitData" class="btn btn-primary saveIntoPlaylist">{% trans %}discover_playlistSave{% endtrans %}</button>
+				    	<div class="groupeSave">
+				    		<div class="containerLoader"> <div id="loader"></div></div>
+				    		<div classs="containerSave"><button :class="{ 'disabled' : nbActiveArtists <= 0}" v-on:click="submitData" class="btn btn-primary saveIntoPlaylist">{% trans %}discover_playlistSave{% endtrans %}</button></div>
+			
+					</div>	
 				</div>
     		</div>
-	    	<div id="loader"></div>
 			<div class="feedback">
 		        <div class="alert alert-success"></div>
 		    </div>

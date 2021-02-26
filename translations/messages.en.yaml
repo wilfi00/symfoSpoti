@@ -8,7 +8,7 @@ validate: Validate
 # Select save
 save_songs: Save songs
 create_new_playlist: Create new playlist
-existing_playlist: Use existing playlist
+existing_playlist: Add to an existing playlist
 adding_to_queue: Add to queue
 
 # Base
@@ -28,7 +28,7 @@ discover_generateToolTip: Add genres and the generate a playlist
 discover_playlistName: Playlist name
 discover_playlistSave: Save into playlist
 discover_playlistSaveToolTip: Start by generate your custom playlist
-discover_playlistSaveSucessFeedback: The playlist has been saved
+discover_playlistSaveSucessFeedback: Songs have been saved
 discover_helpGenres: If you don't know which genres you want, you can use those two pages to help you, thanks to the information icon
 discover_helpGenres1: find genres from one artist
 discover_helpGenres2: browse your followed artists to discover their genres

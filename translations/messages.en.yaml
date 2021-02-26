@@ -4,6 +4,12 @@ save: Save
 reset: Reset
 back: Back
 filters: Filters
+validate: Validate
+# Select save
+save_songs: Save songs
+create_new_playlist: Create new playlist
+existing_playlist: Use existing playlist
+adding_to_queue: Add to queue
 
 # Base
 brand_name: Discover New Music

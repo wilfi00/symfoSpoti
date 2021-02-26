@@ -256,12 +256,19 @@ h1 {
 		transition: max-height 0.3s ease-in;
 	}
 }
+
+
 .displayLink {
 	display: flex;
 	justify-content: space-between;
 	margin-bottom: 20px;
 }
 .search-result {
+	
+	display: flex;
+    flex-wrap: wrap;
+    overflow: hidden;
+    
 	.artistBloc { margin-bottom: 40px; }
 	hr { display: none; }
 	.removeArtist { display: none; }

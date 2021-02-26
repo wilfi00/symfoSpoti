@@ -132,6 +132,9 @@ button:focus { outline: none; }
 	}
 }
 
+.banner{
+	justify-content: space-between;
+}
 .banner a{
 	&:hover, &:focus{
 		color: $color1 !important;;
@@ -199,8 +202,11 @@ h1 {
 }
 #form_artist { margin-bottom: 50px; }
 .artistSelection {
+	    display: flex;
+    flex-wrap: wrap;
 	.artistBloc {
 		cursor: inherit!important;
+		margin-bottom: 25px;
 		
 		.picto-info { display: none; }
 	}
@@ -343,7 +349,7 @@ hr {
     background: linear-gradient(90deg, rgba(255,94,98,1) 0%, rgba(255,153,102,1) 35%);
 	background: lighten($color2, 15%);
 }
-.container hr:last-child { display: none; }
+.artistSelection .artistBloc:last-child hr { display: none; }
 
 .content {
 	// display: flex;
@@ -477,7 +483,10 @@ input::placeholder, .nice-select {
 
 .select-discover, .changeLanguageSelector {
 	width: 135px;
-	display: inline-block;
+	display: flex;
+    justify-content: center;
+    flex-direction: column;
+    margin-right: 10px;
 
 	.nice-select {
 		padding-top: 10px!important;
@@ -494,10 +503,7 @@ input::placeholder, .nice-select {
 	}
 }
 
-.formLanguage{
-	width: 135px;
-	float: right;
-}
+
 
 .select-discover {
 	width: 100%;

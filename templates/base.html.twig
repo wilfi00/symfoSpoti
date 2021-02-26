@@ -39,8 +39,8 @@
       <header>
         <div class="banner d-flex flex-column-reverse flex-md-row">
           <a class="navbar-brand d-flex flex-row" href="{{ path('discover') }}"><img class="logo" src="{{ asset('build/images/logo.png') }}"/><h1>{% trans %}brand_name{% endtrans %}</h1></a>
-        <div class="changeLanguageSelector w-100">
-                  <form class="formLanguage mt-3 mr-3" action="/changeLanguage" id="changeLanguage" method="POST">
+        <div class="changeLanguageSelector">
+                  <form class="formLanguage mr-3" action="/changeLanguage" id="changeLanguage" method="POST">
                       <select name="language">
                           <option data-lang="fr" value="{{ path(route, params|merge({ _locale: 'fr' })) }}">Français</option>
                           <option data-lang="en" value="{{ path(route, params|merge({ _locale: 'en' })) }}">English</option>

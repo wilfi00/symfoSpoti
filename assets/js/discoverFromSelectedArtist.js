@@ -52,7 +52,7 @@ global.artistManager = function(config) {
 
 	function addArtistToSelection(artist)
 	{
-		artist.clone().add('<hr>').prependTo(sidebarSelection);
+		artist.clone().prependTo(sidebarSelection);
 		addEvents();
 		artist.css('pointer-events', 'none');
 		$.post(config.addArtistToSelectionUrl, JSON.stringify(artist.data().information));
@@ -60,7 +60,7 @@ global.artistManager = function(config) {
 
 	function removeArtistToSelection(artist)
 	{
-		artist.next().remove();
+	
 		artist.remove();
 		$.post(config.removeArtistToSelectionUrl, artist.data().information.id);
 	}

@@ -13,6 +13,7 @@ global.artistFollowManager = function(genres) {
 			genres, 
 			true,
 		);
+		manageSaveChoice();
 		
 		var displayLink = $('.displayAll');
 		var hideLink    = $('.hideAll');
@@ -31,5 +32,20 @@ global.artistFollowManager = function(genres) {
 		
 		// Popover artistes genres
 		addPopover('.artistBloc .picto-info');
+		
+		$('#saveAction').off('submit').on('submit', function(event) {
+			saveAction();
+		});
+		
+		function saveAction()
+		{
+			$('#saveAction').append('<input type="hidden" name="nbTracks" value="' + $('#nbTracks').val() + '">');
+			$('#saveAction').append(
+				'<input type="hidden" name="artists" value=\'' 
+				+ JSON.stringify(app.getIdActiveArtists()) 
+				+ '\'>'
+			);
+		}
 	}, 100);
 };
+

@@ -10,10 +10,11 @@ global.genreManager = function(config) {
 	setTimeout(function() {
 		var genres                   = config.genres;
 		const generateButton         = $('.generate');
-		const saveIntoPlaylistButton = $('.saveIntoPlaylist');
+		const saveIntoPlaylistButton = $('.saveAction');
 	
 		init();
 		addEvents();
+		manageSaveChoice();
 	
 		function init()
 		{
@@ -41,8 +42,8 @@ global.genreManager = function(config) {
 				generatePlaylist();
 			});
 			
-			$('#saveIntoPlaylist').off('submit').on('submit', function(event) {
-				saveIntoPlaylist(event);
+			$('#saveAction').off('submit').on('submit', function(event) {
+				saveAction(event);
 			});
 	
 			// Popover sur le bouton de génération de playlist
@@ -108,14 +109,14 @@ global.genreManager = function(config) {
 			return genres;
 		}
 	
-		function saveIntoPlaylist(event)
+		function saveAction(event)
 		{
 			var tracks = [];
 			$('.playlistResult .trackBlock').each(function() {
 				tracks.push($(this).data('id'));
 			});
 	
-			$('#saveIntoPlaylist').append('<input type="hidden" name="tracks" value=\'' + JSON.stringify(tracks) + '\'>');
+			$('#saveAction').append('<input type="hidden" name="tracks" value=\'' + JSON.stringify(tracks) + '\'>');
 		}
 	}, 100);
 };

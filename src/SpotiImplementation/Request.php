@@ -3,6 +3,7 @@
 namespace App\SpotiImplementation;
 use App\Repository\GenreRepository;
 use \App\SpotiImplementation\Auth as SpotiAuth;
+use SpotifyWebAPI\SpotifyWebAPI;
 
 class Request
 {
@@ -18,7 +19,7 @@ class Request
 
     public static function factory()
     {
-        $api = new \App\SpotifyWebAPI\SpotifyWebAPI();
+        $api = new SpotifyWebAPI();
 
         return new self($api);
     }
@@ -179,6 +180,8 @@ class Request
         foreach($multipleArraysTracks as $tracks) {
             $this->api->addPlaylistTracks($playlistId, $tracks);
         }
+        
+        return true;
     }
 
     public function getUserPlaylistsForModaleSelection()
@@ -222,7 +225,11 @@ class Request
         foreach ($artists as $artist) {
             $topTracks = $this->getTopTracksFromArtist($artist['id'], $nbTracks);
             foreach ($topTracks as $track) {
-                $tracks[$track]  = $artist['genres'];
+                if (array_key_exists('genres', $artist)) {
+                    $tracks[$track]  = $artist['genres'];    
+                } else {
+                    $tracks[$track] = '';
+                }
             }
         }
 
@@ -451,5 +458,48 @@ class Request
     protected function getLikedTracks($genresEntities)
     {
         $this->getAllLikedTracks();
+    }
+    
+    public function addTracksToQueue(array $tracks)
+    {
+        $success  = 0;
+        $failure  = 0;
+        
+        $this->setUserSession();
+        if ($this->isThereOneAvailableDevice()) {
+            foreach ($tracks as $trackUri) {
+                if ($this->api->queue($trackUri, $this->getActiveDevice())) {
+                    $success++;
+                } else {
+                    $failure++;
+                }
+            }    
+        }
+        
+        return [
+            'success'   => $success,
+            'failure'   => $failure,
+            'error_msg' => 'no_device',
+        ];
+    }
+    
+    public function isThereOneAvailableDevice()
+    {
+        return $this->getActiveDevice() !== null;
+    }
+    
+    public function getActiveDevice()
+    {
+        $this->setUserSession();
+        $deviceId = null;
+        foreach ($this->api->getMyDevices()->devices as $device) {
+            if ($device->is_active) {
+                return $device->id;
+            } else {
+                $deviceId = $device->id;
+            }
+        }
+        
+        return $deviceId;
     }
 }

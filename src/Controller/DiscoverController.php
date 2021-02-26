@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use \App\SpotiImplementation\Request as SpotiRequest;
 use \App\SpotiImplementation\Auth as SpotiAuth;
+use \App\SpotiImplementation\Save as SpotiSave;
 use App\Repository\GenreRepository;
 use \Sonata\SeoBundle\Seo\SeoPageInterface as Seo;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -35,6 +36,12 @@ class DiscoverController extends AbstractController
         foreach ($genres as &$genre) {
             $genre['active'] = true;
         }
+        
+        $playlists = [];
+        if (SpotiAuth::isUserAuthenticated($request->getSession())) {
+            $requestSpoti  = SpotiRequest::factory();
+            $playlists     = $requestSpoti->getUserPlaylistsForModaleSelection();
+        }
 
         return $this->render('pages/discover.html.twig', [
             'urlSearchGenre'      => $this->generateUrl('searchGenres'),
@@ -48,10 +55,11 @@ class DiscoverController extends AbstractController
                 ]
             ],
             'tracks'              => [],
-            'saveIntoPlaylistUrl' => $this->generateUrl('saveTracksIntoPlaylist'),
+            'saveUrl' => $this->generateUrl('save_tracks_from_genres'),
             'text'                => [
                 'feedbackError'              => $translator->trans('feedbackError'),
-            ]
+            ],
+            'playlists'           => $playlists,
         ]);
     }
     
@@ -59,8 +67,9 @@ class DiscoverController extends AbstractController
     /**
      * @Route("/searchGenres", name="searchGenres")
      */
-    public function searchGenres(Request $request, GenreManager $genreManager)
+    public function searchGenres(Request $request, GenreManager $genreManager, Seo $seo)
     {
+        $seo->addMeta('name', 'robots',  'noindex');
         $search   = json_decode($request->getContent(), true)['search'];
         $genres   = array_slice($genreManager->findAllBySearch($search), 0, 60);
         foreach ($genres as &$genre) {
@@ -209,16 +218,49 @@ class DiscoverController extends AbstractController
     }
 
     /**
+     * @Route("/saveTracksFromGenres", name="save_tracks_from_genres")
+     */
+    public function saveTracksFromGenres(Request $request)
+    {
+        // On part du principe que ça va échouer ;(
+        $success = false;
+        
+        $data = [
+            'saveOption'       => $request->request->get('saveOption'),
+            'tracks'           => json_decode($request->request->get('tracks')),
+            'playlistName'     => $request->request->get('playlistName'),
+            'existingPlaylist' => $request->request->get('existingPlaylist'),
+        ];
+
+        // Si l'utilisateur n'est pas logé sur spotify, on le fait
+        $session = $request->getSession();
+        if (!SpotiAuth::isUserAuthenticated($session)) {
+            // On sauvegarde les datas post avant la redirection pour se connecter
+            $session->set(SpotiAuth::CALLBACK_DATA, $data);
+            return $this->redirect($this->generateUrl('init'), 301);
+        }
+        // Récupération des données si on vient de se logger
+        if ($data['tracks'] === null) {
+            $data = $session->get(SpotiAuth::CALLBACK_DATA);
+        }
+        
+        $spotiSave = new SpotiSave(
+            $data['saveOption'],
+            $data['tracks'],
+            $data['playlistName'],
+            $data['existingPlaylist'],
+        );
+        $success = $spotiSave->save();
+
+        return $this->redirect($this->generateUrl('discover', ['success' => $success]));
+    }
+
+    /**
      * @Route("/setPopularityGenres", name="setPopularityGenres")
      */
     public function setPopularityGenres(GenreRepository $genreRepository)
     {
-        $api = new \App\SpotifyWebAPI\SpotifyWebAPI();
-        $api->setSession(SpotiAuth::getApiSession());
-        $api->setOptions([
-            'auto_refresh' => true,
-        ]);
-        $request = new SpotiRequest($api);
+        $request = SpotiRequest::factory();
         $request->setGenreRespository($genreRepository);
         $genres  = $genreRepository->findAll();
 
@@ -228,44 +270,5 @@ $genres = array_slice($genres, 696, 1000);
             $request->getRandomArtistsFromGenre($genre, 50);
             sleep(30);
         }
-    }
-
-    /**
-     * @Route("/saveTracksIntoPlaylist", name="saveTracksIntoPlaylist")
-     */
-    public function saveTracksIntoPlaylist(Request $request)
-    {
-        // On part du principe que ça va échouer ;(
-        $success = false;
-
-        // Si l'utilisateur n'est pas logé sur spotify, on le fait
-        $session = $request->getSession();
-        if (!SpotiAuth::isUserAuthenticated($session)) {
-            // On sauvegarde les datas post avant la redirection pour se connecter
-            $session->set(SpotiAuth::CALLBACK_DATA, [
-                'playlistName' => $request->request->get('playlistName'),
-                'tracks'       => json_decode($request->request->get('tracks'))
-            ]);
-            return $this->redirect($this->generateUrl('init'), 301);
-        }
-
-        $playlistName = $request->request->get('playlistName');
-        $tracks       = json_decode($request->request->get('tracks'));
-
-        if ($playlistName === null && $tracks === null) {
-            $data         = $session->get(SpotiAuth::CALLBACK_DATA);
-            $playlistName = $data['playlistName'];
-            $tracks       = $data['tracks'];
-        }
-
-        if (!empty($playlistName) && !empty($tracks)) {
-            $request  = SpotiRequest::factory();
-            $playlist = $request->createNewPlaylist($playlistName);
-            $request->addTracksToPlaylist($tracks, $playlist->id);
-            // Succès de l'opération, feedback vert \o/
-            $success = true;
-        }
-
-        return $this->redirect($this->generateUrl('discover', ['success' => $success]));
     }
 }

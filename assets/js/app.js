@@ -186,6 +186,27 @@ global.addPopover = function(selector) {
 	});
 };
 
+global.manageSaveChoice = function() {
+	let playlistName   = $('input[name="playlistName"]');
+	let playlistChoice = $('.nice-select.existingPlaylist');
+	
+	$('select[name="saveOption"]').change(function() {
+		if ($(this).val() === 'createNewPlaylist'){
+			playlistName.show();
+			playlistChoice.hide();
+			playlistName.prop('required', true);
+		} else if ($(this).val() === 'existingPlaylist') {
+			playlistName.hide();
+			playlistChoice.show();
+			playlistName.prop('required', false);
+		} else {
+			playlistName.hide();
+			playlistChoice.hide();
+			playlistName.prop('required', false);
+		}
+	});
+};
+
 $( document ).ready(function() {
 	// Fonction scroll top
 	$('#link').click(function(e){
@@ -195,3 +216,10 @@ $( document ).ready(function() {
 		});
 	});
 });
+
+global.array_column = function(array, columnName) 
+{
+    return array.map(function(value,index) {
+        return value[columnName];
+    })
+}

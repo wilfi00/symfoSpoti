@@ -70,9 +70,7 @@ $text-color: #fff;
 label {
 	display: unset;
 }
-.custom-control.custom-checkbox > * {
-	cursor: pointer;
-}
+.custom-control.custom-checkbox > * { cursor: pointer; }
 
 [v-cloak] { display: none; }
 
@@ -414,8 +412,11 @@ input::placeholder, .nice-select {
 	padding: 10px;
 	text-align: center;
 
+	.saveOption { margin: 20px 0; }
+	.existingPlaylist { display: none; }
+
 	.playlistName { width: 100%; height: 50px; }
-	.saveIntoPlaylist {
+	.saveAction {
 		height: 50px;
 		margin-top: 20px;
 		img {
@@ -470,6 +471,8 @@ input::placeholder, .nice-select {
 .container {
 	position: relative;
 }
+
+#app { margin-top: 30px };
 
 // .btn  {
 // 	background: $color1;  /* fallback for old browsers */

@@ -2,9 +2,9 @@
 
 namespace App\SpotiImplementation;
 
-use \App\SpotifyWebAPI\Session as SpotiSession;
 use Symfony\Component\HttpFoundation\Session\Session;
 use \App\SpotiImplementation\Request as SpotiRequest;
+use SpotifyWebAPI\Session as SpotiSession;
 
 class Auth
 {
@@ -39,9 +39,9 @@ class Auth
             'scope' => [
                 'playlist-modify-public',
                 'playlist-modify-private',
-                'user-top-read',
                 'user-follow-read',
-                'user-library-read',
+                'user-modify-playback-state', // pour ajouter dans la queue
+                'user-read-playback-state', // pour avoir la liste des devices dispo
             ],
         ];
 
@@ -169,6 +169,6 @@ class Auth
 
     protected static function isSessionExpired($session)
     {
-        return $session->getTokenExpiration() <= time();
+        //return $session->getTokenExpiration() <= time();
     }
 }

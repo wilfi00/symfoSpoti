@@ -165,8 +165,14 @@ $( document ).ready(function() {
           }
         });
       },
+      getActiveArtists: function() {
+        return this.vueArtists.filter(artist => artist.active);
+      },
+      getIdActiveArtists: function() {
+        return array_column(this.getActiveArtists(), 'id');
+      },
       getNbActiveArtists: function() {
-        return this.vueArtists.filter(artist => artist.active).length;
+        return this.getActiveArtists().length;
       },
       getActiveGenres: function() {
         return this.vueGenres.filter(genre => genre.active);

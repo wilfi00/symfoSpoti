@@ -5,6 +5,18 @@
  * (and its CSS file) in your base layout (base.html.twig).
  */
 
+function escapeHtml(text) {
+  var map = {
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#039;'
+  };
+  
+  return text.replace(/[&<>"']/g, function(m) { return map[m]; });
+}
+
 // Artistes follow
 global.artistFollowManager = function(genres) {
 	setTimeout(function() {
@@ -13,6 +25,7 @@ global.artistFollowManager = function(genres) {
 			genres, 
 			true,
 		);
+		manageSaveChoice();
 		
 		var displayLink = $('.displayAll');
 		var hideLink    = $('.hideAll');
@@ -31,5 +44,20 @@ global.artistFollowManager = function(genres) {
 		
 		// Popover artistes genres
 		addPopover('.artistBloc .picto-info');
+		
+		$('#saveAction').off('submit').on('submit', function(event) {
+			saveAction();
+		});
+		
+		function saveAction()
+		{
+			$('#saveAction').append('<input type="hidden" name="nbTracks" value="' + $('#nbTracks').val() + '">');
+			$('#saveAction').append(
+				'<input type="hidden" name="artists" value=\'' 
+				+ JSON.stringify(app.getIdActiveArtists()) 
+				+ '\'>'
+			);
+		}
 	}, 100);
 };
+

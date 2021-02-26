@@ -4,6 +4,12 @@ save: Enregistrer
 reset: Réinitialiser
 back: Retour
 filters: Filtres
+validate: Valider
+# Select save
+save_songs: Enregistrer les chansons
+create_new_playlist: Créer une nouvelle playlist
+existing_playlist: Utiliser une playlist existante
+adding_to_queue: Ajouter à la file d'attente
 
 # Base
 brand_name: Génère une playlist
@@ -20,7 +26,6 @@ discover_songs: chansons
 discover_generate: Générer
 discover_generateToolTip: Ajoute d'abord des genres pour générer ta playlist
 discover_playlistName: Nom de la playlist
-discover_playlistSave: Enregistrer dans la playlist
 discover_playlistSaveToolTip: Commence par générer ta playlist personnalisée
 discover_playlistSaveSucessFeedback: La playlist a bien été enregistrée
 discover_helpGenres: Si tu n'as pas d'inspiration pour les genres de musiques à écouter, tu peux t'aider de ces deux pages à l'aide des bulles d'infos

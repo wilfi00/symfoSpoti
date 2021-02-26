@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "525d3b7268882bec22c2a5fbe6c4a992",
+    "content-hash": "06722dd40835359df94d22af986d22e0",
     "packages": [
         {
             "name": "composer/package-versions-deprecated",
@@ -1203,6 +1203,7 @@
                 "reflection",
                 "static"
             ],
+            "abandoned": "roave/better-reflection",
             "time": "2020-03-27T11:06:43+00:00"
         },
         {
@@ -1315,25 +1316,25 @@
         },
         {
             "name": "jwilsson/spotify-web-api-php",
-            "version": "3.3.0",
+            "version": "4.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jwilsson/spotify-web-api-php.git",
-                "reference": "e96ed2724495c356af7a416f9ee898463fba4f58"
+                "reference": "aba1fbd0bb92072a37f50051cf2cd849196c07f8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jwilsson/spotify-web-api-php/zipball/e96ed2724495c356af7a416f9ee898463fba4f58",
-                "reference": "e96ed2724495c356af7a416f9ee898463fba4f58",
+                "url": "https://api.github.com/repos/jwilsson/spotify-web-api-php/zipball/aba1fbd0bb92072a37f50051cf2cd849196c07f8",
+                "reference": "aba1fbd0bb92072a37f50051cf2cd849196c07f8",
                 "shasum": ""
             },
             "require": {
                 "ext-curl": "*",
-                "php": "^7.0"
+                "php": "^7.2 || ^8.0"
             },
             "require-dev": {
                 "php-coveralls/php-coveralls": "^2.0",
-                "phpunit/phpunit": "^6.0",
+                "phpunit/phpunit": "^8.5",
                 "squizlabs/php_codesniffer": "^3.0"
             },
             "type": "library",
@@ -1357,7 +1358,7 @@
             "keywords": [
                 "spotify"
             ],
-            "time": "2020-03-28T10:53:19+00:00"
+            "time": "2020-12-11T16:09:30+00:00"
         },
         {
             "name": "monolog/monolog",

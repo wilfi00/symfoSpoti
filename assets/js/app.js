@@ -187,11 +187,21 @@ global.addPopover = function(selector) {
 };
 
 $( document ).ready(function() {
-	// Fonction scroll top
-	$('#link').click(function(e){
+	//fonction scroll top
+	$('#link-top').click(function() {
 		window.scrollTo({
-		  top: 0,
-		  behavior: 'smooth'
+			top: 0,
+			behavior: 'smooth'
 		});
+	});
+
+	//fonction apparition du bouton scroll top
+	let heightScreen = screen.availHeight;
+	$(window).scroll(function() {
+		if (heightScreen < window.scrollY) {
+			$("#link-top svg").css("display", "block");
+		} else {
+			$("#link-top svg").css("display", "none");
+		}
 	});
 });

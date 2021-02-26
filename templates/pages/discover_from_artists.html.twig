@@ -1,12 +1,12 @@
 {% extends "base.html.twig" %}
 {% block title %}
-<h1>{% trans %}discover_fa_h1{% endtrans %}</h1>
+<h2>{% trans %}discover_fa_h1{% endtrans %}</h2>
 {% endblock %}
 
 {% block content %}
     <p>{% trans %}discover_fa_p1{% endtrans %}</p>
     <div class="row">
-	    <div class="col-8">
+	    <div class="col-lg-8">
 		    {{ form(form) }}
 			<div id="loader"></div>
 			<div class="search-result animate-bottom">
@@ -15,7 +15,7 @@
 		        )) }}
 			</div>
 		</div>
-		<div class="col-4">
+		<div class="col-lg-4">
 			<button type="button" class="btn btn-primary saveFromArtists" data-toggle="modal" data-target="#modalePlaylists">{% trans %}save{% endtrans %}</button>
 			<button class="btn btn-secondary removeAll">{% trans %}reset{% endtrans %}</button>
 			<div class="artistSelection">{{ render(controller(

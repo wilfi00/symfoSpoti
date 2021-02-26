@@ -6,7 +6,7 @@ back: Retour
 filters: Filtres
 
 # Base
-brand_name: Génère une playlist
+brand_name: Discover New Music
 from_genre: A partir des genres
 from_selected_artists: A partir d'une sélection d'artistes
 from_followed_artists: A partir de tes artistes suivis

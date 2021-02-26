@@ -132,6 +132,22 @@ button:focus { outline: none; }
 	}
 }
 
+.banner a{
+	&:hover, &:focus{
+		color: $color1 !important;;
+	}
+}
+
+.navbar-brand{
+	align-items:center;
+}
+
+.logo{
+	height: 50px;
+	margin: 10px;
+	
+}
+
 .navbar {
 	padding: 0!important;
 	background-color: $color2!important;
@@ -159,7 +175,17 @@ button:focus { outline: none; }
 }
 
 h1 {
-	margin: 30px 0 30px 0;
+	margin: 10px 0;
+	white-space: normal;
+    font-size: 2rem;
+}
+
+@media screen and (min-width: 992px) {
+  h1 {
+	margin: 10px 0;
+	white-space: nowrap;
+    font-size: 2.5rem;
+	}
 }
 
 // Discover from artists
@@ -230,12 +256,19 @@ h1 {
 		transition: max-height 0.3s ease-in;
 	}
 }
+
+
 .displayLink {
 	display: flex;
 	justify-content: space-between;
 	margin-bottom: 20px;
 }
 .search-result {
+	
+	display: flex;
+    flex-wrap: wrap;
+    overflow: hidden;
+    
 	.artistBloc { margin-bottom: 40px; }
 	hr { display: none; }
 	.removeArtist { display: none; }
@@ -407,8 +440,12 @@ input::placeholder, .nice-select {
 	}
 }
 
+.groupeSave{
+	display: flex;
+}
 .playlistResult { margin-top: 20px; }
 .save {
+	position:relative;
 	border: 1px solid $color2;
 	margin-top: 20px;
 	padding: 10px;
@@ -453,6 +490,12 @@ input::placeholder, .nice-select {
 		}
 	}
 }
+
+.formLanguage{
+	width: 135px;
+	float: right;
+}
+
 .select-discover {
 	width: 100%;
 }
@@ -503,8 +546,22 @@ body {
 
 // Page artiste follow
 .artists_followed {
+	.containerLoader{
+		width:25%;
+	}
+	.containerSave{
+		width:75%;
+	}
 	#loader {
-		top: 12%!important;
+		position:relative;
+		float: right;
+		margin : 20px 20px 0 0 ;
+		width: 40px;
+    	height: 40px;
+    	left: 0;
+    	top: 0;
+    	border: 10px solid #888;
+		border-top: 10px solid $color1;
 	}
 	.nb-followed-container .important { margin-right: 4px; }
 }
@@ -519,12 +576,13 @@ body {
     opacity: 0.3;
 }
 
-a#link svg {
+a#link-top svg {
     height: 40px;
     width: 40px;
     position:fixed;
     bottom: 40px;
     right: 40px;
+	display : none;
 }
 
 .genre-info-container {

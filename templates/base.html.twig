@@ -13,6 +13,9 @@
         {{ sonata_seo_title() }}
         {{ sonata_seo_metadatas() }}
         
+        <link rel="icon" href="{{ asset('build/images/favicon.ico') }}" />
+        <link rel="icon" type="image/png" href="{{ asset('build/images/favicon.png') }}" />
+        
         {% for locale in locales %}
           {% if locale != app.request.locale %}
             <link rel="alternate" hreflang="{{ locale}} " href="{{ path(route, params|merge({ _locale: locale })) }}" />
@@ -33,8 +36,20 @@
         {% endif %}
     </head>
     <body class="{{app.request.attributes.get('_route')}}">
+      <header>
+        <div class="banner d-flex flex-column-reverse flex-md-row">
+          <a class="navbar-brand d-flex flex-row" href="{{ path('discover') }}"><img class="logo" src="{{ asset('build/images/logo.png') }}"/><h1>{% trans %}brand_name{% endtrans %}</h1></a>
+        <div class="changeLanguageSelector w-100">
+                  <form class="formLanguage mt-3 mr-3" action="/changeLanguage" id="changeLanguage" method="POST">
+                      <select name="language">
+                          <option data-lang="fr" value="{{ path(route, params|merge({ _locale: 'fr' })) }}">Français</option>
+                          <option data-lang="en" value="{{ path(route, params|merge({ _locale: 'en' })) }}">English</option>
+                      </select>
+                  </form>
+              </div>
+        </div>
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
-          <a class="navbar-brand" href="{{ path('discover') }}">{% trans %}brand_name{% endtrans %} :</a>
+         <span class="nav-link">Génère une playlist : </span>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
@@ -53,26 +68,20 @@
             </ul>
           </div>
         </nav>
+      </header>
+        
         {% block sidebarLeft %}
         {% endblock %}
         <div class="container mb-0 mb-sm-5">
-            <div class="header flex-column-reverse flex-md-row mt-2 mt-md-0">
+            <div class="header mt-2 ">
               {% block title %}
               {% endblock %}
-              <div class="changeLanguageSelector">
-                  <form action="/changeLanguage" id="changeLanguage" method="POST">
-                      <select name="language">
-                          <option data-lang="fr" value="{{ path(route, params|merge({ _locale: 'fr' })) }}">Français</option>
-                          <option data-lang="en" value="{{ path(route, params|merge({ _locale: 'en' })) }}">English</option>
-                      </select>
-                  </form>
-              </div>
-            </div>
+           </div>
             {% block content %}
             {% endblock %}
         </div>
         <footer>
-          <a id="link"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-up-circle-fill" viewBox="0 0 16 16">
+          <a id="link-top"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-up-circle-fill" viewBox="0 0 16 16">
   <path fill-rule="evenodd" d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-7.5 3.5a.5.5 0 0 1-1 0V5.707L5.354 7.854a.5.5 0 1 1-.708-.708l3-3a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 5.707V11.5z"/>
 </svg></a>
             {{ encore_entry_script_tags('app') }}

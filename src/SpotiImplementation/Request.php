@@ -323,6 +323,7 @@ class Request
                 'limit'  => $maxLimit,
                 'after'  => $lastArtistId,
             ])->artists;
+            dump($tmpArtistsRequest);
             $currentArtists = $tmpArtistsRequest->items;
 
             // Stocke des infos
@@ -330,7 +331,7 @@ class Request
             $lastArtistId = $tmpArtistsRequest->cursors->after;
     
             $offset += $maxLimit;
-        } while($security < 100 && (sizeof($currentArtists) > $maxLimit));
+        } while($security < 100 && $tmpArtistsRequest->total > sizeof($artists));
 
         return $artists;
     }

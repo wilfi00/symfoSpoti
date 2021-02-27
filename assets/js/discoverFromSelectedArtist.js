@@ -7,6 +7,7 @@ global.artistManager = function(config) {
 	{
 		addEvents();
 		manageSaveChoice();
+		updateNbArtists();
 		manageFeedback(config.success, config.text.playlistSaveSucessFeedback, config.text.feedbackError);
 	}
 
@@ -16,7 +17,6 @@ global.artistManager = function(config) {
 		$('.search-result .artistBloc').each(function() {
 			$(this).off('click').on('click', function() {
 				addArtistToSelection($(this));
-				$('.saveAction').prop('disabled', false);
 			});
 		});
 
@@ -24,16 +24,12 @@ global.artistManager = function(config) {
 		$('.artistSelection .removeArtist').each(function() {
 			$(this).off('click').on('click', function() {
 				removeArtistToSelection($(this).parent());
-				if ($('.artistSelection .artistBloc').length === 0) {
-					$('.saveAction').prop('disabled', true);
-				}
 			});
 		});
 
 		// Supprime toute la sélection
 		$('.removeAll').off('click').on('click', function() {
 			removeAllSelection();
-			$('.saveAction').prop('disabled', true);
 		});
 		
 		// Popover artistes genres
@@ -50,6 +46,9 @@ global.artistManager = function(config) {
 		addEvents();
 		artist.css('pointer-events', 'none');
 		$.post(config.addArtistToSelectionUrl, JSON.stringify(artist.data().information));
+		
+		$('.saveAction').prop('disabled', false);
+		updateNbArtists();
 	}
 
 	function removeArtistToSelection(artist)
@@ -57,6 +56,11 @@ global.artistManager = function(config) {
 	
 		artist.remove();
 		$.post(config.removeArtistToSelectionUrl, artist.data().information.id);
+		
+		if (getNbArtists() === 0) {
+			$('.saveAction').prop('disabled', true);
+		}
+		updateNbArtists();
 	}
 
 	function removeAllSelection()
@@ -65,6 +69,9 @@ global.artistManager = function(config) {
 		$('.artistSelection .artistBloc').each(function() {
 			$(this).remove();
 		});
+		
+		$('.saveAction').prop('disabled', true);
+		updateNbArtists();
 	}
 
 	$('#search-form').submit(function(event) {
@@ -109,5 +116,15 @@ global.artistManager = function(config) {
 	function saveAction()
 	{
 		$('#saveAction').append('<input type="hidden" name="nbTracks" value="' + $('#nbTracks').val() + '">');
+	}
+	
+	function getNbArtists()
+	{
+		return $('.artistSelection .artistBloc').length;
+	}
+	
+	function updateNbArtists()
+	{
+		$('.nb-artists-container .important').html(getNbArtists());
 	}
 };

@@ -24,7 +24,6 @@ class Save
         $this->tracks = $tracks;
         $this->playlistName = $playlistName;
         $this->playlistId = $playlistId;
-        
         $this->spotiRequest  = SpotiRequest::factory();
     }
     

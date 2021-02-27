@@ -110,6 +110,6 @@
 		var vueGenres      = {{ genres|json_encode|raw }};
 		var genres         = {{ genres|json_encode|raw }};
 		var text           = {{ text|json_encode|raw }};
-		artistFollowManager(genres);
+		artistFollowManager(genres, {{ success|json_encode|raw }}, {{ text|json_encode|raw }});
     </script>
 {% endblock %}

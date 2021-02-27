@@ -65,6 +65,7 @@ class DiscoverFromFollowedArtistsController extends AbstractController
             'saveUrl'    => $this->generateUrl('save_tracks_from_followed'),
             'playlists'  => $playlists,
             'url'        => $this->generateUrl('save_tracks_from_followed2'),
+            'success'    => $request->query->get('success'),
             'text'                => [
                 'playlistSaveSucessFeedback' => $translator->trans('discover_playlistSaveSucessFeedback'),
                 'feedbackError'              => $translator->trans('feedbackError'),

@@ -6,7 +6,7 @@
  */
 
 // Artistes follow
-global.artistFollowManager = function(genres) {
+global.artistFollowManager = function(genres, success, text) {
 	setTimeout(function() {
 		// Search genres
 		searchGenres(
@@ -14,6 +14,7 @@ global.artistFollowManager = function(genres) {
 			true,
 		);
 		manageSaveChoice();
+		manageFeedback(success, text.playlistSaveSucessFeedback, text.feedbackError);
 		
 		var displayLink = $('.displayAll');
 		var hideLink    = $('.hideAll');

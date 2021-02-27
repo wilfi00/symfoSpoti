@@ -59,6 +59,19 @@ function showFeedback(msg, classname, size = 220)
 	}, 3000);
 }
 
+global.manageFeedback = function(success, msgSuccess, msgError)
+{
+	if (success === '1') {
+		feedbackSuccess(msgSuccess);
+		// Nettoyage de l'url
+		window.history.replaceState({}, document.title, location.protocol + "//" + location.host + location.pathname);
+	} else if (success === '0') {
+		feedbackError(msgError);
+		// Nettoyage de l'url
+		window.history.replaceState({}, document.title, location.protocol + "//" + location.host + location.pathname);
+	}
+}
+
 Array.prototype.unique = function() {
     var a = this.concat();
     for(var i=0; i<a.length; ++i) {

@@ -17,36 +17,7 @@ class Display extends AbstractController
            'artists' => $artists,
        ]);
     }
-
-    /**
-     * @Route("/displayPlaylists", name="displayPlaylists")
-     */
-    public function displayPlaylists(Request $request)
-    {
-        $session = $request->getSession();
-
-        if (!SpotiAuth::isUserAuthenticated($session)) {
-            return $this->redirectToRoute('init');
-        }
-
-        $form = $this->createForm(PlaylistSelection::class);
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $data = $form->getData();
-
-            $requestSpoti = SpotiRequest::factory();
-            $requestSpoti->addTopTracksToPlaylist($data);
-
-            SpotiTools::emptyArtistSelectionInSession();
-
-            return $this->redirectToRoute('artist_selection', ['success' => 1]);
-        }
-
-        return $this->render('spotiTemplates/_modale_playlists.html.twig', [
-            'formPlaylistSelection' => $form->createView()
-        ]);
-    }
-
+    
     /**
      * @Route("/displayTracks", name="displayTracks")
      *

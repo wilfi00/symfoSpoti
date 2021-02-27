@@ -1,10 +1,3 @@
-/*
- * Welcome to your app's main JavaScript file!
- *
- * We recommend including the built version of this JavaScript file
- * (and its CSS file) in your base layout (base.html.twig).
- */
-
 // Selection artists
 global.artistManager = function(config) {
 	var sidebarSelection = $('.artistSelection');
@@ -13,16 +6,8 @@ global.artistManager = function(config) {
 	function init()
 	{
 		addEvents();
-
-		if (config.success === '1') {
-			feedbackSuccess(config.text.playlistSaveSucessFeedback);
-			// Nettoyage de l'url
-			window.history.replaceState({}, document.title, location.protocol + "//" + location.host + location.pathname);
-		} else if (config.success === '0') {
-			feedbackError(config.text.feedbackError);
-			// Nettoyage de l'url
-			window.history.replaceState({}, document.title, location.protocol + "//" + location.host + location.pathname);
-		}
+		manageSaveChoice();
+		manageFeedback(config.success, config.text.playlistSaveSucessFeedback, config.text.feedbackError);
 	}
 
 	function addEvents()
@@ -31,6 +16,7 @@ global.artistManager = function(config) {
 		$('.search-result .artistBloc').each(function() {
 			$(this).off('click').on('click', function() {
 				addArtistToSelection($(this));
+				$('.saveAction').prop('disabled', false);
 			});
 		});
 
@@ -38,16 +24,24 @@ global.artistManager = function(config) {
 		$('.artistSelection .removeArtist').each(function() {
 			$(this).off('click').on('click', function() {
 				removeArtistToSelection($(this).parent());
+				if ($('.artistSelection .artistBloc').length === 0) {
+					$('.saveAction').prop('disabled', true);
+				}
 			});
 		});
 
 		// Supprime toute la sélection
 		$('.removeAll').off('click').on('click', function() {
 			removeAllSelection();
+			$('.saveAction').prop('disabled', true);
 		});
 		
 		// Popover artistes genres
 		addPopover('.artistBloc .picto-info');
+		
+		$('#saveAction').off('submit').on('submit', function(event) {
+			saveAction();
+		});
 	}
 
 	function addArtistToSelection(artist)
@@ -111,4 +105,9 @@ global.artistManager = function(config) {
 			clearTimeout(typingTimer);
 	    });
 	});
+	
+	function saveAction()
+	{
+		$('#saveAction').append('<input type="hidden" name="nbTracks" value="' + $('#nbTracks').val() + '">');
+	}
 };

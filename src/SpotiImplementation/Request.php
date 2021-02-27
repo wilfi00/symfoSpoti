@@ -323,7 +323,6 @@ class Request
                 'limit'  => $maxLimit,
                 'after'  => $lastArtistId,
             ])->artists;
-            dump($tmpArtistsRequest);
             $currentArtists = $tmpArtistsRequest->items;
 
             // Stocke des infos

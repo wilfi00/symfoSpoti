@@ -24,7 +24,7 @@ class GenreManager extends AbstractManager
     public function findAllBySearch(string $search)
     {
         
-        $this->search = trim($search);
+        $this->search = strtolower(trim($search));
         $resultGenres = [];
         $genres = $this->findAllInArray();
       

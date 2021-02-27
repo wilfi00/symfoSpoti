@@ -116,21 +116,23 @@ global.searchGenres = function(genres, searchGenreUsingJs = false) {
 			if (searchGenreUsingJs) {
 				clearTimeout(typingTimer);
 				typingTimer = setTimeout(function() {
-					var genres0 = genres.filter(genre => genre.name == input.val());
+					textSearch = input.val().trim().toLowerCase();
+					
+					var genres0 = genres.filter(genre => genre.name == textSearch);
 					
 					// Recherche exact (uk metalcore matchera uk metalcore)
 					var regex = '';
-					regex +=  '\\b(\\w*' +  $.trim(input.val()) + '\\w*)\\b';
+					regex +=  '\\b(\\w*' +  textSearch + '\\w*)\\b';
 					var genres1 = genres.filter(genre => genre.name.search(regex) >= 0);
 		
 					// Recherche inversée exact (exemple, uk metalcore matchera metalcore uk)
 					var regex = '';
-					regex +=  '\\b(\\w*' +  $.trim(input.val().split(' ').reverse().join(' ')) + '\\w*)\\b';
+					regex +=  '\\b(\\w*' +  $.trim(textSearch.split(' ').reverse().join(' ')) + '\\w*)\\b';
 					var genres2 = genres.filter(genre => genre.name.search(regex) >= 0);
 		
 					// Recherche très générale en mode OU (uk metalcore renverra tous les uk et tous les metalcore)
 					var regex = '';
-					input.val().split(' ').forEach(function(value) {
+					textSearch.split(' ').forEach(function(value) {
 					   regex += '\\b(\\w*' + value + '\\w*)\\b|';
 					});
 					// Supression du dernier caractère de la chaine pour enlever le ou |

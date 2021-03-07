@@ -19,7 +19,7 @@ class Request
 
     public static function factory()
     {
-        $api = new SpotifyWebAPI();
+        $api = new SpotifyWebAPI(['auto_retry' => true, 'auto_refresh' => true]);
 
         return new self($api);
     }

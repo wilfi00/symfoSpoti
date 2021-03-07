@@ -31,7 +31,7 @@
         "symfony/validator": "5.1.*",
         "symfony/web-link": "5.1.*",
         "symfony/webpack-encore-bundle": "^1.7",
-        "symfony/yaml": "5.1.*"
+        "symfony/yaml": "5.2.*"
     },
     "require-dev": {
         "symfony/debug-pack": "*",

@@ -54,7 +54,6 @@ class Auth
         }
 
         $previousUrl = $session->remove(static::CALLBACK_URL);
-        dump($previousUrl);
         if (!empty($previousUrl)) {
             return $previousUrl;
         } else {

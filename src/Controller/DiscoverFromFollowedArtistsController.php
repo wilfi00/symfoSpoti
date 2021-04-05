@@ -27,7 +27,7 @@ class DiscoverFromFollowedArtistsController extends AbstractController
         $session = $request->getSession();
 
         if (!$security->isGranted('ROLE_SPOTIFY')) {
-           return $this->redirectToRoute('spoti_auth', ['callback_url' => $request->getUri()]);
+           return $this->redirectToRoute('spoti_auth');
         }
         
         $artists      = $spotiRequest->getAllFollowedArtists();

@@ -1,0 +1,17 @@
+knpu_oauth2_client:
+    clients:
+        # configure your clients as described here: https://github.com/knpuniversity/oauth2-client-bundle#configuration
+        # will create service: "knpu.oauth2.client.spotify"
+        # an instance of: KnpU\OAuth2ClientBundle\Client\Provider\SpotifyClient
+        # composer require kerox/oauth2-spotify
+        spotify:
+            # must be "spotify" - it activates that type!
+            type: spotify
+            # add and set these environment variables in your .env files
+            client_id: '%env(SPOTIFY_CLIENT_ID)%'
+            client_secret: '%env(SPOTIFY_API_SECRET)%'
+            # a route name you'll create
+            redirect_route: spoti_callback
+            redirect_params: {}
+            # whether to check OAuth2 "state": defaults to true
+            # use_state: true

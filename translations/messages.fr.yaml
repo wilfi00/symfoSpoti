@@ -5,6 +5,8 @@ reset: Réinitialiser
 back: Retour
 filters: Filtres
 validate: Valider
+login: Se connecter avec Spotify
+logout: Se déconnecter
 # Select save
 save_songs: Enregistrer les chansons
 create_new_playlist: Créer une nouvelle playlist

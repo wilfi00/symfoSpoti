@@ -29,6 +29,7 @@ class GenreRepository extends ServiceEntityRepository
 
     public function updateProgressOfPopularityGenres($currentGenre, $try)
     {
+        return;
         $conn = $this->getEntityManager()->getConnection();
         $sql = 'INSERT INTO progress_popularity_genres (genre, try) VALUES ("' . $currentGenre . '", "' . $try . '")';
         $conn->query($sql);

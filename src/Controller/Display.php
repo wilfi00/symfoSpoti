@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use App\Form\Type\PlaylistSelection;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use \App\SpotiImplementation\Request as SpotiRequest;
@@ -23,7 +22,7 @@ class Display extends AbstractController
      *
      * @deprecated
      */
-    public function displayTracks()
+    public function displayTracks(SpotiRequest $spotiRequest)
     {
         $tracks   = [];
         $tracksId = [
@@ -33,8 +32,7 @@ class Display extends AbstractController
             '0KkcPbenGqMINYgcKYXZyJ',
             '3Iowon86yo3Gm1Lj1fouIG',
         ];
-        $requestSpoti = \App\SpotiImplementation\Request::factory();
-        $spotiTracks  = $requestSpoti->getTracks($tracksId);
+        $spotiTracks  = $spotiRequest->getTracks($tracksId);
 
         foreach ($spotiTracks as $spotiTrack) {
             $tmpImg      = '';

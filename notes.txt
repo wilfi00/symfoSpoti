@@ -152,3 +152,22 @@ et appeler appVue pour follow
 yarn add select2
 yarn add select2-bootstrap-theme
 require('select2')
+
+
+TODO 
+
+Quand on est pas connecté :
+1- toute la partie sauvegarde est grisée
+2- on a le bouton se connecter avec spotify qui s'affiche
+3- on sauvegarde les données en session :
+    a- la playlist générée
+    b- les artistes sélectionnés (déjà fait :) )
+    
+Quand on est connecté :
+1- En haut à droite on a plus le bouton de connexion mais on a son nom + photo (Johan Martin Girafe)
+2- en cliquand sur le nom on a un dropdown avec "Se déconnecter"
+
+Quand on clique sur à partir de tes artistes suivis :
+1- on a une page qui explique la connexion avec en plein milieu le bouton de connexion
+2- si on est déjà connecté -> redirection vers la page artiste suivis
+3- si on est pas connecté -> redirection vers la page explicative 1-

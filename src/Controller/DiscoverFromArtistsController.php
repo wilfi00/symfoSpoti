@@ -16,6 +16,8 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Psr\Log\LoggerInterface;
 use App\Services\InfoFormatter;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Component\Security\Core\Security;
 
 class DiscoverFromArtistsController extends AbstractController
 {
@@ -48,14 +50,10 @@ class DiscoverFromArtistsController extends AbstractController
     /**
      * @Route("/artistsSelection", name="artist_selection")
      */
-    public function artistSelection(Request $request, TranslatorInterface $translator, LoggerInterface $logger)
+    public function artistSelection(Request $request, TranslatorInterface $translator, LoggerInterface $logger, SpotiRequest $spotiRequest, Security $security)
     {
         $logger->info(InfoFormatter::KEYWORD . 'petit message de log', ['test' => 'value']);
         $session = $request->getSession();
-
-        if (!SpotiAuth::isUserAuthenticated($session)) {
-            return $this->redirectToRoute('init');
-        }
 
         $artists = [];
 
@@ -69,8 +67,7 @@ class DiscoverFromArtistsController extends AbstractController
             $data       = $form->getData();
             $artistName = $data['artist'];
 
-            $requestSpoti = SpotiRequest::factory();
-            $answer       = $requestSpoti->searchForArtist($artistName);
+            $answer = $spotiRequest->searchForArtist($artistName);
 
             foreach ($answer as $artist) {
                 $tmpImg = '';
@@ -93,9 +90,8 @@ class DiscoverFromArtistsController extends AbstractController
         }
 
         $playlists = [];
-        if (SpotiAuth::isUserAuthenticated($request->getSession())) {
-            $requestSpoti  = SpotiRequest::factory();
-            $playlists     = $requestSpoti->getUserPlaylistsForModaleSelection();
+        if ($security->isGranted('ROLE_SPOTIFY')) {
+            $playlists     = $spotiRequest->getUserPlaylistsForModaleSelection();
         }
 
         return $this->render('pages/discover_from_artists.html.twig', [
@@ -150,7 +146,7 @@ class DiscoverFromArtistsController extends AbstractController
     /**
      * @Route("/saveTracksFromArtists", name="save_tracks_from_artists")
      */
-    public function saveTracksFromArtists(Request $request, Session $session)
+    public function saveTracksFromArtists(Request $request, Session $session, SpotiRequest $spotiRequest)
     {
         // On part du principe que ça va échouer ;(
         $success = false;
@@ -173,7 +169,7 @@ class DiscoverFromArtistsController extends AbstractController
         if (!SpotiAuth::isUserAuthenticated($session)) {
             // On sauvegarde les datas post avant la redirection pour se connecter
             $session->set(SpotiAuth::CALLBACK_DATA, $data);
-            return $this->redirect($this->generateUrl('init'), 301);
+            return $this->redirect($this->generateUrl('spoti_auth'), 301);
         }
         // Récupération des données si on vient de se logger
         if ($data['saveOption'] === null) {
@@ -186,8 +182,7 @@ class DiscoverFromArtistsController extends AbstractController
             ];
         }
         
-        $request       = SpotiRequest::factory();
-        $tracksRequest = $request->getTopsTracksFromArtists(
+        $tracksRequest = $spotiRequest->getTopsTracksFromArtists(
             $data['artists'], 
             $data['nbTracks']
         );

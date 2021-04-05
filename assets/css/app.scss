@@ -114,7 +114,7 @@ button:focus { outline: none; }
 	}
 }
 
-.btn-secondary {
+/*.btn-secondary {
 	background-color: #444!important;
 	border-color: #555!important;
 
@@ -130,10 +130,17 @@ button:focus { outline: none; }
 	&:disabled {
 		cursor: auto;
 	}
+}*/
+
+.dropdown-toggle, .dropdown-toggle.btn-secondary-toggle:hover {
+	background-color: transparent!important;
+	border-color: $color2!important;
 }
+.btn:focus, .btn:focus:active { box-shadow: none!important; }
 
 .banner{
 	justify-content: space-between;
+	align-items: center;
 }
 .banner a{
 	&:hover, &:focus{
@@ -166,6 +173,10 @@ button:focus { outline: none; }
 .navbar-nav .nav-link {
     padding-right: 15px!important;
     padding-left: 15px!important;
+}
+
+.navbar-right {
+	display: flex;
 }
 
 .popover {
@@ -461,13 +472,15 @@ input::placeholder, .nice-select {
 	.existingPlaylist { display: none; }
 
 	.playlistName { width: 100%; height: 50px; }
-	.saveAction {
-		height: 50px;
-		margin-top: 20px;
-		img {
-			width: 32px;
-			padding-right: 8px;
-		}
+}
+
+.saveAction { margin-top: 20px; }
+
+.login, .saveAction {
+	height: 62px;
+	img {
+		width: 32px;
+		padding-right: 8px;
 	}
 }
 
@@ -481,11 +494,13 @@ input::placeholder, .nice-select {
 	}
 }
 
+.changeLanguageSelector { margin: 0 10px; }
+
 .select-discover, .changeLanguageSelector {
 	width: 135px;
-	display: flex;
+	/*display: flex;
     justify-content: center;
-    flex-direction: column;
+    flex-direction: column;*/
     margin-right: 10px;
 
 	.nice-select {

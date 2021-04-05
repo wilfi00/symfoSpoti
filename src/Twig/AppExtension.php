@@ -4,19 +4,19 @@ namespace App\Twig;
 
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use \App\SpotiImplementation\Auth as SpotiAuth;
 use \App\SpotiImplementation\Request as SpotiRequest;
+use Symfony\Component\Security\Core\Security;
 
 class AppExtension extends AbstractExtension
 {
-    protected $session;
     protected $spotiRequest;
+    protected $security;
     
-    public function __construct(SessionInterface $session) 
+    public function __construct(SpotiRequest $spotiRequest, Security $security) 
     {
-        $this->session = $session;
-        $this->spotiRequest  = SpotiRequest::factory();
+        $this->spotiRequest = $spotiRequest;
+        $this->security = $security;
     }
     
     public function getFunctions()
@@ -29,7 +29,7 @@ class AppExtension extends AbstractExtension
 
     public function isUserConnectedToSpotify()
     {
-        return SpotiAuth::isUserAuthenticated($this->session);
+        return $this->security->isGranted('ROLE_SPOTIFY');
     }
     
     public function isOneDeviceActiveorAvailable()

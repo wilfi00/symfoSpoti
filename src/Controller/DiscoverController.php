@@ -17,15 +17,24 @@ use Psr\Log\LoggerInterface;
 use App\Services\InfoFormatter;
 use Symfony\Bridge\Monolog\Processor\RouteProcessor;
 use Symfony\Bridge\Monolog\Processor\WebProcessor;
+use KnpU\OAuth2ClientBundle\Client\ClientRegistry;
 use \App\Manager\GenreManager as GenreManager;
+use Symfony\Component\Security\Core\Security;
 
 class DiscoverController extends AbstractController
 {
     /**
      * @Route("/", name="discover")
      */
-    public function displayDiscover(Request $request, GenreRepository $genreRepository, Seo $seo, TranslatorInterface $translator, LoggerInterface $logger)
-    {
+    public function displayDiscover(
+        Request $request, 
+        GenreRepository $genreRepository,
+        Seo $seo, 
+        TranslatorInterface $translator, 
+        LoggerInterface $logger, 
+        SpotiRequest $spotiRequest,
+        Security $security
+    ) {
         $seo->addMeta('property', 'og:url',  $this->generateUrl('discover', [], UrlGeneratorInterface::ABSOLUTE_URL));
         if ($request->getLocale() !== 'fr') {
             $seo->addMeta('name', 'description',    $translator->trans('seo_description'));
@@ -38,9 +47,8 @@ class DiscoverController extends AbstractController
         }
         
         $playlists = [];
-        if (SpotiAuth::isUserAuthenticated($request->getSession())) {
-            $requestSpoti  = SpotiRequest::factory();
-            $playlists     = $requestSpoti->getUserPlaylistsForModaleSelection();
+        if ($security->isGranted('ROLE_SPOTIFY')) {
+            $playlists = $spotiRequest->getUserPlaylistsForModaleSelection();
         }
 
         return $this->render('pages/discover.html.twig', [
@@ -139,7 +147,7 @@ class DiscoverController extends AbstractController
      /**
      * @Route("/generatePlaylist", name="generatePlaylist")
      */
-    public function generatePlaylist(Request $request, GenreRepository $genreRepository)
+    public function generatePlaylist(Request $request, GenreRepository $genreRepository, SpotiRequest $spotiRequest)
     {
         $data = $this->isValidDatasForDiscover($request, $genreRepository);
         if ($data === false) {
@@ -151,16 +159,15 @@ class DiscoverController extends AbstractController
         $genreEntities     = $data['genres'];
         $nbSongsPerArtists = 2;
         $nbArtists         = ceil($nbSongs / count($genreEntities) / $nbSongsPerArtists);
-        $request           = SpotiRequest::factory();
-        $request->setGenreRespository($genreRepository);
-        $artists       = $request->getRandomArtistsFromGenres($genreEntities, $nbArtists, true);
-        $tracksRequest = $request->getTopsTracksFromArtists($artists, $nbSongsPerArtists);
+        $spotiRequest->setGenreRespository($genreRepository);
+        $artists       = $spotiRequest->getRandomArtistsFromGenres($genreEntities, $nbArtists, true);
+        $tracksRequest = $spotiRequest->getTopsTracksFromArtists($artists, $nbSongsPerArtists);
 
         $tracksId = array_keys($tracksRequest);
         shuffle($tracksId);
         $tracksId = array_slice($tracksId, 0, $nbSongs);
 
-        $spotiTracks  = $request->getTracks($tracksId);
+        $spotiTracks  = $spotiRequest->getTracks($tracksId);
 
         foreach ($spotiTracks as $spotiTrack) {
             $tmpImg      = '';
@@ -184,7 +191,7 @@ class DiscoverController extends AbstractController
     /**
      * @Route("/generateBetterPlaylist", name="generateBetterPlaylist")
      */
-    public function generateBetterPlaylist(Request $request, GenreRepository $genreRepository)
+    public function generateBetterPlaylist(Request $request, GenreRepository $genreRepository, SpotiRequest $spotiRequest)
     {
         $data = $this->isValidDatasForDiscover($request, $genreRepository);
         if ($data === false) {
@@ -194,8 +201,7 @@ class DiscoverController extends AbstractController
         $nbSongs       = $data['nbSongs'];
         $genreEntities = $data['genres'];
         
-        $requestSpoti = SpotiRequest::factory();
-        $response = $requestSpoti->getBestRecommendations($genreEntities, $nbSongs);
+        $response = $spotiRequest->getBestRecommendations($genreEntities, $nbSongs);
         $spotiTracks   = $response;
         
         foreach ($spotiTracks as $spotiTrack) {
@@ -237,7 +243,7 @@ class DiscoverController extends AbstractController
         if (!SpotiAuth::isUserAuthenticated($session)) {
             // On sauvegarde les datas post avant la redirection pour se connecter
             $session->set(SpotiAuth::CALLBACK_DATA, $data);
-            return $this->redirect($this->generateUrl('init'), 301);
+            return $this->redirect($this->generateUrl('spoti_auth'), 301);
         }
         // Récupération des données si on vient de se logger
         if ($data['tracks'] === null) {
@@ -258,16 +264,15 @@ class DiscoverController extends AbstractController
     /**
      * @Route("/setPopularityGenres", name="setPopularityGenres")
      */
-    public function setPopularityGenres(GenreRepository $genreRepository)
+    public function setPopularityGenres(GenreRepository $genreRepository, SpotiRequest $spotiRequest)
     {
-        $request = SpotiRequest::factory();
-        $request->setGenreRespository($genreRepository);
+        $spotiRequest->setGenreRespository($genreRepository);
         $genres  = $genreRepository->findAll();
 
 $genres = array_slice($genres, 696, 1000);
 
         foreach ($genres as $genre) {
-            $request->getRandomArtistsFromGenre($genre, 50);
+            $spotiRequest->getRandomArtistsFromGenre($genre, 50);
             sleep(30);
         }
     }

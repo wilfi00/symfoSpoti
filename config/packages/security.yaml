@@ -1,15 +1,25 @@
 security:
+    enable_authenticator_manager: true
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
     providers:
-        users_in_memory: { memory: null }
+        app_user_provider:
+            entity:
+                class: App\Entity\User
+                property: uuid
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         main:
-            anonymous: true
             lazy: true
-            provider: users_in_memory
+            custom_authenticators:
+                - App\Security\SpotifyAuthenticator
+                
+            logout:
+                path: logout
+
+                # where to redirect after logout
+                target: discover
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#firewalls-authentication

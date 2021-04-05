@@ -5,6 +5,8 @@ reset: Reset
 back: Back
 filters: Filters
 validate: Validate
+login: Log in with spotify
+logout: Log out
 # Select save
 save_songs: Save songs
 create_new_playlist: Create new playlist

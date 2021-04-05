@@ -1,9 +1,12 @@
 <?php
 
 namespace App\SpotiImplementation;
+
 use App\Repository\GenreRepository;
 use \App\SpotiImplementation\Auth as SpotiAuth;
 use SpotifyWebAPI\SpotifyWebAPI;
+use Symfony\Component\Security\Core\Security;
+use App\Entity\User;
 
 class Request
 {
@@ -11,49 +14,36 @@ class Request
     protected $userSession; // Permet de jouer les actions liées à un utilisateur (exemple : enregistrer une playlist)
     protected $api;
     protected $genreRepository;
+    protected $security;
 
-    function __construct($api)
+    public function __construct(Security $security)
     {
-        $this->api = $api;
+        $this->security = $security;
+        $this->api = new SpotifyWebAPI(['auto_retry' => true, 'auto_refresh' => true]);
+        
+        $user = $this->security->getUser();
+        if (null === $user) {
+            $spotiSession = SpotiAuth::makeBasicAuth();
+        } else {
+            $spotiSession = SpotiAuth::makeUserAuth($user);
+        }
+        $this->api->setSession($spotiSession);
     }
-
-    public static function factory()
-    {
-        $api = new SpotifyWebAPI(['auto_retry' => true, 'auto_refresh' => true]);
-
-        return new self($api);
-    }
-
-    protected function setBasicSession()
-    {
-        $this->api->setSession(SpotiAuth::getBasicApiSession());
-    }
-
-    protected function setUserSession()
-    {
-        $this->api->setSession(SpotiAuth::getApiSession());
-        $this->api->setOptions([
-            'auto_refresh' => true,
-        ]);
-    }
-
+    
     public function searchForArtist($search)
     {
-        $this->setBasicSession();
         $search = $this->api->search($search . '*', 'artist');
         return  $search->artists->items;
     }
 
     public function getSeveralArtists($limit = 5)
     {
-        $this->setBasicSession();
         $search = $this->api->search(Tools::generateRandomCharacter() . '%', 'artist', ['limit' => $limit]);
         return  $search->artists->items;
     }
 
     public function getTenArtists($nbArtists = 10, $fromGenre = 'metal')
     {
-        $this->setBasicSession();
         $artists = [];
         while (count($artists) < $nbArtists) {
             $tmpArtists = $this->getSeveralArtists(50);
@@ -73,7 +63,6 @@ class Request
 
     public function getRandomArtist2()
     {
-        $this->setBasicSession();
         // $search = $this->api->search('caravan%', 'artist', ['limit' => 50]);
         $search = $this->api->search(Tools::generateRandomCharacter() . '% genre:electro+swing', 'artist', ['limit' => 50]);
         // $search = $this->api->search(Tools::generateRandomCharacter() . '% genre:metalcore', 'artist', ['limit' => 50]);
@@ -83,7 +72,6 @@ class Request
 
     public function getRandomArtistsFromGenres($genresEntities, $nbArtists, $strict)
     {
-        $this->setBasicSession();
         $artists = [];
         foreach ($genresEntities as $genre) {
             $artists = array_merge($artists, $this->getRandomArtistsFromGenre($genre, $nbArtists, $strict));
@@ -95,7 +83,6 @@ class Request
 
     public function getRandomArtistsFromGenre(\App\Entity\Genre $genre, $nbArtists = 10, $strict = true, $maxTry = 50)
     {
-        $this->setBasicSession();
         $cpt         = 0;
         $artists     = [];
         $genre       = Tools::formatStringForSpotify($genre->getName());
@@ -149,7 +136,6 @@ class Request
 
     public function getSeveralTracks($metal = false)
     {
-        $this->setBasicSession();
         $tracks    = [] ;
         if ($metal) {
             $artists = $this->getTenMetalArtists();
@@ -170,7 +156,6 @@ class Request
 
     public function addTracksToPlaylist($tracks, $playlistId)
     {
-        $this->setUserSession();
         if (empty($tracks) || empty($playlistId)) {
             return;
         }
@@ -186,7 +171,6 @@ class Request
 
     public function getUserPlaylistsForModaleSelection()
     {
-        $this->setUserSession();
         $currentUserId = $this->api->me()->id;
 
         $playlists          = [];
@@ -220,7 +204,6 @@ class Request
 
     public function getTopsTracksFromArtists($artists, $nbTracks)
     {
-        $this->setBasicSession();
         $tracks = [];
         foreach ($artists as $artist) {
             $topTracks = $this->getTopTracksFromArtist($artist['id'], $nbTracks);
@@ -238,7 +221,6 @@ class Request
 
     protected function getTopTracksFromArtist($id, $nbTracks = 10)
     {
-        $this->setBasicSession();
         if ($nbTracks < 1 || $nbTracks > 10) {
             $nbTracks = 10;
         }
@@ -268,7 +250,6 @@ class Request
 
     public function getTracks($tracks)
     {
-        $this->setBasicSession();
         $tracksToReturn = [];
 
         // Spotify ne peut traiter que 50 tracks max
@@ -293,20 +274,16 @@ class Request
 
     public function createNewPlaylist($name, $isPublic = true)
     {
-        $this->setUserSession();
         return $this->api->createPlaylist(['name' => $name]);
     }
 
     public function getArtist($id)
     {
-        $this->setBasicSession();
         return $this->api->getArtist($id);
     }
     
     public function getAllFollowedArtists()
     {
-        $this->setUserSession();
-        
         $artists           = [];
         $lastArtistId      = null;
         $tmpArtistsRequest = [];
@@ -337,13 +314,11 @@ class Request
     
     public function getUserInformations()
     {
-        $this->setUserSession();
         return $this->api->me();
     }
     
     public function getGenreSeeds()
     {
-        $this->setBasicSession();
         return $this->api->getGenreSeeds();
     }
     
@@ -353,7 +328,6 @@ class Request
         $cpt    = 0;
         $maxTry = 50;
         $tracks = [];
-        $this->setBasicSession();
         $genres = $this->translateGenresToSeeds($genresEntities);
         $artists = $this->getFollowedArtistsByGenres($genresEntities);
         $likedTracks  = [];
@@ -424,10 +398,6 @@ class Request
     
     protected function getAllLikedTracks()
     {
-       // getMySavedTracks
-        
-        $this->setUserSession();
-        
         $tracks           = [];
         $tmpTracksRequest = [];
         $maxLimit          = 50;
@@ -465,7 +435,6 @@ class Request
         $success  = 0;
         $failure  = 0;
         
-        $this->setUserSession();
         if ($this->isThereOneAvailableDevice()) {
             foreach ($tracks as $trackUri) {
                 if ($this->api->queue($trackUri, $this->getActiveDevice())) {
@@ -490,7 +459,6 @@ class Request
     
     public function getActiveDevice()
     {
-        $this->setUserSession();
         $deviceId = null;
         foreach ($this->api->getMyDevices()->devices as $device) {
             if ($device->is_active) {

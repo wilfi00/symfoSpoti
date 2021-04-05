@@ -15,22 +15,22 @@ use \App\SpotiImplementation\Save as SpotiSave;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use App\Form\Type\ArtistsType;
+use Symfony\Component\Security\Core\Security;
 
 class DiscoverFromFollowedArtistsController extends AbstractController
 {
     /**
      * @Route("/followedArtists", name="artists_followed")
      */
-    public function index(Request $request, TranslatorInterface $translator)
+    public function index(Request $request, TranslatorInterface $translator, SpotiRequest $spotiRequest, Security $security)
     {
         $session = $request->getSession();
 
-        if (!SpotiAuth::isUserAuthenticated($session)) {
-            return $this->redirectToRoute('init');
+        if (!$security->isGranted('ROLE_SPOTIFY')) {
+           return $this->redirectToRoute('spoti_auth', ['callback_url' => $request->getUri()]);
         }
         
-        $requestSpoti = SpotiRequest::factory();
-        $artists      = $requestSpoti->getAllFollowedArtists();
+        $artists      = $spotiRequest->getAllFollowedArtists();
         
         usort($artists, function($a, $b) {
             return strtolower($a->name) > strtolower($b->name);
@@ -53,9 +53,8 @@ class DiscoverFromFollowedArtistsController extends AbstractController
         }
         
         $playlists = [];
-        if (SpotiAuth::isUserAuthenticated($request->getSession())) {
-            $requestSpoti  = SpotiRequest::factory();
-            $playlists     = $requestSpoti->getUserPlaylistsForModaleSelection();
+        if ($security->isGranted('ROLE_SPOTIFY')) {
+            $playlists     = $spotiRequest->getUserPlaylistsForModaleSelection();
         }
 
         return $this->render('pages/discover_from_followed_artists.html.twig', [
@@ -76,7 +75,7 @@ class DiscoverFromFollowedArtistsController extends AbstractController
     /**
      * @Route("/saveTracksFromFollowed", name="save_tracks_from_followed")
      */
-    public function saveTracksFromFollowed(Request $request)
+    public function saveTracksFromFollowed(Request $request, SpotiRequest $spotiRequest, Security $security)
     {
         // On part du principe que ça va échouer ;(
         $success = false;
@@ -91,10 +90,10 @@ class DiscoverFromFollowedArtistsController extends AbstractController
 
         // Si l'utilisateur n'est pas logé sur spotify, on le fait
         $session = $request->getSession();
-        if (!SpotiAuth::isUserAuthenticated($session)) {
+        if (!$security->isGranted('ROLE_SPOTIFY')) {
             // On sauvegarde les datas post avant la redirection pour se connecter
             $session->set(SpotiAuth::CALLBACK_DATA, $data);
-            return $this->redirect($this->generateUrl('init'), 301);
+            return $this->redirect($this->generateUrl('spoti_auth'), 301);
         }
         // Récupération des données si on vient de se logger
         if ($data['saveOption'] === null) {
@@ -107,8 +106,7 @@ class DiscoverFromFollowedArtistsController extends AbstractController
             ];
         }
         
-        $request       = SpotiRequest::factory();
-        $tracksRequest = $request->getTopsTracksFromArtists(
+        $tracksRequest = $spotiRequest->getTopsTracksFromArtists(
             $data['artists'], 
             $data['nbTracks']
         );
@@ -127,18 +125,16 @@ class DiscoverFromFollowedArtistsController extends AbstractController
     /**
      * @Route("/saveTracksFromFollowed2", name="save_tracks_from_followed2")
      */
-    public function saveTracksFromFollowed2(Request $request)
+    public function saveTracksFromFollowed2(Request $request, SpotiRequest $spotiRequest)
     {
         $requestContent = json_decode($request->getContent(), true);
-        $request       = SpotiRequest::factory();
-        $tracksRequest = $request->getTopsTracksFromArtists(
+        $tracksRequest = $spotiRequest->getTopsTracksFromArtists(
             $requestContent['artists'], 
             $requestContent['nbTracks']
         );
         
-        $request  = SpotiRequest::factory();
-        $playlist = $request->createNewPlaylist($requestContent['playlistName']);
-        $request->addTracksToPlaylist(array_keys($tracksRequest), $playlist->id);
+        $playlist = $spotiRequest->createNewPlaylist($requestContent['playlistName']);
+        $spotiRequest->addTracksToPlaylist(array_keys($tracksRequest), $playlist->id);
         
         $response = new Response();
         $response->setContent(json_encode([

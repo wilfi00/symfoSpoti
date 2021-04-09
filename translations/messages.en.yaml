@@ -34,6 +34,7 @@ discover_playlistSaveSucessFeedback: Songs have been saved
 discover_helpGenres: If you don't know which genres you want, you can use those two pages to help you, thanks to the information icon
 discover_helpGenres1: find genres from one artist
 discover_helpGenres2: browse your followed artists to discover their genres
+discover_connexion_explain: Connect to Spotify to save the songs
 
 # Discover from artists
 discover_fa_h1: Listen to the best songs of your favorites artists
@@ -54,6 +55,8 @@ discover_fwa_filter_genres: I only wish these genres
 fwa_discover_song: song by artist
 fwa_discover_songs: songs by artist
 discover_fwa_select_all_artists: Select all artists
+discover_fwa_connexion_explain: To display this page and generate a playlist using your followed artists, you must connect to Spotify
+
 
 #SEO
 seo_description: Discover new songs and save them in a Spotify playlist !

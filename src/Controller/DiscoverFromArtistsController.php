@@ -90,7 +90,7 @@ class DiscoverFromArtistsController extends AbstractController
 
         $playlists = [];
         if ($security->isGranted('ROLE_SPOTIFY')) {
-            $playlists     = $spotiRequest->getUserPlaylistsForModaleSelection();
+            $playlists = $spotiRequest->getUserPlaylistsForModaleSelection();
         }
 
         return $this->render('pages/discover_from_artists.html.twig', [
@@ -145,7 +145,7 @@ class DiscoverFromArtistsController extends AbstractController
     /**
      * @Route("/saveTracksFromArtists", name="save_tracks_from_artists")
      */
-    public function saveTracksFromArtists(Request $request, Session $session, SpotiRequest $spotiRequest)
+    public function saveTracksFromArtists(Request $request, Session $session, SpotiRequest $spotiRequest, Security $security)
     {
         // On part du principe que ça va échouer ;(
         $success = false;
@@ -164,8 +164,9 @@ class DiscoverFromArtistsController extends AbstractController
         ];
 
         // Si l'utilisateur n'est pas logé sur spotify, on le fait
+        // Sert plus à grand chose car maintenant si on est là on est normalement connnecté :)
         $session = $request->getSession();
-        if (!SpotiAuth::isUserAuthenticated($session)) {
+        if (!$security->isGranted('ROLE_SPOTIFY')) {
             // On sauvegarde les datas post avant la redirection pour se connecter
             $session->set(SpotiAuth::CALLBACK_DATA, $data);
             return $this->redirect($this->generateUrl('spoti_auth'), 301);
@@ -187,6 +188,7 @@ class DiscoverFromArtistsController extends AbstractController
         );
         
         $spotiSave = new SpotiSave(
+            $spotiRequest,
             $data['saveOption'],
             array_keys($tracksRequest),
             $data['playlistName'],

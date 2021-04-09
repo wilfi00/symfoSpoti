@@ -33,6 +33,7 @@ discover_playlistSaveSucessFeedback: Enregistrement effectué
 discover_helpGenres: Si tu n'as pas d'inspiration pour les genres de musiques à écouter, tu peux t'aider de ces deux pages à l'aide des bulles d'infos
 discover_helpGenres1: trouve les genres associés à un artiste
 discover_helpGenres2: parcours les artistes que tu suis pour découvrir leurs genres
+discover_connexion_explain: Se connecter à Spotify pour enregistrer les chansons
 
 # Discover from artists
 discover_fa_h1: Ecoute les meilleurs titres de tes groupes préférés
@@ -53,6 +54,7 @@ discover_fwa_filter_genres: Je souhaite seulement ces genres
 fwa_discover_song: chanson par artiste
 fwa_discover_songs: chansons par artiste
 discover_fwa_select_all_artists: Sélectionner tous les artistes
+discover_fwa_connexion_explain: Pour accéder à cette page et générer une playlist avec tes artistes suivis, il faut se connecter à Spotify
 
 #SEO
-seo_description: Découvre de nouvelles musiques et enregistre les dans une playlist spotify !
+seo_description: Découvre de nouvelles musiques et enregistre les dans une playlist Spotify !

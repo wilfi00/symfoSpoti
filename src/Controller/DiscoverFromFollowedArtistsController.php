@@ -20,6 +20,17 @@ use Symfony\Component\Security\Core\Security;
 class DiscoverFromFollowedArtistsController extends AbstractController
 {
     /**
+     * @Route("/followedArtistsNotConnected", name="artists_followed_not_connected")
+     */
+    public function isNotConnected(Security $security)
+    {
+        if ($security->isGranted('ROLE_SPOTIFY')) {
+            return $this->redirectToRoute('artists_followed');
+        }
+        return $this->render('pages/discover_from_followed_artists_not_connected.html.twig');
+    }
+    
+    /**
      * @Route("/followedArtists", name="artists_followed")
      */
     public function index(Request $request, TranslatorInterface $translator, SpotiRequest $spotiRequest, Security $security)
@@ -27,7 +38,7 @@ class DiscoverFromFollowedArtistsController extends AbstractController
         $session = $request->getSession();
 
         if (!$security->isGranted('ROLE_SPOTIFY')) {
-           return $this->redirectToRoute('spoti_auth');
+           return $this->redirectToRoute('artists_followed_not_connected');
         }
         
         $artists      = $spotiRequest->getAllFollowedArtists();
@@ -112,6 +123,7 @@ class DiscoverFromFollowedArtistsController extends AbstractController
         );
         
         $spotiSave = new SpotiSave(
+            $spotiRequest,
             $data['saveOption'],
             array_keys($tracksRequest),
             $data['playlistName'],

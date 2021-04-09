@@ -9,6 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use \App\SpotiImplementation\Request as SpotiRequest;
 use \App\SpotiImplementation\Auth as SpotiAuth;
 use \App\SpotiImplementation\Save as SpotiSave;
+use \App\SpotiImplementation\Tools as SpotiTools;
 use App\Repository\GenreRepository;
 use \Sonata\SeoBundle\Seo\SeoPageInterface as Seo;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -20,6 +21,7 @@ use Symfony\Bridge\Monolog\Processor\WebProcessor;
 use KnpU\OAuth2ClientBundle\Client\ClientRegistry;
 use \App\Manager\GenreManager as GenreManager;
 use Symfony\Component\Security\Core\Security;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 class DiscoverController extends AbstractController
 {
@@ -33,7 +35,8 @@ class DiscoverController extends AbstractController
         TranslatorInterface $translator, 
         LoggerInterface $logger, 
         SpotiRequest $spotiRequest,
-        Security $security
+        Security $security,
+        Session $session
     ) {
         $seo->addMeta('property', 'og:url',  $this->generateUrl('discover', [], UrlGeneratorInterface::ABSOLUTE_URL));
         if ($request->getLocale() !== 'fr') {
@@ -62,7 +65,7 @@ class DiscoverController extends AbstractController
                     'feedbackError'              => $translator->trans('feedbackError'),
                 ]
             ],
-            'tracks'              => [],
+            'tracks'              => SpotiTools::getTracksInSession($session),
             'saveUrl' => $this->generateUrl('save_tracks_from_genres'),
             'text'                => [
                 'feedbackError'              => $translator->trans('feedbackError'),
@@ -147,7 +150,7 @@ class DiscoverController extends AbstractController
      /**
      * @Route("/generatePlaylist", name="generatePlaylist")
      */
-    public function generatePlaylist(Request $request, GenreRepository $genreRepository, SpotiRequest $spotiRequest)
+    public function generatePlaylist(Request $request, GenreRepository $genreRepository, SpotiRequest $spotiRequest, Session $session)
     {
         $data = $this->isValidDatasForDiscover($request, $genreRepository);
         if ($data === false) {
@@ -185,6 +188,7 @@ class DiscoverController extends AbstractController
                 'genres'     => $tracksRequest[$spotiTrack->id],
             ];
         }
+        SpotiTools::saveTracksInSession($session, $tracks);
         return $this->render('spotiTemplates/_tracks.html.twig', ['tracks' => $tracks]);
     }
     
@@ -226,7 +230,7 @@ class DiscoverController extends AbstractController
     /**
      * @Route("/saveTracksFromGenres", name="save_tracks_from_genres")
      */
-    public function saveTracksFromGenres(Request $request)
+    public function saveTracksFromGenres(Request $request, SpotiRequest $spotiRequest, Security $security)
     {
         // On part du principe que ça va échouer ;(
         $success = false;
@@ -239,8 +243,9 @@ class DiscoverController extends AbstractController
         ];
 
         // Si l'utilisateur n'est pas logé sur spotify, on le fait
+        // Sert plus à grand chose car maintenant si on est là on est normalement connnecté :)
         $session = $request->getSession();
-        if (!SpotiAuth::isUserAuthenticated($session)) {
+        if (!$security->isGranted('ROLE_SPOTIFY')) {
             // On sauvegarde les datas post avant la redirection pour se connecter
             $session->set(SpotiAuth::CALLBACK_DATA, $data);
             return $this->redirect($this->generateUrl('spoti_auth'), 301);
@@ -251,6 +256,7 @@ class DiscoverController extends AbstractController
         }
         
         $spotiSave = new SpotiSave(
+            $spotiRequest,
             $data['saveOption'],
             $data['tracks'],
             $data['playlistName'],

@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Session\Session;
 class Tools
 {
     const SESSION_ARTISTSELECTION = 'artist_selection';
+    const SESSION_DISCOVERSELECTION = 'discover_selection';
 
     public static function generateRandomCharacter()
     {
@@ -65,6 +66,23 @@ class Tools
     {
         $session = new Session();
         $session->remove(static::SESSION_ARTISTSELECTION);
+    }
+    
+    public static function saveTracksInSession(Session $session, array $tracks)
+    {
+        static::emptyTracksInSession();
+        return $session->set(static::SESSION_DISCOVERSELECTION, $tracks);
+    }
+    
+    public static function getTracksInSession(Session $session)
+    {
+        return $session->get(static::SESSION_DISCOVERSELECTION);
+    }
+    
+    public static function emptyTracksInSession()
+    {
+        $session = new Session();
+        $session->remove(static::SESSION_DISCOVERSELECTION);
     }
 
     public static function isCurrentUserOwnerOfPlaylist($userId, $playlist)

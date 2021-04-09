@@ -18,13 +18,13 @@ class Save
     const MODE_EXISTINGPLAYLIST = 'existingPlaylist';
     const MODE_QUEUE = 'queue';
     
-    public function __construct(string $saveMode, array $tracks = [], $playlistName = '', $playlistId = null)
+    public function __construct(SpotiRequest $spotiRequest, string $saveMode, array $tracks = [], $playlistName = '', $playlistId = null)
     {
         $this->saveMode = $saveMode;
         $this->tracks = $tracks;
         $this->playlistName = $playlistName;
         $this->playlistId = $playlistId;
-        $this->spotiRequest  = SpotiRequest::factory();
+        $this->spotiRequest  = $spotiRequest;
     }
     
     public function save()

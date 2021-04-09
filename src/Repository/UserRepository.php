@@ -30,6 +30,7 @@ class UserRepository extends ServiceEntityRepository
         $user->setImageUrl(User::getImageUrlFromSpotifyInformations($spotifyUser));
         $user->setAccessToken($token->getToken());
         $user->setRefreshToken($token->getRefreshToken());
+        $user->setLastConn();
         $this->_em->persist($user);
         $this->_em->flush();
         return $user;

@@ -2,9 +2,10 @@
 
 namespace App\Security;
 
-use App\Entity\User; // your user entity
+use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use KnpU\OAuth2ClientBundle\Client\ClientRegistry;
+use KnpU\OAuth2ClientBundle\Client\OAuth2ClientInterface;
 use KnpU\OAuth2ClientBundle\Security\Authenticator\OAuth2Authenticator;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -39,9 +40,9 @@ class SpotifyAuthenticator extends OAuth2Authenticator
 
     public function authenticate(Request $request): PassportInterface
     {
-        $this->credentials = $this->fetchAccessToken($this->clientRegistry->getClient('spotify'));
+        $credentials = $this->fetchAccessToken($this->clientRegistry->getClient('spotify'));
        
-        return new SelfValidatingPassport(new UserBadge($this->credentials, function() {
+        return new SelfValidatingPassport(new UserBadge($credentials, function() {
             $spotifyUser = $this->clientRegistry->getClient('spotify')->fetchUserFromToken($this->credentials);
       
             // Update user
@@ -56,7 +57,7 @@ class SpotifyAuthenticator extends OAuth2Authenticator
     }
 
     /**
-     * @return FacebookClient
+     * @return OAuth2ClientInterface
      */
     private function getSpotifyClient()
     {

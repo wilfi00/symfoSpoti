@@ -15,11 +15,7 @@ use \Sonata\SeoBundle\Seo\SeoPageInterface as Seo;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Psr\Log\LoggerInterface;
-use App\Services\InfoFormatter;
-use Symfony\Bridge\Monolog\Processor\RouteProcessor;
-use Symfony\Bridge\Monolog\Processor\WebProcessor;
-use KnpU\OAuth2ClientBundle\Client\ClientRegistry;
-use \App\Manager\GenreManager as GenreManager;
+use \App\Manager\GenreManager;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\HttpFoundation\Session\Session;
 
@@ -27,6 +23,15 @@ class DiscoverController extends AbstractController
 {
     /**
      * @Route("/", name="discover")
+     * @param Request $request
+     * @param GenreRepository $genreRepository
+     * @param Seo $seo
+     * @param TranslatorInterface $translator
+     * @param LoggerInterface $logger
+     * @param SpotiRequest $spotiRequest
+     * @param Security $security
+     * @param Session $session
+     * @return Response
      */
     public function displayDiscover(
         Request $request, 
@@ -96,7 +101,7 @@ class DiscoverController extends AbstractController
     /**
      * Vérification de la validité des données postées par le formulaire discovery
      *
-     * @return bool True si valid
+     * @return bool
      */
     protected function isValidDatasForDiscover($request, GenreRepository $genreRepository)
     {
@@ -104,57 +109,60 @@ class DiscoverController extends AbstractController
         // Vérification de la data sur le nombre de chanson
         if (!isset($data['nbSongs'])) {
             return false;
-        } else {
-            $nbSongs = $data['nbSongs'];
-            if (!empty($nbSongs)) {
-                $validValues = [25, 50, 100, 150, 200];
-                $nbSongs     = intval($nbSongs);
-                if (!in_array($nbSongs, $validValues)) {
-                    return false;
-                }
-            } else {
+        }
+
+        $nbSongs = $data['nbSongs'];
+        if (!empty($nbSongs)) {
+            $validValues = [25, 50, 100, 150, 200];
+            $nbSongs     = intval($nbSongs);
+            if (!in_array($nbSongs, $validValues)) {
                 return false;
             }
+        } else {
+            return false;
         }
 
         // Vérification de la data sur les genres
         if (!isset($data['genres'])) {
             return false;
-        } elseif (!is_array($data['genres'])) {
+        }
+
+        if (!is_array($data['genres'])) {
             return false;
-        } else {
-            $genres = $data['genres'];
-            if (empty($genres)) {
+        }
+
+        $genres = $data['genres'];
+        if (empty($genres)) {
+            return false;
+        }
+
+        // On s'assure de ne pas avoir de doublons
+        $genres = array_unique($genres);
+
+        $genreEntities = [];
+        // Pour chaque genre on vérifie que se sont effectivement des genres enregistrés en proposés en DB
+        foreach ($genres as $genreId) {
+            $genreEntity = $genreRepository->find($genreId);
+
+            if ($genreEntity === false) {
                 return false;
-            }
-
-            // On s'assure de ne pas avoir de doublons
-            $genres = array_unique($genres);
-
-            $genreEntities = [];
-            // Pour chaque genre on vérifie que se sont effectivement des genres enregistrés en proposés en DB
-            foreach ($genres as $genreId) {
-                $genreEntity = $genreRepository->find($genreId);
-
-                if ($genreEntity === false) {
-                    return false;
-                } else {
-                    $genreEntities[] = $genreEntity;
-                }
+            } else {
+                $genreEntities[] = $genreEntity;
             }
         }
 
         return ['nbSongs' => $nbSongs, 'genres' => $genreEntities];
     }
 
-     /**
+    /**
      * @Route("/generatePlaylist", name="generatePlaylist")
+     * @throws \Exception
      */
     public function generatePlaylist(Request $request, GenreRepository $genreRepository, SpotiRequest $spotiRequest, Session $session)
     {
         $data = $this->isValidDatasForDiscover($request, $genreRepository);
         if ($data === false) {
-            throw new \Exception('Something went wrong!');
+            throw new \RuntimeException('Something went wrong!');
         }
 
         // On détermine le nombre d'artistes à récupérer en fonction du nombre de chansons
@@ -191,15 +199,16 @@ class DiscoverController extends AbstractController
         SpotiTools::saveTracksInSession($session, $tracks);
         return $this->render('spotiTemplates/_tracks.html.twig', ['tracks' => $tracks]);
     }
-    
+
     /**
      * @Route("/generateBetterPlaylist", name="generateBetterPlaylist")
+     * @throws \Exception
      */
     public function generateBetterPlaylist(Request $request, GenreRepository $genreRepository, SpotiRequest $spotiRequest)
     {
         $data = $this->isValidDatasForDiscover($request, $genreRepository);
         if ($data === false) {
-            throw new \Exception('Something went wrong!');
+            throw new \RuntimeException('Something went wrong!');
         }
         
         $nbSongs       = $data['nbSongs'];
@@ -237,7 +246,7 @@ class DiscoverController extends AbstractController
         
         $data = [
             'saveOption'       => $request->request->get('saveOption'),
-            'tracks'           => json_decode($request->request->get('tracks')),
+            'tracks'           => json_decode($request->request->get('tracks'), true),
             'playlistName'     => $request->request->get('playlistName'),
             'existingPlaylist' => $request->request->get('existingPlaylist'),
         ];
@@ -269,6 +278,8 @@ class DiscoverController extends AbstractController
 
     /**
      * @Route("/setPopularityGenres", name="setPopularityGenres")
+     * @param GenreRepository $genreRepository
+     * @param SpotiRequest $spotiRequest
      */
     public function setPopularityGenres(GenreRepository $genreRepository, SpotiRequest $spotiRequest)
     {

@@ -7,7 +7,6 @@ use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Psr\Log\LoggerInterface;
 use App\Services\InfoFormatter;
-use Symfony\Component\HttpKernel\HttpKernelInterface;
 
 
 class RequestSubscriber implements EventSubscriberInterface

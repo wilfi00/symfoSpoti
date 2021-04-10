@@ -2,11 +2,8 @@
 
 namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use \App\SpotiImplementation\Request as SpotiRequest;
-use \App\SpotiImplementation\Auth as SpotiAuth;
-use \App\SpotiImplementation\Tools as SpotiTools;
 
 class Display extends AbstractController
 {

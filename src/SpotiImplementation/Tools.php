@@ -95,9 +95,9 @@ class Tools
         return $_SERVER['REQUEST_URI'];
     }
 
-    public static function formatStringForSpotify($string)
+    public static function formatStringForSpotify($string): string
     {
-	return '"' . $string . '"';
+	    return '"' . $string . '"';
     }
 
     public static function formatInverseStringForSpotify($string)

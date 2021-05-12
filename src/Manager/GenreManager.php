@@ -13,7 +13,6 @@ class GenreManager extends AbstractManager
     /**
      * FacturationDetailsManager constructor.
      * @param EntityManagerInterface $entityManager
-     * @param FacturationManager $facturationManager
      */
     public function __construct(EntityManagerInterface $entityManager)
     {
@@ -25,7 +24,6 @@ class GenreManager extends AbstractManager
     {
         
         $this->search = strtolower(trim($search));
-        $resultGenres = [];
         $genres = $this->findAllInArray();
       
         // Si pas de recherche, on renvoit tout

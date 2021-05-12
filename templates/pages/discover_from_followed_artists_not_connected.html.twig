@@ -1,0 +1,12 @@
+{% extends "base.html.twig" %}
+{% block title %}
+<h2>{% trans %}discover_fwa_h1{% endtrans %}</h2>
+{% endblock %}
+
+{% block content %}
+    <p>{% trans %}discover_fwa_p1{% endtrans %}</p>
+    <div class="followedArtistsNotConnected">
+		<p class="importantSecondary">{% trans %}discover_fwa_connexion_explain{% endtrans %}</p>
+		<form action="{{ path('spoti_auth') }}"><button type="submit" class="btn btn-primary login"><img src="{{ asset('build/images/Spotify_Icon_RGB_Black.png') }}" alt="Spotify logo">{% trans %}login{% endtrans %}</button></form>
+	</div>
+{% endblock %}

@@ -6,12 +6,9 @@ use App\Repository\GenreRepository;
 use \App\SpotiImplementation\Auth as SpotiAuth;
 use SpotifyWebAPI\SpotifyWebAPI;
 use Symfony\Component\Security\Core\Security;
-use App\Entity\User;
 
 class Request
 {
-    protected $basicSession; // Permet de jouer la plupart des actions de l'API spotify
-    protected $userSession; // Permet de jouer les actions liées à un utilisateur (exemple : enregistrer une playlist)
     protected $api;
     protected $genreRepository;
     protected $security;
@@ -61,16 +58,7 @@ class Request
         return $artists;
     }
 
-    public function getRandomArtist2()
-    {
-        // $search = $this->api->search('caravan%', 'artist', ['limit' => 50]);
-        $search = $this->api->search(Tools::generateRandomCharacter() . '% genre:electro+swing', 'artist', ['limit' => 50]);
-        // $search = $this->api->search(Tools::generateRandomCharacter() . '% genre:metalcore', 'artist', ['limit' => 50]);
-
-        return  $search->artists->items;
-    }
-
-    public function getRandomArtistsFromGenres($genresEntities, $nbArtists, $strict)
+    public function getRandomArtistsFromGenres($genresEntities, $nbArtists, $strict): array
     {
         $artists = [];
         foreach ($genresEntities as $genre) {
@@ -83,25 +71,26 @@ class Request
 
     public function getRandomArtistsFromGenre(\App\Entity\Genre $genre, $nbArtists = 10, $strict = true, $maxTry = 50)
     {
-        $cpt         = 0;
-        $artists     = [];
-        $genre       = Tools::formatStringForSpotify($genre->getName());
-        $tmpArtistId = []; // Permet de gérer le fait de récupérer des artistes uniques
-        $nbArtists   = Tools::addErrorProbability($nbArtists);
+        $genreRepository = $this->getGenreRepository();
+        $cpt             = 0;
+        $artists         = [];
+        $genreString     = Tools::formatStringForSpotify($genre->getName());
+        $tmpArtistId     = []; // Permet de gérer le fait de récupérer des artistes uniques
+        $nbArtistsProb   = Tools::addErrorProbability($nbArtists);
 
-        while ((count($artists) < $nbArtists) && ($cpt <= $maxTry)) {
+        while ((count($artists) < $nbArtistsProb) && ($cpt <= $maxTry)) {
             $cpt++;
-            $search = $this->api->search(Tools::generateRandomCharacter() . '% genre:' . $genre, 'artist', ['limit' => 50]);
+            $search = $this->api->search(Tools::generateRandomCharacter() . '% genre:' . $genreString, 'artist', ['limit' => 50]);
             $searchArtists = $search->artists->items;
             shuffle($searchArtists);
             foreach ($searchArtists as $artist) {
                 if ($strict) {
                     foreach ($artist->genres as $g) {
-                        if (count($artists) >= $nbArtists) {
+                        if (count($artists) >= $nbArtistsProb) {
                             break;
                         }
 
-                        if ($g === Tools::formatInverseStringForSpotify($genre)) {
+                        if ($g === Tools::formatInverseStringForSpotify($genreString)) {
                             $id = $artist->id;
                             // On ne rajoute que des artistes uniques
                             if (!in_array($id, $tmpArtistId)) {
@@ -118,40 +107,19 @@ class Request
                     $artists[] = $artist->id;
                 }
 
-                if (count($artists) === $nbArtists) {
+                if (count($artists) === $nbArtistsProb) {
                     break;
                 }
             }
 
             // Log
-            $genreRepository = $this->getGenreRepository();
             if (!empty($genreRepository)) {
-                $genreRepository->updateProgressOfPopularityGenres(Tools::formatInverseStringForSpotify($genre), $cpt);
+                $genreRepository->updateProgressOfPopularityGenres(Tools::formatInverseStringForSpotify($genreString), $cpt);
             }
         }
 
-        $genreRepository->updateTries(Tools::formatInverseStringForSpotify($genre), $cpt);
+        $genreRepository->updateTries(Tools::formatInverseStringForSpotify($genreString), $cpt);
         return  $artists;
-    }
-
-    public function getSeveralTracks($metal = false)
-    {
-        $tracks    = [] ;
-        if ($metal) {
-            $artists = $this->getTenMetalArtists();
-        } else {
-            $artists = $this->getSeveralArtists();
-        }
-        $artistsId = ApiTools::convertApiObjectsToIds($artists);
-
-        foreach ($artistsId as $id) {
-            $topTracks = $this->api->getArtistTopTracks($id, 'country=FR');
-            foreach ($topTracks->tracks as $topTrack) {
-                $tracks[] = $topTrack;
-            }
-        }
-
-        return $tracks;
     }
 
     public function addTracksToPlaylist($tracks, $playlistId)
@@ -162,19 +130,18 @@ class Request
         // Spotify ne peut traiter que 50 tracks max
         $multipleArraysTracks = array_chunk($tracks, 50);
 
-        foreach($multipleArraysTracks as $tracks) {
-            $this->api->addPlaylistTracks($playlistId, $tracks);
+        foreach ($multipleArraysTracks as $track) {
+            $this->api->addPlaylistTracks($playlistId, $track);
         }
         
         return true;
     }
 
-    public function getUserPlaylistsForModaleSelection()
+    public function getUserPlaylistsForModaleSelection(): array
     {
         $currentUserId = $this->api->me()->id;
 
         $playlists          = [];
-        $tmpPlaylistRequest = [];
         $maxLimit           = 50;
         $offset             = 0;
 
@@ -197,12 +164,12 @@ class Request
             }
 
             $offset += $maxLimit;
-        } while(sizeof($tmpPlaylistsRequest) >= $maxLimit);
+        } while(count($tmpPlaylistsRequest) >= $maxLimit);
 
         return $playlists;
     }
 
-    public function getTopsTracksFromArtists($artists, $nbTracks)
+    public function getTopsTracksFromArtists($artists, $nbTracks): array
     {
         $tracks = [];
         foreach ($artists as $artist) {
@@ -219,7 +186,7 @@ class Request
         return $tracks;
     }
 
-    protected function getTopTracksFromArtist($id, $nbTracks = 10)
+    protected function getTopTracksFromArtist($id, $nbTracks = 10): array
     {
         if ($nbTracks < 1 || $nbTracks > 10) {
             $nbTracks = 10;
@@ -234,21 +201,7 @@ class Request
         return array_slice($tracks, 0, $nbTracks);
     }
 
-    public function addTopTracksToPlaylist($data)
-    {
-        $nbSongs     = $data['nbSongs'];
-        $playlistId  = $data['playlist'];
-        $artists     = Tools::getArtistsSelectionInSession();
-        $tracksToAdd = [];
-
-        foreach($artists as $artist) {
-            $tracksToAdd = array_merge($tracksToAdd, $this->getTopTracksFromArtist($artist['id'], $nbSongs));
-        }
-
-        $this->addTracksToPlaylist($tracksToAdd, $playlistId);
-    }
-
-    public function getTracks($tracks)
+    public function getTracks($tracks): array
     {
         $tracksToReturn = [];
 
@@ -262,7 +215,7 @@ class Request
         return $tracksToReturn;
     }
 
-    public function setGenreRespository(GenreRepository $genreRepository)
+    public function setGenreRespository(GenreRepository $genreRepository): void
     {
         $this->genreRepository = $genreRepository;
     }
@@ -282,13 +235,11 @@ class Request
         return $this->api->getArtist($id);
     }
     
-    public function getAllFollowedArtists()
+    public function getAllFollowedArtists(): array
     {
         $artists           = [];
         $lastArtistId      = null;
-        $tmpArtistsRequest = [];
         $maxLimit          = 50;
-        $offset            = 0;
         
         $security = 0;
         
@@ -305,24 +256,13 @@ class Request
             // Stocke des infos
             $artists = array_merge($artists, $currentArtists);
             $lastArtistId = $tmpArtistsRequest->cursors->after;
-    
-            $offset += $maxLimit;
-        } while($security < 100 && $tmpArtistsRequest->total > sizeof($artists));
+
+        } while($security < 100 && $tmpArtistsRequest->total > count($artists));
 
         return $artists;
     }
     
-    public function getUserInformations()
-    {
-        return $this->api->me();
-    }
-    
-    public function getGenreSeeds()
-    {
-        return $this->api->getGenreSeeds();
-    }
-    
-    public function getBestRecommendations(array $genresEntities, int $nbTracks = 50, $includeFollowedArtits = false, $includeLikedSongs = false)
+    public function getBestRecommendations(array $genresEntities, int $nbTracks = 50): array
     {
         $uniqArtists = [];
         $cpt    = 0;
@@ -339,11 +279,7 @@ class Request
             ])->tracks;
             
             foreach ($recos as $reco) {
-                foreach ($reco->artists as $recoArtist) {
-                    $uniqArtists[] = $recoArtist->id;
-                }
                 $tracks[$reco->id] = $reco;
-                
             }
             $cpt++;    
         }
@@ -352,7 +288,7 @@ class Request
         return array_slice($tracks, 0, $nbTracks);
     }
     
-    protected function translateGenresToSeeds(array $genresEntities)
+    protected function translateGenresToSeeds(array $genresEntities): array
     {
         $perfects     = [];
         $genresSeeds  = [];
@@ -361,8 +297,8 @@ class Request
         foreach ($seeds as $seed) {
             foreach ($genresEntities as $genre) {
                 $name = strtolower($genre->getName());
-                if ((strpos($name, strtolower($seed)) !== false)
-                    || (strpos($seed, strtolower($name)) !== false)) {
+                if ((stripos($name, $seed) !== false)
+                    || (stripos($seed, $name) !== false)) {
                         
                     if ($seed == $name) {
                         $perfects[] = $seed;
@@ -381,7 +317,7 @@ class Request
         return array_slice($genresSeeds, 0, 2);
     }
     
-    protected function getFollowedArtistsByGenres($genresEntities)
+    protected function getFollowedArtistsByGenres($genresEntities): array
     {
         $artists = [];
         $artistsFollowed = $this->getAllFollowedArtists();
@@ -396,10 +332,9 @@ class Request
         return array_slice($artists, 0, 3);
     }
     
-    protected function getAllLikedTracks()
+    protected function getAllLikedTracks(): array
     {
         $tracks           = [];
-        $tmpTracksRequest = [];
         $maxLimit          = 50;
         $offset            = 0;
         
@@ -418,19 +353,13 @@ class Request
                 $tracks[] = $currentTrack->track;
             }
 
-    
             $offset += $maxLimit;
         } while($security < 10 && (sizeof($currentTracks) >= $maxLimit));
 
         return $tracks;
     }
     
-    protected function getLikedTracks($genresEntities)
-    {
-        $this->getAllLikedTracks();
-    }
-    
-    public function addTracksToQueue(array $tracks)
+    public function addTracksToQueue(array $tracks): array
     {
         $success  = 0;
         $failure  = 0;
@@ -452,7 +381,7 @@ class Request
         ];
     }
     
-    public function isThereOneAvailableDevice()
+    public function isThereOneAvailableDevice(): bool
     {
         return $this->getActiveDevice() !== null;
     }
@@ -463,9 +392,9 @@ class Request
         foreach ($this->api->getMyDevices()->devices as $device) {
             if ($device->is_active) {
                 return $device->id;
-            } else {
-                $deviceId = $device->id;
             }
+
+            $deviceId = $device->id;
         }
         
         return $deviceId;

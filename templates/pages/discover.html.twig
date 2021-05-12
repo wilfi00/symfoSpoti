@@ -40,7 +40,7 @@
                     </ul>
                 </div>
     		    <div id="loader"></div>
-    		    <div class="playlistResult"></div>
+    		    <div class="playlistResult">{% include 'spotiTemplates/_tracks.html.twig' %}</div>
     		</div>
     		<div class="col-lg-4">
     			<!-- https://codepen.io/Aoyue/pen/rLExYX -->
@@ -63,21 +63,29 @@
     			<div class="save">
     			    <h3>{% trans %}save_songs{% endtrans %}</h3>
                     <form action="{{ saveUrl }}" id="saveAction" method="POST">
-                        <select class="saveOption" name="saveOption">
-                            <option value="createNewPlaylist" default>{% trans %}create_new_playlist{% endtrans %}</option>
+                        <select {{ isConnected() ? '' : 'disabled' }} class="saveOption" name="saveOption">
+                            <option value="createNewPlaylist">{% trans %}create_new_playlist{% endtrans %}</option>
                             <option {{ isConnected() ? '' : 'disabled' }} value="existingPlaylist">{% trans %}existing_playlist{% endtrans %}</option>
                             <option {{ isConnected() and isOneDeviceActive() ? '' : 'disabled' }} value="queue">{% trans %}adding_to_queue{% endtrans %}</option>
                         </select>
-        				<input name="playlistName" type="text" class="playlistName" placeholder="{% trans %}discover_playlistName{% endtrans %}" required>
+        				<input {{ isConnected() ? '' : 'disabled' }} name="playlistName" type="text" class="playlistName" placeholder="{% trans %}discover_playlistName{% endtrans %}" required>
         				<select class="existingPlaylist" name="existingPlaylist">
         				    {% for name, id in playlists %}
         				        <option value="{{ id }}">{{ name }}</option>
         				    {% endfor %}
         				</select>
-        				<button type="submit" class="btn btn-primary saveAction" data-content="{% trans %}discover_playlistSaveToolTip{% endtrans %}" disabled>
-                            <img src="{{ asset('build/images/Spotify_Icon_RGB_Black.png') }}" alt="Spotify logo">{% trans %}validate{% endtrans %}
-        				</button>
-                    </form>
+        				{% if isConnected() %}
+            				<button type="submit" class="btn btn-primary saveAction" data-content="{% trans %}discover_playlistSaveToolTip{% endtrans %}" {% if tracks is empty %}disabled{% endif %}>
+                                <img src="{{ asset('build/images/Spotify_Icon_RGB_Black.png') }}" alt="Spotify logo">{% trans %}validate{% endtrans %}
+            				</button>
+            			{% endif %} 
+    				</form>
+        			{% if not isConnected() %}
+        			    <p class="importantSecondary">{% trans %}discover_connexion_explain{% endtrans %}</p>
+        			    <form action="{{ path('spoti_auth') }}">
+        			        <button type="submit" class="btn btn-primary login"><img class="mr-1" src="{{ asset('build/images/Spotify_Icon_RGB_Black.png') }}" alt="Spotify logo">{% trans %}login{% endtrans %}</button>
+    			        </form>
+    				{% endif %}
     			</div>
     		</div>
     	</div>

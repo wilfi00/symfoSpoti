@@ -77,7 +77,7 @@
 				<div class="save">
     			    <h3>{% trans %}save_songs{% endtrans %}</h3>
                     <form action="{{ saveUrl }}" id="saveAction" method="POST">
-                        <select class="saveOption" name="saveOption">
+                        <select {{ isConnected() ? '' : 'disabled' }}  class="saveOption" name="saveOption">
                             <option value="createNewPlaylist" default>{% trans %}create_new_playlist{% endtrans %}</option>
                             <option {{ isConnected() ? '' : 'disabled' }} value="existingPlaylist">{% trans %}existing_playlist{% endtrans %}</option>
                             <option {{ isConnected() and isOneDeviceActive() ? '' : 'disabled' }} value="queue">{% trans %}adding_to_queue{% endtrans %}</option>

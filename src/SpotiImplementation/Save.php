@@ -18,28 +18,32 @@ class Save
     const MODE_EXISTINGPLAYLIST = 'existingPlaylist';
     const MODE_QUEUE = 'queue';
     
-    public function __construct(string $saveMode, array $tracks = [], $playlistName = '', $playlistId = null)
+    public function __construct(SpotiRequest $spotiRequest, string $saveMode, array $tracks = [], $playlistName = '', $playlistId = null)
     {
         $this->saveMode = $saveMode;
         $this->tracks = $tracks;
         $this->playlistName = $playlistName;
         $this->playlistId = $playlistId;
-        $this->spotiRequest  = SpotiRequest::factory();
+        $this->spotiRequest  = $spotiRequest;
     }
     
     public function save()
     {
         $saveMode = $this->saveMode;
-        
+
         if ($saveMode === static::MODE_NEWPLAYLIST) {
             return $this->saveUsingNewPlaylist();
-        } elseif ($saveMode === static::MODE_EXISTINGPLAYLIST) {
-            return $this->saveUsingExistingPlaylist();
-        } elseif ($saveMode === static::MODE_QUEUE) {
-            return $this->saveUsingQueue();
-        } else {
-            return false;
         }
+
+        if ($saveMode === static::MODE_EXISTINGPLAYLIST) {
+            return $this->saveUsingExistingPlaylist();
+        }
+
+        if ($saveMode === static::MODE_QUEUE) {
+            return $this->saveUsingQueue();
+        }
+
+        return false;
     }
     
     protected function saveUsingNewPlaylist()

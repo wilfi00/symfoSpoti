@@ -76,7 +76,9 @@ label {
 
 [v-cloak] { display: none; }
 
-a { 
+.dropdown-item:active { color: inherit; background-color: inherit; }
+
+a:not(.dropdown-item, .nav-link) { 
 	cursor: pointer;
 	color: $color1 !important;
 	&:hover, &:focus {
@@ -94,6 +96,7 @@ a {
 	height: 40px;
 }
 
+.btn:focus, .btn:focus:active { box-shadow: none!important; }
 button:focus { outline: none; }
 
 .btn-primary {
@@ -136,13 +139,12 @@ button:focus { outline: none; }
 	background-color: transparent!important;
 	border-color: $color2!important;
 }
-.btn:focus, .btn:focus:active { box-shadow: none!important; }
 
 .banner{
 	justify-content: space-between;
 	align-items: center;
 }
-.banner a{
+.banner a:not(.dropdown-item) {
 	&:hover, &:focus{
 		color: $color1 !important;;
 	}
@@ -474,14 +476,19 @@ input::placeholder, .nice-select {
 	.playlistName { width: 100%; height: 50px; }
 }
 
-.saveAction { margin-top: 20px; }
-
+.save { .importantSecondary, .saveAction { margin-top: 20px; } }
 .login, .saveAction {
 	height: 62px;
 	img {
 		width: 32px;
 		padding-right: 8px;
 	}
+}
+
+.login img {
+	width: 28px;
+	border-radius: 50%;
+	padding-right: 0;
 }
 
 .close {
@@ -591,10 +598,17 @@ body {
 	}
 	.nb-followed-container .important { margin-right: 4px; }
 }
+.followedArtistsNotConnected {
+	margin-top: 40px;
+	text-align: center;	
+}
 
 .important {
 	color: $color1;
 	font-size: 20px;
+}
+.importantSecondary {
+	font-size: 18px;
 }
 
 .disabled {

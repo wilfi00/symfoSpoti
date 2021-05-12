@@ -4,7 +4,6 @@ namespace App\Services;
 
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
-use \App\Services\Utils;
 
 class InfoProcessor
 {

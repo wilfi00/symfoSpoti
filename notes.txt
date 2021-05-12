@@ -157,15 +157,15 @@ require('select2')
 TODO 
 
 Quand on est pas connecté :
-1- toute la partie sauvegarde est grisée
-2- on a le bouton se connecter avec spotify qui s'affiche
-3- on sauvegarde les données en session :
-    a- la playlist générée
-    b- les artistes sélectionnés (déjà fait :) )
+[OK]1- toute la partie sauvegarde est grisée
+[OK]2- on a le bouton se connecter avec spotify qui s'affiche
+[OK]3- on sauvegarde les données en session :
+    [OK]a- la playlist générée
+    [OK]b- les artistes sélectionnés (déjà fait :) )
     
 Quand on est connecté :
-1- En haut à droite on a plus le bouton de connexion mais on a son nom + photo (Johan Martin Girafe)
-2- en cliquand sur le nom on a un dropdown avec "Se déconnecter"
+[OK]1- En haut à droite on a plus le bouton de connexion mais on a son nom + photo (Johan Martin Girafe)
+[OK]2- en cliquand sur le nom on a un dropdown avec "Se déconnecter"
 
 Quand on clique sur à partir de tes artistes suivis :
 1- on a une page qui explique la connexion avec en plein milieu le bouton de connexion

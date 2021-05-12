@@ -6,28 +6,39 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use \App\SpotiImplementation\Request as SpotiRequest;
 use \App\SpotiImplementation\Auth as SpotiAuth;
-use \App\SpotiImplementation\Tools as SpotiTools;
 use \App\SpotiImplementation\Save as SpotiSave;
-use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use App\Form\Type\ArtistsType;
 use Symfony\Component\Security\Core\Security;
 
 class DiscoverFromFollowedArtistsController extends AbstractController
 {
     /**
+     * @Route("/followedArtistsNotConnected", name="artists_followed_not_connected")
+     */
+    public function isNotConnected(Security $security)
+    {
+        if ($security->isGranted('ROLE_SPOTIFY')) {
+            return $this->redirectToRoute('artists_followed');
+        }
+        return $this->render('pages/discover_from_followed_artists_not_connected.html.twig');
+    }
+
+    /**
      * @Route("/followedArtists", name="artists_followed")
+     * @param Request $request
+     * @param TranslatorInterface $translator
+     * @param SpotiRequest $spotiRequest
+     * @param Security $security
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
      */
     public function index(Request $request, TranslatorInterface $translator, SpotiRequest $spotiRequest, Security $security)
     {
         $session = $request->getSession();
 
         if (!$security->isGranted('ROLE_SPOTIFY')) {
-           return $this->redirectToRoute('spoti_auth', ['callback_url' => $request->getUri()]);
+           return $this->redirectToRoute('artists_followed_not_connected');
         }
         
         $artists      = $spotiRequest->getAllFollowedArtists();
@@ -84,7 +95,7 @@ class DiscoverFromFollowedArtistsController extends AbstractController
             'saveOption'       => $request->request->get('saveOption'),
             'playlistName'     => $request->request->get('playlistName'),
             'existingPlaylist' => $request->request->get('existingPlaylist'),
-            'artists'          => json_decode($request->request->get('artists')),
+            'artists'          => json_decode($request->request->get('artists'), true),
             'nbTracks'         => $request->request->get('nbTracks'),
         ];
 
@@ -112,6 +123,7 @@ class DiscoverFromFollowedArtistsController extends AbstractController
         );
         
         $spotiSave = new SpotiSave(
+            $spotiRequest,
             $data['saveOption'],
             array_keys($tracksRequest),
             $data['playlistName'],

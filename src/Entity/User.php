@@ -5,7 +5,7 @@ namespace App\Entity;
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Kerox\OAuth2\Client\Provider\SpotifyResourceOwner as SpotifyResourceOwner;
+use Kerox\OAuth2\Client\Provider\SpotifyResourceOwner;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -118,7 +118,6 @@ class User implements UserInterface
      */
     public function getRoles(): array
     {
-        $roles = $this->roles;
         // guarantee every user at least has ROLE_USER
         $roles = ['ROLE_USER', 'ROLE_SPOTIFY'];
 

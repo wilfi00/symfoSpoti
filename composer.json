@@ -28,7 +28,7 @@
         "symfony/process": "5.2.*",
         "symfony/security-bundle": "5.2.*",
         "symfony/serializer-pack": "*",
-        "symfony/string": "5.1.*",
+        "symfony/string": "5.2.*",
         "symfony/translation": "5.1.*",
         "symfony/twig-pack": "^1.0",
         "symfony/web-link": "5.1.*",

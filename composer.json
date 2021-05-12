@@ -9,7 +9,7 @@
         "kerox/oauth2-spotify": "^1.2",
         "knpuniversity/oauth2-client-bundle": "^2.8",
         "paragonie/sodium_compat": "^1.12",
-        "sensio/framework-extra-bundle": "^5.5",
+        "sensio/framework-extra-bundle": "^6.1",
         "sonata-project/seo-bundle": "^2.10",
         "stof/doctrine-extensions-bundle": "^1.6",
         "symfony/asset": "5.1.*",

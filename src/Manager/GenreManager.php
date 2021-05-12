@@ -13,7 +13,6 @@ class GenreManager extends AbstractManager
     /**
      * FacturationDetailsManager constructor.
      * @param EntityManagerInterface $entityManager
-     * @param FacturationManager $facturationManager
      */
     public function __construct(EntityManagerInterface $entityManager)
     {

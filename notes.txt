@@ -12,8 +12,8 @@ yarn upgrade (il faut que yarn ne tourne pas !)
 
 yarn encore dev --watch
 
-composer install
-yarn encore production && php bin/console cache:clear --env=prod --no-debug
+composer install && composer update && yarn upgrade && yarn encore production && php bin/console cache:clear --env=prod --no-debug
+yarn encore dev && php bin/console cache:clear --env=dev --no-debug
 => il faut que johan soit le proprio de var
 mais pour apache il faut que ça soit www-data :/
 

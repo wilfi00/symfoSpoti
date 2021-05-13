@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Interfaces\SongInterface;
 use App\Traits\SongTrait;
 use App\Repository\TrackRepository;
 use Doctrine\ORM\Mapping as ORM;
@@ -9,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass=TrackRepository::class)
  */
-class Track
+class Track implements SongInterface
 {
     use SongTrait;
     
@@ -17,6 +18,11 @@ class Track
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     protected $preview_url;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="tracks")
+     */
+    private $user;
 
     public function getPreviewUrl(): ?string
     {

@@ -2,6 +2,7 @@
 
 namespace App\Traits;
 
+use App\Entity\User;
 use Doctrine\ORM\Mapping as ORM;
 
 trait SongTrait
@@ -12,11 +13,6 @@ trait SongTrait
      * @ORM\Column(type="integer")
      */
     protected $id;
-
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    protected $user_id;
 
     /**
      * @ORM\Column(type="string", length=50)
@@ -41,18 +37,6 @@ trait SongTrait
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getUserId(): ?int
-    {
-        return $this->user_id;
-    }
-
-    public function setUserId(?int $user_id): self
-    {
-        $this->user_id = $user_id;
-
-        return $this;
     }
 
     public function getSpotifyId(): ?string
@@ -99,6 +83,18 @@ trait SongTrait
     public function setPopularity(int $popularity): self
     {
         $this->popularity = $popularity;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }

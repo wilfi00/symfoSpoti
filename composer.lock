@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "941f65c3526493c0b935f6fcbb1e0576",
+    "content-hash": "0c44d872bc677e0cdaac02ce89b86952",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -3945,7 +3945,7 @@
         },
         {
             "name": "symfony/dotenv",
-            "version": "v5.1.11",
+            "version": "v5.2.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/dotenv.git",

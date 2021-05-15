@@ -6,6 +6,9 @@ use App\Interfaces\SongInterface;
 use App\Traits\SongTrait;
 use App\Repository\AlbumRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass=AlbumRepository::class)
@@ -13,9 +16,18 @@ use Doctrine\ORM\Mapping as ORM;
 class Album implements SongInterface
 {
     use SongTrait;
+    use TimestampableEntity;
+    use SoftDeleteableEntity;
+
+    public const TYPE = 'album';
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="albums")
      */
-    private $user;
+    private UserInterface $user;
+
+    public function getType(): string
+    {
+        return static::TYPE;
+    }
 }

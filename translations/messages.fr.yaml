@@ -7,6 +7,10 @@ filters: Filtres
 validate: Valider
 login: Se connecter avec Spotify
 logout: Se déconnecter
+add: Ajouter
+track: Chanson
+artist: Artiste
+album: Album
 # Select save
 save_songs: Enregistrer les chansons
 create_new_playlist: Créer une nouvelle playlist
@@ -15,9 +19,10 @@ adding_to_queue: Ajouter à la file d'attente
 
 # Base
 brand_name: Discover New Music
-from_genre: A partir des genres
-from_selected_artists: A partir d'une sélection d'artistes
-from_followed_artists: A partir de tes artistes suivis
+from_genre: À partir des genres
+from_selected_artists: À partir d'une sélection d'artistes
+from_followed_artists: À partir de tes artistes suivis
+listenlater: À écouter plus tard
 
 # Discover
 discover_h1: Découvre de nouveaux artistes
@@ -55,6 +60,11 @@ fwa_discover_song: chanson par artiste
 fwa_discover_songs: chansons par artiste
 discover_fwa_select_all_artists: Sélectionner tous les artistes
 discover_fwa_connexion_explain: Pour accéder à cette page et générer une playlist avec tes artistes suivis, il faut se connecter à Spotify
+
+# Listen later
+listenlater_h1: À écouter plus tard
+listenlater_p1: Ajouter des chansons, album ou artistes à écouter plus tard !
+listenlater_searchPlaceholder: Rechercher...
 
 #SEO
 seo_description: Découvre de nouvelles musiques et enregistre les dans une playlist Spotify !

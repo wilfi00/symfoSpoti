@@ -41,6 +41,7 @@ Encore
     .addEntry('discoverFromSelectedArtist', './assets/js/discoverFromSelectedArtist.js')
     .addEntry('discoverFromFollowedArtist', './assets/js/discoverFromFollowedArtist.js')
     .addEntry('appVue', './assets/js/appVue.js')
+    .addEntry('listenLaterAdd', './assets/js/listenLaterAdd.js')
     //.addEntry('page1', './assets/js/page1.js')
     //.addEntry('page2', './assets/js/page2.js')
 

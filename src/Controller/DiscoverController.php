@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Manager\ArtistManager;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,11 +14,6 @@ use App\Repository\GenreRepository;
 use Sonata\SeoBundle\Seo\SeoPageInterface as Seo;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Psr\Log\LoggerInterface;
-use App\Services\InfoFormatter;
-use Symfony\Bridge\Monolog\Processor\RouteProcessor;
-use Symfony\Bridge\Monolog\Processor\WebProcessor;
-use KnpU\OAuth2ClientBundle\Client\ClientRegistry;
 use App\Manager\GenreManager as GenreManager;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -28,13 +22,20 @@ class DiscoverController extends AbstractController
 {
     /**
      * @Route("/", name="discover")
+     * @param Request $request
+     * @param GenreRepository $genreRepository
+     * @param Seo $seo
+     * @param TranslatorInterface $translator
+     * @param SpotiRequest $spotiRequest
+     * @param Security $security
+     * @param Session $session
+     * @return Response
      */
     public function displayDiscover(
         Request $request, 
         GenreRepository $genreRepository,
         Seo $seo, 
-        TranslatorInterface $translator, 
-        LoggerInterface $logger, 
+        TranslatorInterface $translator,
         SpotiRequest $spotiRequest,
         Security $security,
         Session $session
@@ -74,10 +75,14 @@ class DiscoverController extends AbstractController
             'playlists'           => $playlists,
         ]);
     }
-    
-    
+
+
     /**
      * @Route("/searchGenres", name="searchGenres")
+     * @param Request $request
+     * @param GenreManager $genreManager
+     * @param Seo $seo
+     * @return Response
      */
     public function searchGenres(Request $request, GenreManager $genreManager, Seo $seo)
     {
@@ -97,6 +102,8 @@ class DiscoverController extends AbstractController
     /**
      * Vérification de la validité des données postées par le formulaire discovery
      *
+     * @param $request
+     * @param GenreRepository $genreRepository
      * @return bool True si valid
      */
     protected function isValidDatasForDiscover($request, GenreRepository $genreRepository)
@@ -148,8 +155,14 @@ class DiscoverController extends AbstractController
         return ['nbSongs' => $nbSongs, 'genres' => $genreEntities];
     }
 
-     /**
+    /**
      * @Route("/generatePlaylist", name="generatePlaylist")
+     * @param Request $request
+     * @param GenreRepository $genreRepository
+     * @param SpotiRequest $spotiRequest
+     * @param Session $session
+     * @return Response
+     * @throws \Exception
      */
     public function generatePlaylist(Request $request, GenreRepository $genreRepository, SpotiRequest $spotiRequest, Session $session)
     {
@@ -192,9 +205,14 @@ class DiscoverController extends AbstractController
         SpotiTools::saveTracksInSession($session, $tracks);
         return $this->render('spotiTemplates/_tracks.html.twig', ['tracks' => $tracks]);
     }
-    
+
     /**
      * @Route("/generateBetterPlaylist", name="generateBetterPlaylist")
+     * @param Request $request
+     * @param GenreRepository $genreRepository
+     * @param SpotiRequest $spotiRequest
+     * @return Response
+     * @throws \Exception
      */
     public function generateBetterPlaylist(Request $request, GenreRepository $genreRepository, SpotiRequest $spotiRequest)
     {
@@ -230,6 +248,10 @@ class DiscoverController extends AbstractController
 
     /**
      * @Route("/saveTracksFromGenres", name="save_tracks_from_genres")
+     * @param Request $request
+     * @param SpotiRequest $spotiRequest
+     * @param Security $security
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function saveTracksFromGenres(Request $request, SpotiRequest $spotiRequest, Security $security)
     {
@@ -270,6 +292,8 @@ class DiscoverController extends AbstractController
 
     /**
      * @Route("/setPopularityGenres", name="setPopularityGenres")
+     * @param GenreRepository $genreRepository
+     * @param SpotiRequest $spotiRequest
      */
     public function setPopularityGenres(GenreRepository $genreRepository, SpotiRequest $spotiRequest)
     {

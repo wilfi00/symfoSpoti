@@ -36,54 +36,57 @@
         {% endif %}
     </head>
     <body class="{{app.request.attributes.get('_route')}}">
-      <header>
+        <header>
         <div class="banner d-flex flex-column-reverse flex-md-row">
-          <a class="navbar-brand d-flex" href="{{ path('discover') }}"><img class="logo" src="{{ asset('build/images/logo.png') }}"/><h1>{% trans %}brand_name{% endtrans %}</h1></a>
-          <div class="navbar-right">
-            {% if isConnected() %}
-              <div class="dropdown">
-                <button class="btn btn-secondary dropdown-toggle login" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  {{ app.user.username }}<img class="ml-2" src="{{ app.user.getImageUrl() }}" alt="Image de profil">
-                </button>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                  <a class="dropdown-item" href="{{ path('logout') }}">{% trans %}logout{% endtrans %}</a>
+            <a class="navbar-brand d-flex" href="{{ path('discover') }}"><img class="logo" src="{{ asset('build/images/logo.png') }}"/><h1>{% trans %}brand_name{% endtrans %}</h1></a>
+            <div class="navbar-right">
+                {% if isConnected() %}
+                    <div class="dropdown">
+                        <button class="btn btn-secondary dropdown-toggle login" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        {{ app.user.username }}<img class="ml-2" src="{{ app.user.getImageUrl() }}" alt="Image de profil">
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a class="dropdown-item" href="{{ path('logout') }}">{% trans %}logout{% endtrans %}</a>
+                        </div>
+                    </div>
+                {% else %}
+                    <form action="{{ path('spoti_auth') }}"><button type="submit" class="btn btn-primary login"><img class="mr-1" src="{{ asset('build/images/Spotify_Icon_RGB_Black.png') }}" alt="Spotify logo">{% trans %}login{% endtrans %}</button></form>
+                {% endif %}
+                <div class="changeLanguageSelector">
+                    <form class="formLanguage" action="/changeLanguage" id="changeLanguage" method="POST">
+                        <select name="language">
+                            <option data-lang="fr" value="{{ path(route, params|merge({ _locale: 'fr' })) }}">Français</option>
+                            <option data-lang="en" value="{{ path(route, params|merge({ _locale: 'en' })) }}">English</option>
+                        </select>
+                    </form>
                 </div>
-              </div>
-            {% else %}
-              <form action="{{ path('spoti_auth') }}"><button type="submit" class="btn btn-primary login"><img class="mr-1" src="{{ asset('build/images/Spotify_Icon_RGB_Black.png') }}" alt="Spotify logo">{% trans %}login{% endtrans %}</button></form>
-            {% endif %}
-            <div class="changeLanguageSelector">
-              <form class="formLanguage" action="/changeLanguage" id="changeLanguage" method="POST">
-                <select name="language">
-                  <option data-lang="fr" value="{{ path(route, params|merge({ _locale: 'fr' })) }}">Français</option>
-                  <option data-lang="en" value="{{ path(route, params|merge({ _locale: 'en' })) }}">English</option>
-                </select>
-              </form>
             </div>
-          </div>
         </div>
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
-         <span class="nav-link">Génère une playlist : </span>
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-        
-          <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            {% set path = app.request.attributes.get('_route') %}
-            <ul class="navbar-nav mr-auto">
-              <li class="nav-item {% if path == 'discover' %}active{% endif %}">
-                <a class="nav-link" href="{{ path('discover') }}">{% trans %}from_genre{% endtrans %}</a>
-              </li>
-              <li class="nav-item {% if path == 'artist_selection' %}active{% endif %}">
-                <a class="nav-link" href="{{ path('artist_selection') }}">{% trans %}from_selected_artists{% endtrans %}</a>
-              </li>
-              <li class="nav-item {% if path == 'artists_followed' or path == 'artists_followed_not_connected' %}active{% endif %}">
-                <a class="nav-link" href="{{ path('artists_followed') }}">{% trans %}from_followed_artists{% endtrans %}</a>
-              </li>
-            </ul>
-          </div>
+            <span class="nav-link">Génère une playlist : </span>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                {% set path = app.request.attributes.get('_route') %}
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item {% if path == 'discover' %}active{% endif %}">
+                        <a class="nav-link" href="{{ path('discover') }}">{% trans %}from_genre{% endtrans %}</a>
+                    </li>
+                    <li class="nav-item {% if path == 'artist_selection' %}active{% endif %}">
+                        <a class="nav-link" href="{{ path('artist_selection') }}">{% trans %}from_selected_artists{% endtrans %}</a>
+                    </li>
+                    <li class="nav-item {% if path == 'artists_followed' or path == 'artists_followed_not_connected' %}active{% endif %}">
+                        <a class="nav-link" href="{{ path('artists_followed') }}">{% trans %}from_followed_artists{% endtrans %}</a>
+                    </li>
+                    <li class="nav-item {% if path == 'listen_later' or path == 'listen_later_not_connected' %}active{% endif %}">
+                        <a class="nav-link" href="{{ path('listen_later') }}">{% trans %}listenlater{% endtrans %}</a>
+                    </li>
+                </ul>
+            </div>
         </nav>
-      </header>
+        </header>
         
         {% block sidebarLeft %}
         {% endblock %}

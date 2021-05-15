@@ -2,11 +2,10 @@
 
 namespace App\Manager;
 
-use App\Entity\Artist;
-use App\Entity\User;
 use App\Traits\SongManagerTrait;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\Track;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class TrackManager extends AbstractManager
 {
@@ -22,10 +21,10 @@ class TrackManager extends AbstractManager
         parent::__construct($entityManager);
     }
 
-    public function add(User $user, string $spotifyId, string $spotifyUri, string $name, int $popularity): void
+    public function add(UserInterface $user, string $spotifyId, string $spotifyUri, string $name, string $image): void
     {
-        $artist = new Track();
-        $this->setCommonAttributes($artist, $user, $spotifyId,  $spotifyUri,  $name, $popularity);
-        $this->save($artist);
+        $track = new Track();
+        $this->setCommonAttributes($track, $user, $spotifyId,  $spotifyUri,  $name, $image);
+        $this->save($track);
     }
 }

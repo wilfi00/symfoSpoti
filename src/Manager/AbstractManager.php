@@ -64,7 +64,7 @@ abstract class AbstractManager
      *
      * @param EntityManagerInterface $entityManager
      */
-    public function setEntityManager(EntityManagerInterface $entityManager)
+    public function setEntityManager(EntityManagerInterface $entityManager): void
     {
         $this->entityManager = $entityManager;
         $this->repository = $entityManager->getRepository($this->entityClassName);
@@ -74,7 +74,7 @@ abstract class AbstractManager
      * @todo should be protected to avoid use from controller
      * Gets managed entity's repository
      */
-    public function getRepository()
+    public function getRepository(): EntityRepository
     {
         return $this->repository;
     }
@@ -82,7 +82,7 @@ abstract class AbstractManager
     /**
      * Flushes all changes
      */
-    public function flush()
+    public function flush(): void
     {
         $this->entityManager->flush();
     }
@@ -91,7 +91,7 @@ abstract class AbstractManager
      * Clear all changes
      * @param null $objectName
      */
-    public function clear($objectName = null)
+    public function clear($objectName = null): void
     {
         $this->entityManager->clear($objectName);
     }
@@ -129,7 +129,7 @@ abstract class AbstractManager
      *
      * @return array
      */
-    public function findBy(array $criteria, array $orderBy = null, int $limit = null, int $offset = null)
+    public function findBy(array $criteria, array $orderBy = null, int $limit = null, int $offset = null): array
     {
         return $this->repository->findBy($criteria, $orderBy, $limit, $offset);
     }
@@ -139,7 +139,7 @@ abstract class AbstractManager
      *
      * @return array
      */
-    public function findAll()
+    public function findAll(): array
     {
         return $this->repository->findAll();
     }
@@ -149,7 +149,7 @@ abstract class AbstractManager
      *
      * @return array
      */
-    public function findAllInArray()
+    public function findAllInArray(): array
     {
         return $this->repository->createQueryBuilder('g')
             ->getQuery()
@@ -164,7 +164,7 @@ abstract class AbstractManager
      * @param string|null $username
      * @param bool $flush
      */
-    public function softDelete($entity, string $username = null, bool $flush = true)
+    public function softDelete($entity, string $username = null, bool $flush = true): void
     {
         if (!method_exists($entity, 'setDtd')) {
             throw new \LogicException(sprintf('Entity %s is not soft deletable.', get_class($entity)));
@@ -208,7 +208,7 @@ abstract class AbstractManager
      * @param mixed  $entity
      * @param bool $flush
      */
-    public function delete($entity, bool $flush = true)
+    public function delete($entity, bool $flush = true): void
     {
         $this->entityManager->remove($entity);
 
@@ -244,7 +244,7 @@ abstract class AbstractManager
      * @param mixed $object
      * @param bool $flush
      */
-    public function save($object, bool $flush = true)
+    public function save($object, bool $flush = true): void
     {
         $this->entityManager->persist($object);
 

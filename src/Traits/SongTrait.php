@@ -2,8 +2,8 @@
 
 namespace App\Traits;
 
-use App\Entity\User;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 trait SongTrait
 {
@@ -12,27 +12,27 @@ trait SongTrait
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    protected $id;
+    protected int $id;
 
     /**
      * @ORM\Column(type="string", length=50)
      */
-    protected $spotify_id;
+    protected string $spotify_id;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    protected $spotify_uri;
+    protected string $spotify_uri;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    protected $name;
+    protected string $name;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
-    protected $popularity;
+    protected ?string $image;
 
     public function getId(): ?int
     {
@@ -75,26 +75,26 @@ trait SongTrait
         return $this;
     }
 
-    public function getPopularity(): ?int
-    {
-        return $this->popularity;
-    }
-
-    public function setPopularity(int $popularity): self
-    {
-        $this->popularity = $popularity;
-
-        return $this;
-    }
-
-    public function getUser(): ?User
+    public function getUser(): ?UserInterface
     {
         return $this->user;
     }
 
-    public function setUser(?User $user): self
+    public function setUser(?UserInterface $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getImage(): string
+    {
+        return $this->image;
+    }
+
+    public function setImage(?string $imageUrl): self
+    {
+        $this->image = $imageUrl;
 
         return $this;
     }

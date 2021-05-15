@@ -6,6 +6,9 @@ use App\Interfaces\SongInterface;
 use App\Traits\SongTrait;
 use App\Repository\TrackRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass=TrackRepository::class)
@@ -13,16 +16,20 @@ use Doctrine\ORM\Mapping as ORM;
 class Track implements SongInterface
 {
     use SongTrait;
-    
+    use TimestampableEntity;
+    use SoftDeleteableEntity;
+
+    public const TYPE = 'track';
+
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    protected $preview_url;
+    protected ?string $preview_url;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="tracks")
      */
-    private $user;
+    protected UserInterface $user;
 
     public function getPreviewUrl(): ?string
     {
@@ -34,5 +41,10 @@ class Track implements SongInterface
         $this->preview_url = $preview_url;
 
         return $this;
+    }
+
+    public function getType(): string
+    {
+        return static::TYPE;
     }
 }

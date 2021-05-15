@@ -1,0 +1,37 @@
+{% extends "base.html.twig" %}
+{% block title %}
+<h2>{% trans %}listenlater_h1{% endtrans %}</h2>
+{% endblock %}
+{% block content %}
+    {% set typeTrack = constant('App\\Entity\\Track::TYPE') %}
+    {% set typeArtist = constant('App\\Entity\\Artist::TYPE') %}
+    {% set typeAlbum = constant('App\\Entity\\Album::TYPE') %}
+    <p>{% trans %}listenlater_p1{% endtrans %}</p>
+    <hr>
+    <form action="{{ path('searchSongType') }}" id="searchAction" method="POST">
+        <div class="row">
+            <div class="col-md-2">
+                <div class="select-discover">
+                    <select id="type" name="typeSearch">
+                        <option value="{{ typeTrack }}">{{ typeTrack|trans }}</option>
+                        <option value="{{ typeArtist }}">{{ typeArtist|trans }}</option>
+                        <option value="{{ typeAlbum }}">{{ typeAlbum|trans }}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-10">
+                <input type="text" id="addListenLater" name="searchText" placeholder="{% trans %}listenlater_searchPlaceholder{% endtrans %}">
+                <div id="loader"></div>
+                <div id="search-result" class="search-result">{% include 'spotiTemplates/_songs.html.twig' %}</div>
+            </div>
+        </div>
+    </form>
+
+    <div class="feedback">
+        <div class="alert alert-success"></div>
+    </div>
+{% endblock %}
+{% block footer %}
+    {{ encore_entry_script_tags('listenLaterAdd') }}
+    <script>listenLaterAdd({{ jsConfig|json_encode|raw }});</script>
+{% endblock %}

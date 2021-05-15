@@ -29,44 +29,15 @@ class Request
         }
         $this->api->setSession($spotiSession);
     }
-    
+
+    public function getDirectApi(): SpotifyWebAPI
+    {
+        return $this->api;
+    }
+
     public function searchForArtist($search)
     {
-        $search = $this->api->search($search . '*', 'artist');
-        return  $search->artists->items;
-    }
-
-    public function getSeveralArtists($limit = 5)
-    {
-        $search = $this->api->search(Tools::generateRandomCharacter() . '%', 'artist', ['limit' => $limit]);
-        return  $search->artists->items;
-    }
-
-    public function getTenArtists($nbArtists = 10, $fromGenre = 'metal')
-    {
-        $artists = [];
-        while (count($artists) < $nbArtists) {
-            $tmpArtists = $this->getSeveralArtists(50);
-            foreach ($tmpArtists as $tmpArtist) {
-                $genres = $tmpArtist->genres;
-                foreach ($genres as $genre) {
-                    if (strpos($genre, $fromGenre) !== false) {
-                        $artists[] = $tmpArtist;
-                        break;
-                    }
-                }
-            }
-        }
-
-        return $artists;
-    }
-
-    public function getRandomArtist2()
-    {
-        // $search = $this->api->search('caravan%', 'artist', ['limit' => 50]);
-        $search = $this->api->search(Tools::generateRandomCharacter() . '% genre:electro+swing', 'artist', ['limit' => 50]);
-        // $search = $this->api->search(Tools::generateRandomCharacter() . '% genre:metalcore', 'artist', ['limit' => 50]);
-
+        $search = $this->api->search($search, 'artist');
         return  $search->artists->items;
     }
 
@@ -132,26 +103,6 @@ class Request
 
         $genreRepository->updateTries(Tools::formatInverseStringForSpotify($genre), $cpt);
         return  $artists;
-    }
-
-    public function getSeveralTracks($metal = false)
-    {
-        $tracks    = [] ;
-        if ($metal) {
-            $artists = $this->getTenMetalArtists();
-        } else {
-            $artists = $this->getSeveralArtists();
-        }
-        $artistsId = ApiTools::convertApiObjectsToIds($artists);
-
-        foreach ($artistsId as $id) {
-            $topTracks = $this->api->getArtistTopTracks($id, 'country=FR');
-            foreach ($topTracks->tracks as $topTrack) {
-                $tracks[] = $topTrack;
-            }
-        }
-
-        return $tracks;
     }
 
     public function addTracksToPlaylist($tracks, $playlistId)
@@ -234,20 +185,6 @@ class Request
         return array_slice($tracks, 0, $nbTracks);
     }
 
-    public function addTopTracksToPlaylist($data)
-    {
-        $nbSongs     = $data['nbSongs'];
-        $playlistId  = $data['playlist'];
-        $artists     = Tools::getArtistsSelectionInSession();
-        $tracksToAdd = [];
-
-        foreach($artists as $artist) {
-            $tracksToAdd = array_merge($tracksToAdd, $this->getTopTracksFromArtist($artist['id'], $nbSongs));
-        }
-
-        $this->addTracksToPlaylist($tracksToAdd, $playlistId);
-    }
-
     public function getTracks($tracks)
     {
         $tracksToReturn = [];
@@ -311,17 +248,7 @@ class Request
 
         return $artists;
     }
-    
-    public function getUserInformations()
-    {
-        return $this->api->me();
-    }
-    
-    public function getGenreSeeds()
-    {
-        return $this->api->getGenreSeeds();
-    }
-    
+
     public function getBestRecommendations(array $genresEntities, int $nbTracks = 50, $includeFollowedArtits = false, $includeLikedSongs = false)
     {
         $uniqArtists = [];

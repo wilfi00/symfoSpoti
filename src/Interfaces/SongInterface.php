@@ -2,7 +2,7 @@
 
 namespace App\Interfaces;
 
-use App\Entity\User;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 Interface SongInterface
 {
@@ -13,8 +13,8 @@ Interface SongInterface
     public function setSpotifyUri(string $spotify_uri): self;
     public function getName(): ?string;
     public function setName(string $name): self;
-    public function getPopularity(): ?int;
-    public function setPopularity(int $popularity): self;
-    public function getUser(): ?User;
-    public function setUser(?User $user): self;
+    public function getUser(): ?UserInterface;
+    public function setUser(?UserInterface $user): self;
+    public function getType(): string;
+    public function setImage(string $image);
 }

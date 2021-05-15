@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,6 +22,8 @@ class DiscoverFromFollowedArtistsController extends AbstractController
 {
     /**
      * @Route("/followedArtistsNotConnected", name="artists_followed_not_connected")
+     * @param Security $security
+     * @return RedirectResponse|Response
      */
     public function isNotConnected(Security $security)
     {
@@ -29,9 +32,14 @@ class DiscoverFromFollowedArtistsController extends AbstractController
         }
         return $this->render('pages/discover_from_followed_artists_not_connected.html.twig');
     }
-    
+
     /**
      * @Route("/followedArtists", name="artists_followed")
+     * @param Request $request
+     * @param TranslatorInterface $translator
+     * @param SpotiRequest $spotiRequest
+     * @param Security $security
+     * @return RedirectResponse|Response
      */
     public function index(Request $request, TranslatorInterface $translator, SpotiRequest $spotiRequest, Security $security)
     {
@@ -82,9 +90,13 @@ class DiscoverFromFollowedArtistsController extends AbstractController
             ]
         ]);
     }
-    
+
     /**
      * @Route("/saveTracksFromFollowed", name="save_tracks_from_followed")
+     * @param Request $request
+     * @param SpotiRequest $spotiRequest
+     * @param Security $security
+     * @return RedirectResponse
      */
     public function saveTracksFromFollowed(Request $request, SpotiRequest $spotiRequest, Security $security)
     {
@@ -133,9 +145,12 @@ class DiscoverFromFollowedArtistsController extends AbstractController
 
         return $this->redirect($this->generateUrl('artists_followed', ['success' => $success]));
     }
-    
+
     /**
      * @Route("/saveTracksFromFollowed2", name="save_tracks_from_followed2")
+     * @param Request $request
+     * @param SpotiRequest $spotiRequest
+     * @return Response
      */
     public function saveTracksFromFollowed2(Request $request, SpotiRequest $spotiRequest)
     {

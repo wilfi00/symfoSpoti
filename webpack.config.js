@@ -42,6 +42,7 @@ Encore
     .addEntry('discoverFromFollowedArtist', './assets/js/discoverFromFollowedArtist.js')
     .addEntry('appVue', './assets/js/appVue.js')
     .addEntry('listenLaterAdd', './assets/js/listenLaterAdd.js')
+    .addEntry('listenLaterConsult', './assets/js/listenLaterConsult.js')
     //.addEntry('page1', './assets/js/page1.js')
     //.addEntry('page2', './assets/js/page2.js')
 
@@ -90,4 +91,13 @@ Encore
     .enableVueLoader()
 ;
 
-module.exports = Encore.getWebpackConfig();
+let config = Encore.getWebpackConfig();
+
+//disable amd loader
+config.module.rules.unshift({
+    parser: {
+        amd: false,
+    }
+});
+
+module.exports = config;

@@ -60,17 +60,21 @@ $text-color: #fff;
 	align-items: center;
 }
 
-.custom-control-input:checked ~ .custom-control-label::before, .custom-checkbox .custom-control-input:indeterminate ~ .custom-control-label::before {
+.form-check-input:checked, .form-check-input[type="checkbox"]:indeterminate {
 	border-color: $color1;
 	background-color: $color1;
 }
-.custom-checkbox .custom-control-input:checked:focus ~ .custom-control-label::before {
+.form-check .form-check-input:focus {
 	box-shadow: none;
+}
+.form-check .form-check-input {
+	float: none;
+	margin-right: 2px;
 }
 label {
 	display: unset;
 }
-.custom-control.custom-checkbox > * {
+.form-check > * {
 	cursor: pointer;
 }
 
@@ -78,9 +82,10 @@ label {
 
 .dropdown-item:active { color: inherit; background-color: inherit; }
 
-a:not(.dropdown-item, .nav-link) { 
+a:not(.dropdown-item, .nav-link, .no-style) {
 	cursor: pointer;
 	color: $color1 !important;
+	text-decoration: none;
 	&:hover, &:focus {
 		text-decoration: none;
 		color: darken($color1, 10%) !important;
@@ -117,7 +122,8 @@ button:focus { outline: none; }
 	}
 }
 
-/*.btn-secondary {
+.btn-secondary:not(.login) {
+	height: 62px;
 	background-color: #444!important;
 	border-color: #555!important;
 
@@ -133,7 +139,7 @@ button:focus { outline: none; }
 	&:disabled {
 		cursor: auto;
 	}
-}*/
+}
 
 .dropdown-toggle, .dropdown-toggle.btn-secondary-toggle:hover {
 	background-color: transparent!important;
@@ -160,19 +166,19 @@ button:focus { outline: none; }
 	
 }
 
-.navbar {
+.navbar, .dropdown-menu {
 	padding: 0!important;
 	background-color: $color2!important;
 	
-	a { 
+	a {
 		padding: 15px;
 		color: white!important; 
 		transition: background-color 0.3s;
 	}
-	li.active a, a:hover:not(.navbar-brand) { background-color: $color1!important; }
+	li.active > a, .activedropdown, a:hover:not(.navbar-brand) { background-color: $color1!important; }
 }
-
-.navbar-nav .nav-link {
+.nav-link, .nav-link:hover { color: white; }
+.navbar-nav {
     padding-right: 15px!important;
     padding-left: 15px!important;
 }
@@ -211,16 +217,17 @@ h1 {
 	margin-bottom: 50px;
 }
 .removeAll {
-	margin-bottom: 50px;
+	margin-bottom: 20px;
 }
 #form_artist { margin-bottom: 50px; }
 .artistSelection {
-	    display: flex;
+	margin-top: 20px;
+	display: flex;
     flex-wrap: wrap;
 	.artistBloc {
 		cursor: inherit!important;
 		margin-bottom: 25px;
-		
+
 		.picto-info { display: none; }
 	}
 	.removeArtist {
@@ -282,7 +289,7 @@ h1 {
 	justify-content: space-between;
 	margin-bottom: 20px;
 }
-.artist_selection.search-result {
+.artist_selection .search-result {
 	
 	display: flex;
     flex-wrap: wrap;
@@ -393,7 +400,7 @@ hr {
 		}
 	}
 }
-input {
+input:not(.form-check-input) {
 	width: 100%;
 	font-weight: normal;
 	color: $color3;
@@ -486,16 +493,6 @@ input::placeholder, .nice-select {
 	width: 28px;
 	border-radius: 50%;
 	padding-right: 0;
-}
-
-.close {
-	color : #fff;
-	font-weight : 500;
-	line-height: 0.9;
-
-	&:hover {
-		color: lighten($color1, 8%);
-	}
 }
 
 .changeLanguageSelector { margin: 0 10px; }
@@ -653,6 +650,10 @@ svg { color: $color2 };
 	}
 }
 
-
+.listen_later_consult table {
+	img { width: 60px; }
+	color: white;
+	td { vertical-align: middle; }
+}
 
 

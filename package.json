@@ -1,10 +1,10 @@
 {
     "devDependencies": {
+        "@fortawesome/fontawesome-free": "^5.15.3",
         "@symfony/webpack-encore": "^0.31.0",
-        "bootstrap": "^4.4.1",
+        "bootstrap": "^5.0.1",
         "core-js": "^3.0.0",
         "node-sass": "^4.13.0",
-        "popper.js": "^1.16.0",
         "regenerator-runtime": "^0.13.2",
         "sass-loader": "9.0.1",
         "vue-loader": "^15.9.3",
@@ -25,8 +25,21 @@
     "repository": "https://github.com/wilfi00/symfoSpoti.git",
     "author": "Johan Martin <0johan.martin0@gmail.com>",
     "dependencies": {
+        "@popperjs/core": "^2.9.2",
         "axios": "^0.21.1",
+        "child_process": "^1.0.2",
+        "datatables.net": "^1.10.24",
+        "dgram": "^1.0.1",
+        "dns": "^0.2.2",
+        "fs": "0.0.1-security",
+        "http2": "^3.3.7",
         "jquery": "^3.4.1",
+        "net": "^1.0.2",
+        "popper": "^1.0.1",
+        "popper.js": "^1.16.1",
+        "rijs": "^0.9.1",
+        "rijs.npm": "^2.0.0",
+        "tls": "0.0.1",
         "vue": "^2.6.12"
     }
 }

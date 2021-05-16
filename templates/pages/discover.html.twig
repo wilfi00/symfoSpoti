@@ -95,14 +95,16 @@
     </div>
 {% endblock %}
 {% block footer %}
-    {{ encore_entry_script_tags('discoverFromGenres') }}
-    {{ encore_entry_script_tags('appVue') }}
+	{{ encore_entry_script_tags('discoverFromGenres') }}
+	{{ encore_entry_script_tags('appVue') }}
 	<script>
-	    genreManager({{ jsConfig|json_encode|raw }});
-	    var url            = '';
-	    var urlSearchGenre = "{{ urlSearchGenre }}";
-	    var vueGenres      = {{ jsConfig.genres|json_encode|raw }};
-	    var vueArtists     = [];
-	    var text           = {{ text|json_encode|raw }};
+		var url = '';
+		var urlSearchGenre = "{{ urlSearchGenre }}";
+		var vueGenres = {{ jsConfig.genres|json_encode|raw }};
+		var vueArtists = [];
+		var text = {{ text|json_encode|raw }};
+		$( document ).ready(function() {
+			genreManager({{ jsConfig|json_encode|raw }});
+		});
 	</script>
 {% endblock %}

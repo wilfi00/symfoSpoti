@@ -11,6 +11,11 @@ add: Add
 track: Track
 artist: Artist
 album: Album
+consult: Consult
+name: Name
+link: Link
+delete: Delete
+date_add: Date added
 # Select save
 save_songs: Save songs
 create_new_playlist: Create new playlist
@@ -66,6 +71,7 @@ discover_fwa_connexion_explain: To display this page and generate a playlist usi
 listenlater_h1: To listen later
 listenlater_p1: Add songs, albums or artist to listen later !
 listenlater_searchPlaceholder: Search...
+listenlater_openinapp: Listen on Spotify
 
 #SEO
 seo_description: Discover new songs and save them in a Spotify playlist !

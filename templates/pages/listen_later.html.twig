@@ -28,10 +28,14 @@
     </form>
 
     <div class="feedback">
-        <div class="alert alert-success"></div>
+        <div class="alert alert-success"></di   v>
     </div>
 {% endblock %}
 {% block footer %}
     {{ encore_entry_script_tags('listenLaterAdd') }}
-    <script>listenLaterAdd({{ jsConfig|json_encode|raw }});</script>
+    <script>
+        $( document ).ready(function() {
+            listenLaterAdd({{ jsConfig|json_encode|raw }});
+        });
+    </script>
 {% endblock %}

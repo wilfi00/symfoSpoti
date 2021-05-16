@@ -9,9 +9,9 @@
     	<div class="row">
     		<div class="col-lg-8">
     			<div class="displayLink">
-					<div class="custom-control custom-checkbox">
-					  <input @click="refreshVueArtists" :checked="getNbActiveArtists() > 0" v-indeterminate="getNbActiveArtists() > 0 && getNbActiveArtists() < this.vueArtists.length" type="checkbox" class="custom-control-input" id="checkAll">
-					  <label class="custom-control-label" for="checkAll">{% trans %}discover_fwa_select_all_artists{% endtrans %}</label>
+					<div class="form-check">
+					  <input @click="refreshVueArtists" :checked="getNbActiveArtists() > 0" v-indeterminate="getNbActiveArtists() > 0 && getNbActiveArtists() < this.vueArtists.length" type="checkbox" class="form-check-input" id="checkAll">
+					  <label class="form-check-label" for="checkAll">{% trans %}discover_fwa_select_all_artists{% endtrans %}</label>
 					</div>
 	    			<a class="displayAll" href="#">{% trans %}discover_fwa_display{% endtrans %}</a>
 	    			<a class="hideAll d-none" href="#">{% trans %}discover_fwa_hide{% endtrans %}</a>
@@ -94,9 +94,11 @@
                     </form>
     			</div>
     		</div>
-			<div class="feedback">
-		        <div class="alert alert-success"></div>
-		    </div>
+			<div class="col-lg-4">
+				<div class="feedback">
+					<div class="alert alert-success"></div>
+				</div>
+			</div>
 	    </div>
     </div>
 {% endblock %}
@@ -104,12 +106,14 @@
 	{{ encore_entry_script_tags('discoverFromFollowedArtist') }}
     {{ encore_entry_script_tags('appVue') }}
 	<script>
-		var url            = "{{ url }}";
+		var url = "{{ url }}";
 		var urlSearchGenre = "";
-		var vueArtists     = {{ vueArtists|json_encode|raw }};
-		var vueGenres      = {{ genres|json_encode|raw }};
-		var genres         = {{ genres|json_encode|raw }};
-		var text           = {{ text|json_encode|raw }};
-		artistFollowManager(genres, {{ success|json_encode|raw }}, {{ text|json_encode|raw }});
+		var vueArtists = {{ vueArtists|json_encode|raw }};
+		var vueGenres = {{ genres|json_encode|raw }};
+		var text = {{ text|json_encode|raw }};
+		$( document ).ready(function() {
+			var genres = {{ genres|json_encode|raw }};
+			artistFollowManager(genres, {{ success|json_encode|raw }}, {{ text|json_encode|raw }});
+		});
     </script>
 {% endblock %}

@@ -9,9 +9,6 @@ use App\Manager\AlbumManager;
 use App\Manager\ArtistManager;
 use App\Manager\TrackManager;
 use App\Services\SearchSongService;
-use Exception;
-use Monolog\Logger;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -37,11 +34,16 @@ class ListenLaterController extends AbstractController
 
     /**
      * @Route("/listenLater", name="listen_later")
+     * @param Security $security
      * @param TranslatorInterface $translator
      * @return Response
      */
-    public function listenLater(TranslatorInterface $translator)
+    public function listenLater(Security $security, TranslatorInterface $translator)
     {
+        if (!$security->isGranted('ROLE_SPOTIFY')) {
+            return $this->redirectToRoute('listen_later_not_connected');
+        }
+
         return $this->render('pages/listen_later.html.twig', [
             'songs'    => [],
             'jsConfig' => [
@@ -51,6 +53,26 @@ class ListenLaterController extends AbstractController
                     'feedbackError'              => $translator->trans('feedbackError'),
                 ]
             ],
+        ]);
+    }
+
+    /**
+     * @Route("/listenLaterConsult", name="listen_later_consult")
+     * @param Security $security
+     * @return Response
+     */
+    public function listenLaterConsult(Security $security)
+    {
+        if (!$security->isGranted('ROLE_SPOTIFY')) {
+            return $this->redirectToRoute('listen_later_not_connected');
+        }
+
+        $user = $this->getUser();
+
+        return $this->render('pages/listen_later_consult.html.twig', [
+            'tracks'  => $user->getTracks(),
+            'artists' => $user->getArtists(),
+            'albums'  => $user->getAlbums(),
         ]);
     }
 

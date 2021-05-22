@@ -9,8 +9,8 @@ php bin/console make:migration
 
 composer update => update composer.lock avec nouvelles version paquets
 composer install => install les nouvelles dépendances depuis composer.lock
-yarn upgrade (il faut que yarn ne tourne pas !) => comme composer update
-yarn install => comme comspoer install
+yarn upgrade --ignore-engines (il faut que yarn ne tourne pas !) => comme composer update
+yarn install --ignore-engines => comme comspoer install
 
 yarn encore dev --watch
 

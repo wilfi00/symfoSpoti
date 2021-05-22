@@ -60,27 +60,32 @@ $text-color: #fff;
 	align-items: center;
 }
 
-.custom-control-input:checked ~ .custom-control-label::before, .custom-checkbox .custom-control-input:indeterminate ~ .custom-control-label::before {
+.form-check-input:checked, .form-check-input[type="checkbox"]:indeterminate {
 	border-color: $color1;
 	background-color: $color1;
 }
-.custom-checkbox .custom-control-input:checked:focus ~ .custom-control-label::before {
+.form-check .form-check-input:focus {
 	box-shadow: none;
+}
+.form-check .form-check-input {
+	float: none;
+	margin-right: 2px;
 }
 label {
 	display: unset;
 }
-.custom-control.custom-checkbox > * {
+.form-check > * {
 	cursor: pointer;
 }
 
 [v-cloak] { display: none; }
 
-.dropdown-item:active { color: inherit; background-color: inherit; }
+.dropdown-item:active, .dropdown-item:hover, .dropdown-item:focus { color: inherit; background-color: inherit; }
 
-a:not(.dropdown-item, .nav-link) { 
+a:not(.dropdown-item, .nav-link, .no-style) {
 	cursor: pointer;
 	color: $color1 !important;
+	text-decoration: none;
 	&:hover, &:focus {
 		text-decoration: none;
 		color: darken($color1, 10%) !important;
@@ -117,7 +122,8 @@ button:focus { outline: none; }
 	}
 }
 
-/*.btn-secondary {
+.btn-secondary:not(.login) {
+	height: 62px;
 	background-color: #444!important;
 	border-color: #555!important;
 
@@ -133,12 +139,13 @@ button:focus { outline: none; }
 	&:disabled {
 		cursor: auto;
 	}
-}*/
+}
 
 .dropdown-toggle, .dropdown-toggle.btn-secondary-toggle:hover {
 	background-color: transparent!important;
 	border-color: $color2!important;
 }
+.navbar-toggler:focus { box-shadow: none; }
 
 .banner{
 	justify-content: space-between;
@@ -160,19 +167,19 @@ button:focus { outline: none; }
 	
 }
 
-.navbar {
+.navbar, .dropdown-menu {
 	padding: 0!important;
 	background-color: $color2!important;
 	
-	a { 
+	a {
 		padding: 15px;
 		color: white!important; 
 		transition: background-color 0.3s;
 	}
-	li.active a, a:hover:not(.navbar-brand) { background-color: $color1!important; }
+	li.active > a, .activedropdown, a:hover:not(.navbar-brand) { background-color: $color1!important; }
 }
-
-.navbar-nav .nav-link {
+.nav-link, .nav-link:hover { color: white; }
+.navbar-nav a {
     padding-right: 15px!important;
     padding-left: 15px!important;
 }
@@ -211,16 +218,17 @@ h1 {
 	margin-bottom: 50px;
 }
 .removeAll {
-	margin-bottom: 50px;
+	margin-bottom: 20px;
 }
 #form_artist { margin-bottom: 50px; }
 .artistSelection {
-	    display: flex;
+	margin-top: 20px;
+	display: flex;
     flex-wrap: wrap;
 	.artistBloc {
 		cursor: inherit!important;
 		margin-bottom: 25px;
-		
+
 		.picto-info { display: none; }
 	}
 	.removeArtist {
@@ -282,7 +290,7 @@ h1 {
 	justify-content: space-between;
 	margin-bottom: 20px;
 }
-.search-result {
+.artist_selection .search-result {
 	
 	display: flex;
     flex-wrap: wrap;
@@ -299,10 +307,7 @@ h1 {
     left: 50%;
     top: 50%;
     z-index: 1;
-    width: 150px;
-    height: 150px;
     margin: -75px 0 0 -75px;
-    border: 16px solid #f3f3f3;
 	border: 16px solid darken($color3, 10%);
     border-radius: 50%;
     border-top: 16px solid #3498db;
@@ -351,15 +356,15 @@ h1 {
         justify-content: space-around;
         margin-left: 20px;
     }
+}
 
-	.artistName {
-		font-size: 18px;
-		margin-right: 10px;
-	}
+.songName {
+	font-size: 18px;
+	margin-right: 10px;
 }
 
 hr {
-    background: linear-gradient(90deg, rgba(255,94,98,1) 0%, rgba(255,153,102,1) 35%);
+    background: linear-gradient(90deg, rgb(255, 94, 98) 0%, rgba(255,153,102,1) 35%);
 	background: lighten($color2, 15%);
 }
 .artistSelection .artistBloc:last-child hr { display: none; }
@@ -396,7 +401,7 @@ hr {
 		}
 	}
 }
-input {
+input:not(.form-check-input) {
 	width: 100%;
 	font-weight: normal;
 	color: $color3;
@@ -489,16 +494,6 @@ input::placeholder, .nice-select {
 	width: 28px;
 	border-radius: 50%;
 	padding-right: 0;
-}
-
-.close {
-	color : #fff;
-	font-weight : 500;
-	line-height: 0.9;
-
-	&:hover {
-		color: lighten($color1, 8%);
-	}
 }
 
 .changeLanguageSelector { margin: 0 10px; }
@@ -638,4 +633,45 @@ svg { color: $color2 };
 
 .checkbox-artist {
 	display: inline-block;
+}
+
+// Page listenLater
+.listen_later #loader { top: 150px; }
+.listen_later .search-result {
+	margin-top: 20px;
+
+	.songBlock {
+		display: flex;
+		align-items: center;
+		cursor: pointer;
+
+		img { width: 90px; }
+
+		.informations, .addSong { margin-left: 20px; }
+	}
+}
+
+.listen_later_consult {
+	table {
+		img { width: 60px; }
+		color: white;
+		td { vertical-align: middle; }
+	}
+
+	.nav-tabs { margin-bottom: 20px; }
+	#songTable_filter input { padding: 8px; }
+	div.dataTables_wrapper div.dataTables_info { padding-top: 0; }
+	#songTable_paginate a:not(#songTable_next) { margin-right: 8px; }
+}
+
+table.dataTable > thead .sorting {
+	&::before { content: none!important; }
+	&::after  { content: " ↑↓"!important; }
+
+	&::before, &::after {
+		position: inherit!important;
+		display: inline!important;
+		bottom: auto!important;
+		right: auto!important;
+	}
 }

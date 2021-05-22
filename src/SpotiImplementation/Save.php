@@ -6,19 +6,19 @@ use \App\SpotiImplementation\Request as SpotiRequest;
 
 class Save
 {
-    protected $saveMode;
-    protected $tracks;
-    protected $playlistName;
+    protected string $saveMode;
+    protected array $tracks;
+    protected string $playlistName;
     protected $playlistId;
-    
-    protected $spotiRequest;
+
+    protected Request $spotiRequest;
     
     // Les modes de sauvegardes
-    const MODE_NEWPLAYLIST = 'createNewPlaylist';
-    const MODE_EXISTINGPLAYLIST = 'existingPlaylist';
-    const MODE_QUEUE = 'queue';
+    protected const MODE_NEWPLAYLIST = 'createNewPlaylist';
+    protected const MODE_EXISTINGPLAYLIST = 'existingPlaylist';
+    protected const MODE_QUEUE = 'queue';
     
-    public function __construct(SpotiRequest $spotiRequest, string $saveMode, array $tracks = [], $playlistName = '', $playlistId = null)
+    public function __construct(SpotiRequest $spotiRequest, string $saveMode, array $tracks = [], string $playlistName = '', $playlistId = null)
     {
         $this->saveMode = $saveMode;
         $this->tracks = $tracks;
@@ -27,7 +27,7 @@ class Save
         $this->spotiRequest  = $spotiRequest;
     }
     
-    public function save()
+    public function save(): bool
     {
         $saveMode = $this->saveMode;
 
@@ -46,7 +46,7 @@ class Save
         return false;
     }
     
-    protected function saveUsingNewPlaylist()
+    protected function saveUsingNewPlaylist(): bool
     {
         $success = false;
         
@@ -62,12 +62,12 @@ class Save
        return $success;
     }
     
-    protected function saveUsingExistingPlaylist() 
+    protected function saveUsingExistingPlaylist(): bool
     {
         return $this->spotiRequest->addTracksToPlaylist($this->tracks, $this->playlistId);
     }
     
-    protected function saveUsingQueue()
+    protected function saveUsingQueue(): bool
     {
         $successData = $this->spotiRequest->addTracksToQueue($this->tracks);
         

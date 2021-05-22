@@ -2,7 +2,7 @@
     "type": "project",
     "license": "proprietary",
     "require": {
-        "php": "^7.2.5",
+        "php": "^7.4",
         "ext-ctype": "*",
         "ext-iconv": "*",
         "jwilsson/spotify-web-api-php": "^4.1",
@@ -34,7 +34,9 @@
         "symfony/web-link": "5.1.*",
         "symfony/webpack-encore-bundle": "^1.7",
         "symfony/yaml": "5.2.*",
-      "ext-json": "*"
+        "twig/extensions": "^1.5",
+        "twig/twig": "^2.0"
+        "ext-json": "*"
     },
     "require-dev": {
         "symfony/debug-pack": "*",

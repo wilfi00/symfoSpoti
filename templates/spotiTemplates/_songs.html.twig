@@ -1,0 +1,15 @@
+{% for song in songs %}
+{% set type = song.getType() %}
+<div class="songBlock"
+	data-name="{{ song.getName() }}"
+	data-type="{{ type }}"
+	data-spotifyid="{{ song.getSpotifyId() }}"
+	data-spotifyuri="{{ song.getSpotifyUri() }}"
+	data-image="{{ song.getImage() }}">
+	<img src="{{ song.getImage() }}" alt="Song image" />
+	<div class="informations">
+		<div class="name"><span class="songName">{{ song.getName() }}</span> ~ <span class="songType">{{ type|trans }}</span><span class="addSong important">{% trans %}add{% endtrans %}</span></div>
+
+	</div>
+</div>
+{% if not loop.last %}<hr>{% endif %}{% endfor %}

@@ -2,13 +2,18 @@
 
 namespace App\Controller;
 
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use \App\SpotiImplementation\Request as SpotiRequest;
-use \App\SpotiImplementation\Auth as SpotiAuth;
-use \App\SpotiImplementation\Save as SpotiSave;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use App\SpotiImplementation\Request as SpotiRequest;
+use App\SpotiImplementation\Auth as SpotiAuth;
+use App\SpotiImplementation\Tools as SpotiTools;
+use App\SpotiImplementation\Save as SpotiSave;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Component\Security\Core\Security;
 
@@ -16,6 +21,8 @@ class DiscoverFromFollowedArtistsController extends AbstractController
 {
     /**
      * @Route("/followedArtistsNotConnected", name="artists_followed_not_connected")
+     * @param Security $security
+     * @return RedirectResponse|Response
      */
     public function isNotConnected(Security $security)
     {
@@ -31,7 +38,7 @@ class DiscoverFromFollowedArtistsController extends AbstractController
      * @param TranslatorInterface $translator
      * @param SpotiRequest $spotiRequest
      * @param Security $security
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
+     * @return RedirectResponse|Response
      */
     public function index(Request $request, TranslatorInterface $translator, SpotiRequest $spotiRequest, Security $security)
     {
@@ -82,9 +89,13 @@ class DiscoverFromFollowedArtistsController extends AbstractController
             ]
         ]);
     }
-    
+
     /**
      * @Route("/saveTracksFromFollowed", name="save_tracks_from_followed")
+     * @param Request $request
+     * @param SpotiRequest $spotiRequest
+     * @param Security $security
+     * @return RedirectResponse
      */
     public function saveTracksFromFollowed(Request $request, SpotiRequest $spotiRequest, Security $security)
     {
@@ -133,9 +144,12 @@ class DiscoverFromFollowedArtistsController extends AbstractController
 
         return $this->redirect($this->generateUrl('artists_followed', ['success' => $success]));
     }
-    
+
     /**
      * @Route("/saveTracksFromFollowed2", name="save_tracks_from_followed2")
+     * @param Request $request
+     * @param SpotiRequest $spotiRequest
+     * @return Response
      */
     public function saveTracksFromFollowed2(Request $request, SpotiRequest $spotiRequest)
     {

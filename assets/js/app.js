@@ -12,10 +12,15 @@ require('../css/nice-select.scss');
 // Need jQuery? Install it with "yarn add jquery", then uncomment to require it.
 
 jQuery = $ = require('jquery');
+require('popper.js');
 require('../js/jquery.nice-select.min.js');
 require('bootstrap');
+require( 'datatables.net' )( window, $ );
 
 require('../img/discovernewmusic.png');
+
+require('@fortawesome/fontawesome-free/css/all.min.css');
+require('@fortawesome/fontawesome-free/js/all.js');
 
 // Nice select
 $('select:not(.searchSelect)').niceSelect();
@@ -178,29 +183,6 @@ global.changeLanguage = function(defaultLanguage)
 	});
 }
 
-global.addPopover = function(selector) {
-	$(selector).popover({ 
-		trigger: 'manual', 
-		html: true,
-		content: function() {
-			return $(this).parent().find('.popover-content').html();
-		},
-	}).on("mouseenter", function() {
-	    var _this = this;
-	    $(this).popover("show");
-	    $(".popover").on("mouseleave", function() {
-	      $(_this).popover('hide');
-	    });
-	}).on("mouseleave", function() {
-    	var _this = this;
-	    setTimeout(function() {
-	      if (!$(".popover:hover").length) {
-	        $(_this).popover("hide");
-	      }
-	    }, 300);
-	});
-};
-
 global.manageSaveChoice = function() {
 	let playlistName   = $('input[name="playlistName"]');
 	let playlistChoice = $('.nice-select.existingPlaylist');
@@ -240,6 +222,29 @@ $( document ).ready(function() {
 			$("#link-top svg").css("display", "none");
 		}
 	});
+
+	global.addPopover = function(selector) {
+		$(selector).popover({
+			trigger: 'manual',
+			html: true,
+			content: function() {
+				return $(this).parent().find('.popover-content').html();
+			},
+		}).on("mouseenter", function() {
+			let _this = this;
+			$(this).popover("show");
+			$(".popover").on("mouseleave", function() {
+				$(_this).popover('hide');
+			});
+		}).on("mouseleave", function() {
+			let _this = this;
+			setTimeout(function() {
+				if (!$(".popover:hover").length) {
+					$(_this).popover("hide");
+				}
+			}, 300);
+		});
+	};
 });
 
 global.array_column = function(array, columnName) 

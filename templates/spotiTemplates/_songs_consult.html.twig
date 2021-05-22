@@ -1,0 +1,20 @@
+<table id="songTable" class="table">
+	<thead>
+		<th></th>
+		<th>{% trans %}name{% endtrans %}</th>
+		<th>{% trans %}link{% endtrans %}</th>
+		<th>{% trans %}date_add{% endtrans %}</th>
+		<th>{% trans %}delete{% endtrans %}</th>
+	</thead>
+	<tbody>
+		{% for song in songs %}
+		<tr>
+			<td><img src="{{ song.getImage() }}" alt="Song image" /></td>
+			<td>{{ song.getName() }}</td>
+			<td><a href="{{ song.getSpotifyUri() }}">{% trans %}listenlater_openinapp{% endtrans %} <i class="fas fa-external-link-alt"></i></a></td>
+			<td data-sort="{{ song.getCreatedAt().timestamp }}">{{ song.getCreatedAt()|localizeddate('medium', 'none') }}</td>
+			<td></td>
+		</tr>
+		{% endfor %}
+	</tbody>
+</table>

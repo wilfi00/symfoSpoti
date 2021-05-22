@@ -28,7 +28,7 @@ $( document ).ready(function() {
       </svg>
   	  <img class="image" :class="{ 'disabled' : artist.active == false}" v-bind:src="artist.images[0].url" />
   	  <br>
-	    <p><div class="checkbox-artist custom-control custom-checkbox"><input @click="artist.active ? artist.active = false :artist.active = true" :checked=artist.active type="checkbox" class="custom-control-input" :id=artist.id>  <label class="custom-control-label" :for=artist.id><span class="artistLabel" :class="{ 'disabled' : artist.active == false}">{{ artist.name }}</span></label></div></p>
+	    <p><div class="checkbox-artist form-check"><input @click="artist.active ? artist.active = false :artist.active = true" :checked=artist.active type="checkbox" class="form-check-input" :id=artist.id>  <label class="form-check-label" :for=artist.id><span class="artistLabel" :class="{ 'disabled' : artist.active == false}">{{ artist.name }}</span></label></div></p>
   	  </div>`,
   })
   

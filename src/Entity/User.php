@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Kerox\OAuth2\Client\Provider\SpotifyResourceOwner;
@@ -62,6 +64,28 @@ class User implements UserInterface
      * @ORM\Column(type="datetime")
      */
     protected $lastConn;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Artist::class, mappedBy="user")
+     */
+    private $artists;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Album::class, mappedBy="user")
+     */
+    private $albums;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Track::class, mappedBy="user")
+     */
+    private $tracks;
+
+    public function __construct()
+    {
+        $this->artists = new ArrayCollection();
+        $this->albums = new ArrayCollection();
+        $this->tracks = new ArrayCollection();
+    }
 
 
     public function getId(): ?int
@@ -131,7 +155,7 @@ class User implements UserInterface
         return $this;
     }
 	
-	public function getAccessToken(): ?string
+    public function getAccessToken(): ?string
     {
         return $this->accessToken;
     }
@@ -160,7 +184,7 @@ class User implements UserInterface
      *
      * @return $this
      */
-    public function setLastConn(DateTime $lastConn = null)
+    public function setLastConn(DateTime $lastConn = null): self
     {
         if (!$lastConn instanceOf DateTime) {
             $lastConn = new DateTime();
@@ -207,5 +231,95 @@ class User implements UserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    /**
+     * @return Collection|Artist[]
+     */
+    public function getArtists(): Collection
+    {
+        return $this->artists;
+    }
+
+    public function addArtist(Artist $artist): self
+    {
+        if (!$this->artists->contains($artist)) {
+            $this->artists[] = $artist;
+            $artist->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeArtist(Artist $artist): self
+    {
+        if ($this->artists->removeElement($artist)) {
+            // set the owning side to null (unless already changed)
+            if ($artist->getUser() === $this) {
+                $artist->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Album[]
+     */
+    public function getAlbums(): Collection
+    {
+        return $this->albums;
+    }
+
+    public function addAlbum(Album $album): self
+    {
+        if (!$this->albums->contains($album)) {
+            $this->albums[] = $album;
+            $album->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAlbum(Album $album): self
+    {
+        if ($this->albums->removeElement($album)) {
+            // set the owning side to null (unless already changed)
+            if ($album->getUser() === $this) {
+                $album->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Track[]
+     */
+    public function getTracks(): Collection
+    {
+        return $this->tracks;
+    }
+
+    public function addTrack(Track $track): self
+    {
+        if (!$this->tracks->contains($track)) {
+            $this->tracks[] = $track;
+            $track->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTrack(Track $track): self
+    {
+        if ($this->tracks->removeElement($track)) {
+            // set the owning side to null (unless already changed)
+            if ($track->getUser() === $this) {
+                $track->setUser(null);
+            }
+        }
+
+        return $this;
     }
 }

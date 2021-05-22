@@ -74,4 +74,9 @@ class Auth
     {
         return $_ENV['SPOTIFY_REDIRECT_URI'];
     }
+  
+    protected static function isSessionExpired($session): bool
+    {
+        return $session->getTokenExpiration() <= time();
+    }
 }

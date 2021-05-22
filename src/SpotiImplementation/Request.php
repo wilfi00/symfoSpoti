@@ -2,6 +2,7 @@
 
 namespace App\SpotiImplementation;
 
+use App\Entity\Genre;
 use App\Repository\GenreRepository;
 use \App\SpotiImplementation\Auth as SpotiAuth;
 use SpotifyWebAPI\SpotifyWebAPI;
@@ -9,9 +10,9 @@ use Symfony\Component\Security\Core\Security;
 
 class Request
 {
-    protected $api;
-    protected $genreRepository;
-    protected $security;
+    protected SpotifyWebAPI $api;
+    protected GenreRepository $genreRepository;
+    protected Security $security;
 
     public function __construct(Security $security)
     {
@@ -26,36 +27,16 @@ class Request
         }
         $this->api->setSession($spotiSession);
     }
-    
+
+    public function getDirectApi(): SpotifyWebAPI
+    {
+        return $this->api;
+    }
+
     public function searchForArtist($search)
     {
-        $search = $this->api->search($search . '*', 'artist');
+        $search = $this->api->search($search, 'artist');
         return  $search->artists->items;
-    }
-
-    public function getSeveralArtists($limit = 5)
-    {
-        $search = $this->api->search(Tools::generateRandomCharacter() . '%', 'artist', ['limit' => $limit]);
-        return  $search->artists->items;
-    }
-
-    public function getTenArtists($nbArtists = 10, $fromGenre = 'metal')
-    {
-        $artists = [];
-        while (count($artists) < $nbArtists) {
-            $tmpArtists = $this->getSeveralArtists(50);
-            foreach ($tmpArtists as $tmpArtist) {
-                $genres = $tmpArtist->genres;
-                foreach ($genres as $genre) {
-                    if (strpos($genre, $fromGenre) !== false) {
-                        $artists[] = $tmpArtist;
-                        break;
-                    }
-                }
-            }
-        }
-
-        return $artists;
     }
 
     public function getRandomArtistsFromGenres($genresEntities, $nbArtists, $strict): array
@@ -69,16 +50,16 @@ class Request
         return $artists;
     }
 
-    public function getRandomArtistsFromGenre(\App\Entity\Genre $genre, $nbArtists = 10, $strict = true, $maxTry = 50)
+    public function getRandomArtistsFromGenre(Genre $genre, $nbArtists = 10, $strict = true, $maxTry = 50)
     {
+        $cpt         = 0;
+        $artists     = [];
+        $genre       = Tools::formatStringForSpotify($genre->getName());
+        $tmpArtistId = []; // Permet de gérer le fait de récupérer des artistes uniques
+        $nbArtists   = Tools::addErrorProbability($nbArtists);
         $genreRepository = $this->getGenreRepository();
-        $cpt             = 0;
-        $artists         = [];
-        $genreString     = Tools::formatStringForSpotify($genre->getName());
-        $tmpArtistId     = []; // Permet de gérer le fait de récupérer des artistes uniques
-        $nbArtistsProb   = Tools::addErrorProbability($nbArtists);
 
-        while ((count($artists) < $nbArtistsProb) && ($cpt <= $maxTry)) {
+        while ((count($artists) < $nbArtists) && ($cpt <= $maxTry)) {
             $cpt++;
             $search = $this->api->search(Tools::generateRandomCharacter() . '% genre:' . $genreString, 'artist', ['limit' => 50]);
             $searchArtists = $search->artists->items;
@@ -122,16 +103,16 @@ class Request
         return  $artists;
     }
 
-    public function addTracksToPlaylist($tracks, $playlistId)
+    public function addTracksToPlaylist($tracks, $playlistId): bool
     {
         if (empty($tracks) || empty($playlistId)) {
-            return;
+            return false;
         }
         // Spotify ne peut traiter que 50 tracks max
         $multipleArraysTracks = array_chunk($tracks, 50);
 
-        foreach ($multipleArraysTracks as $track) {
-            $this->api->addPlaylistTracks($playlistId, $track);
+        foreach($multipleArraysTracks as $tmpTracks) {
+            $this->api->addPlaylistTracks($playlistId, $tmpTracks);
         }
         
         return true;
@@ -208,8 +189,8 @@ class Request
         // Spotify ne peut traiter que 50 tracks max
         $multipleArraysTracks = array_chunk($tracks, 50);
 
-        foreach($multipleArraysTracks as $tracks) {
-            $tracksToReturn = array_merge($tracksToReturn, $this->api->getTracks($tracks)->tracks);
+        foreach($multipleArraysTracks as $tmpTracks) {
+            $tracksToReturn = array_merge($tracksToReturn, $this->api->getTracks($tmpTracks)->tracks);
         }
 
         return $tracksToReturn;
@@ -261,8 +242,8 @@ class Request
 
         return $artists;
     }
-    
-    public function getBestRecommendations(array $genresEntities, int $nbTracks = 50): array
+
+    public function getBestRecommendations(array $genresEntities, int $nbTracks = 50, $includeFollowedArtits = false, $includeLikedSongs = false): array
     {
         $uniqArtists = [];
         $cpt    = 0;
@@ -358,7 +339,7 @@ class Request
 
         return $tracks;
     }
-    
+  
     public function addTracksToQueue(array $tracks): array
     {
         $success  = 0;
@@ -366,7 +347,7 @@ class Request
         
         if ($this->isThereOneAvailableDevice()) {
             foreach ($tracks as $trackUri) {
-                if ($this->api->queue($trackUri, $this->getActiveDevice())) {
+                if ($this->api->queue($trackUri)) {
                     $success++;
                 } else {
                     $failure++;

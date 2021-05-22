@@ -8,7 +8,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 class Auth
 {
-    public const CALLBACK_URL = 'callback_url';
+    public const CALLBACK_URL  = 'callback_url';
     public const CALLBACK_DATA = 'callback_data';
     
     protected static function makeSpotiSession(): SpotiSession
@@ -55,9 +55,9 @@ class Auth
         $previousUrl = $session->remove(static::CALLBACK_URL);
         if (!empty($previousUrl)) {
             return $previousUrl;
-        } else {
-            return $defaultUrl;
         }
+
+        return $defaultUrl;
     }
     
     protected static function getSecret()
@@ -74,7 +74,7 @@ class Auth
     {
         return $_ENV['SPOTIFY_REDIRECT_URI'];
     }
-
+  
     protected static function isSessionExpired($session): bool
     {
         return $session->getTokenExpiration() <= time();

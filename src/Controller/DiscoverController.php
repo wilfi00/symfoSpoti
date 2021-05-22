@@ -112,43 +112,45 @@ class DiscoverController extends AbstractController
         // Vérification de la data sur le nombre de chanson
         if (!isset($data['nbSongs'])) {
             return false;
-        } else {
-            $nbSongs = $data['nbSongs'];
-            if (!empty($nbSongs)) {
-                $validValues = [25, 50, 100, 150, 200];
-                $nbSongs     = intval($nbSongs);
-                if (!in_array($nbSongs, $validValues)) {
-                    return false;
-                }
-            } else {
+        }
+
+        $nbSongs = $data['nbSongs'];
+        if (!empty($nbSongs)) {
+            $validValues = [25, 50, 100, 150, 200];
+            $nbSongs     = intval($nbSongs);
+            if (!in_array($nbSongs, $validValues)) {
                 return false;
             }
+        } else {
+            return false;
         }
 
         // Vérification de la data sur les genres
         if (!isset($data['genres'])) {
             return false;
-        } elseif (!is_array($data['genres'])) {
+        }
+
+        if (!is_array($data['genres'])) {
             return false;
-        } else {
-            $genres = $data['genres'];
-            if (empty($genres)) {
+        }
+
+        $genres = $data['genres'];
+        if (empty($genres)) {
+            return false;
+        }
+
+        // On s'assure de ne pas avoir de doublons
+        $genres = array_unique($genres);
+
+        $genreEntities = [];
+        // Pour chaque genre on vérifie que se sont effectivement des genres enregistrés en proposés en DB
+        foreach ($genres as $genreId) {
+            $genreEntity = $genreRepository->find($genreId);
+
+            if ($genreEntity === false) {
                 return false;
-            }
-
-            // On s'assure de ne pas avoir de doublons
-            $genres = array_unique($genres);
-
-            $genreEntities = [];
-            // Pour chaque genre on vérifie que se sont effectivement des genres enregistrés en proposés en DB
-            foreach ($genres as $genreId) {
-                $genreEntity = $genreRepository->find($genreId);
-
-                if ($genreEntity === false) {
-                    return false;
-                } else {
-                    $genreEntities[] = $genreEntity;
-                }
+            } else {
+                $genreEntities[] = $genreEntity;
             }
         }
 
@@ -157,6 +159,7 @@ class DiscoverController extends AbstractController
 
     /**
      * @Route("/generatePlaylist", name="generatePlaylist")
+     *
      * @param Request $request
      * @param GenreRepository $genreRepository
      * @param SpotiRequest $spotiRequest
@@ -168,7 +171,7 @@ class DiscoverController extends AbstractController
     {
         $data = $this->isValidDatasForDiscover($request, $genreRepository);
         if ($data === false) {
-            throw new \Exception('Something went wrong!');
+            throw new \RuntimeException('Something went wrong!');
         }
 
         // On détermine le nombre d'artistes à récupérer en fonction du nombre de chansons
@@ -208,6 +211,7 @@ class DiscoverController extends AbstractController
 
     /**
      * @Route("/generateBetterPlaylist", name="generateBetterPlaylist")
+     *
      * @param Request $request
      * @param GenreRepository $genreRepository
      * @param SpotiRequest $spotiRequest
@@ -218,7 +222,7 @@ class DiscoverController extends AbstractController
     {
         $data = $this->isValidDatasForDiscover($request, $genreRepository);
         if ($data === false) {
-            throw new \Exception('Something went wrong!');
+            throw new \RuntimeException('Something went wrong!');
         }
         
         $nbSongs       = $data['nbSongs'];
@@ -260,7 +264,7 @@ class DiscoverController extends AbstractController
         
         $data = [
             'saveOption'       => $request->request->get('saveOption'),
-            'tracks'           => json_decode($request->request->get('tracks')),
+            'tracks'           => json_decode($request->request->get('tracks'), true),
             'playlistName'     => $request->request->get('playlistName'),
             'existingPlaylist' => $request->request->get('existingPlaylist'),
         ];

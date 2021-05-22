@@ -15,7 +15,6 @@ use App\SpotiImplementation\Tools as SpotiTools;
 use App\SpotiImplementation\Save as SpotiSave;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use App\Form\Type\ArtistsType;
 use Symfony\Component\Security\Core\Security;
 
 class DiscoverFromFollowedArtistsController extends AbstractController
@@ -107,7 +106,7 @@ class DiscoverFromFollowedArtistsController extends AbstractController
             'saveOption'       => $request->request->get('saveOption'),
             'playlistName'     => $request->request->get('playlistName'),
             'existingPlaylist' => $request->request->get('existingPlaylist'),
-            'artists'          => json_decode($request->request->get('artists')),
+            'artists'          => json_decode($request->request->get('artists'), true),
             'nbTracks'         => $request->request->get('nbTracks'),
         ];
 

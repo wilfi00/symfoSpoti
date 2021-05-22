@@ -5,9 +5,8 @@ namespace App\Repository;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use Kerox\OAuth2\Client\Provider\SpotifyResourceOwner as SpotifyResourceOwner;
+use Kerox\OAuth2\Client\Provider\SpotifyResourceOwner;
 use League\OAuth2\Client\Token\AccessToken;
-
 
 /**
  * @method User|null find($id, $lockMode = null, $lockVersion = null)

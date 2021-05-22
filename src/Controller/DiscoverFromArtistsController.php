@@ -6,7 +6,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use App\SpotiImplementation\Request as SpotiRequest;
 use App\SpotiImplementation\Auth as SpotiAuth;
@@ -20,7 +19,7 @@ use Symfony\Component\Security\Core\Security;
 
 class DiscoverFromArtistsController extends AbstractController
 {
-    public function initArtists($session)
+    public function initArtists($session): array
     {
         $artists          = [];
         $artistsSelection = SpotiTools::getArtistsSelectionInSession($session);
@@ -48,6 +47,12 @@ class DiscoverFromArtistsController extends AbstractController
 
     /**
      * @Route("/artistsSelection", name="artist_selection")
+     * @param Request $request
+     * @param TranslatorInterface $translator
+     * @param LoggerInterface $logger
+     * @param SpotiRequest $spotiRequest
+     * @param Security $security
+     * @return Response
      */
     public function artistSelection(Request $request, TranslatorInterface $translator, LoggerInterface $logger, SpotiRequest $spotiRequest, Security $security)
     {
@@ -114,6 +119,9 @@ class DiscoverFromArtistsController extends AbstractController
 
     /**
      * @Route("/addArtistToSelection", name="addArtist")
+     * @param Request $request
+     * @param LoggerInterface $logger
+     * @return Response
      */
     public function addArtistToSelection(Request $request, LoggerInterface $logger)
     {
@@ -125,6 +133,8 @@ class DiscoverFromArtistsController extends AbstractController
 
     /**
      * @Route("/removeArtistToSelectionUrl", name="removeArtist")
+     * @param Request $request
+     * @return Response
      */
     public function removeArtistToSelectionUrl(Request $request)
     {
@@ -141,15 +151,17 @@ class DiscoverFromArtistsController extends AbstractController
         SpotiTools::emptyArtistSelectionInSession();
         return new Response();
     }
-    
+
     /**
      * @Route("/saveTracksFromArtists", name="save_tracks_from_artists")
+     * @param Request $request
+     * @param Session $session
+     * @param SpotiRequest $spotiRequest
+     * @param Security $security
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function saveTracksFromArtists(Request $request, Session $session, SpotiRequest $spotiRequest, Security $security)
     {
-        // On part du principe que ça va échouer ;(
-        $success = false;
-        
         $artists = SpotiTools::getArtistsSelectionInSession($session);
         if (empty($artists)) {
             return $this->redirect($this->generateUrl('artist_selection', ['success' => 0]));

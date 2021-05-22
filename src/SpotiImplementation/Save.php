@@ -30,16 +30,20 @@ class Save
     public function save(): bool
     {
         $saveMode = $this->saveMode;
-        
+
         if ($saveMode === static::MODE_NEWPLAYLIST) {
             return $this->saveUsingNewPlaylist();
-        } elseif ($saveMode === static::MODE_EXISTINGPLAYLIST) {
-            return $this->saveUsingExistingPlaylist();
-        } elseif ($saveMode === static::MODE_QUEUE) {
-            return $this->saveUsingQueue();
-        } else {
-            return false;
         }
+
+        if ($saveMode === static::MODE_EXISTINGPLAYLIST) {
+            return $this->saveUsingExistingPlaylist();
+        }
+
+        if ($saveMode === static::MODE_QUEUE) {
+            return $this->saveUsingQueue();
+        }
+
+        return false;
     }
     
     protected function saveUsingNewPlaylist(): bool

@@ -39,7 +39,7 @@ class Request
         return  $search->artists->items;
     }
 
-    public function getRandomArtistsFromGenres($genresEntities, $nbArtists, $strict)
+    public function getRandomArtistsFromGenres($genresEntities, $nbArtists, $strict): array
     {
         $artists = [];
         foreach ($genresEntities as $genre) {
@@ -61,17 +61,17 @@ class Request
 
         while ((count($artists) < $nbArtists) && ($cpt <= $maxTry)) {
             $cpt++;
-            $search = $this->api->search(Tools::generateRandomCharacter() . '% genre:' . $genre, 'artist', ['limit' => 50]);
+            $search = $this->api->search(Tools::generateRandomCharacter() . '% genre:' . $genreString, 'artist', ['limit' => 50]);
             $searchArtists = $search->artists->items;
             shuffle($searchArtists);
             foreach ($searchArtists as $artist) {
                 if ($strict) {
                     foreach ($artist->genres as $g) {
-                        if (count($artists) >= $nbArtists) {
+                        if (count($artists) >= $nbArtistsProb) {
                             break;
                         }
 
-                        if ($g === Tools::formatInverseStringForSpotify($genre)) {
+                        if ($g === Tools::formatInverseStringForSpotify($genreString)) {
                             $id = $artist->id;
                             // On ne rajoute que des artistes uniques
                             if (!in_array($id, $tmpArtistId)) {
@@ -88,18 +88,18 @@ class Request
                     $artists[] = $artist->id;
                 }
 
-                if (count($artists) === $nbArtists) {
+                if (count($artists) === $nbArtistsProb) {
                     break;
                 }
             }
 
             // Log
             if (!empty($genreRepository)) {
-                $genreRepository->updateProgressOfPopularityGenres(Tools::formatInverseStringForSpotify($genre), $cpt);
+                $genreRepository->updateProgressOfPopularityGenres(Tools::formatInverseStringForSpotify($genreString), $cpt);
             }
         }
 
-        $genreRepository->updateTries(Tools::formatInverseStringForSpotify($genre), $cpt);
+        $genreRepository->updateTries(Tools::formatInverseStringForSpotify($genreString), $cpt);
         return  $artists;
     }
 
@@ -220,9 +220,7 @@ class Request
     {
         $artists           = [];
         $lastArtistId      = null;
-        $tmpArtistsRequest = [];
         $maxLimit          = 50;
-        $offset            = 0;
         
         $security = 0;
         
@@ -239,9 +237,8 @@ class Request
             // Stocke des infos
             $artists = array_merge($artists, $currentArtists);
             $lastArtistId = $tmpArtistsRequest->cursors->after;
-    
-            $offset += $maxLimit;
-        } while($security < 100 && $tmpArtistsRequest->total > sizeof($artists));
+
+        } while($security < 100 && $tmpArtistsRequest->total > count($artists));
 
         return $artists;
     }
@@ -263,11 +260,7 @@ class Request
             ])->tracks;
             
             foreach ($recos as $reco) {
-                foreach ($reco->artists as $recoArtist) {
-                    $uniqArtists[] = $recoArtist->id;
-                }
                 $tracks[$reco->id] = $reco;
-                
             }
             $cpt++;    
         }
@@ -320,10 +313,9 @@ class Request
         return array_slice($artists, 0, 3);
     }
     
-    protected function getAllLikedTracks()
+    protected function getAllLikedTracks(): array
     {
         $tracks           = [];
-        $tmpTracksRequest = [];
         $maxLimit          = 50;
         $offset            = 0;
         
@@ -342,13 +334,12 @@ class Request
                 $tracks[] = $currentTrack->track;
             }
 
-    
             $offset += $maxLimit;
         } while($security < 10 && (sizeof($currentTracks) >= $maxLimit));
 
         return $tracks;
     }
-
+  
     public function addTracksToQueue(array $tracks): array
     {
         $success  = 0;
@@ -382,9 +373,9 @@ class Request
         foreach ($this->api->getMyDevices()->devices as $device) {
             if ($device->is_active) {
                 return $device->id;
-            } else {
-                $deviceId = $device->id;
             }
+
+            $deviceId = $device->id;
         }
         
         return $deviceId;

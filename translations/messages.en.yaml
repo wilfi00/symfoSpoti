@@ -77,6 +77,7 @@ listenlater_addSucess: Added !
 # Listen later consult
 listenlater_consult_h1: To listen later
 listenlater_consult_p1: Songs, albums and artists saved to listen later
+listenlater_deleteSuccess: Deleted !
 
 #SEO
 seo_description: Discover new songs and save them in a Spotify playlist !

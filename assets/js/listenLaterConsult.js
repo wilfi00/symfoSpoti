@@ -2,9 +2,11 @@
 global.listenLaterConsult = function(config) {
 	init();
 
-	function addEvents()
+	function addEventDatatable(table, tableObject)
 	{
-
+		table.find('.delete').off('click').on('click', function() {
+			deleteSong($(this), tableObject);
+		});
 	}
 
 	function init()
@@ -23,6 +25,29 @@ global.listenLaterConsult = function(config) {
 			datatableOptions.language = { url: "https://cdn.datatables.net/plug-ins/1.10.24/i18n/French.json" }
 		}
 
-		$('table').dataTable(datatableOptions);
+		$('table').each(function() {
+			let table = $(this).DataTable(datatableOptions);
+			addEventDatatable($(this), table);
+		});
+	}
+
+	function deleteSong(song, table)
+	{
+		showLoader();
+		$.ajax({
+			url : config.urlDeleteSong,
+			type: 'POST',
+			data : {
+				id:   song.data('id'),
+				type: song.data('type')
+			}
+		}).done(function(response) {
+			feedbackSuccess(config.text.deleteSuccess);
+			table.rows(song.parents('tr')).remove().draw();
+		}).fail(function() {
+			feedbackError(config.text.feedbackError);
+		}).always(function(){
+			hideLoader();
+		});
 	}
 };

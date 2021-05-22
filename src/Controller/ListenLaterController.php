@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Album;
 use App\Entity\Artist;
 use App\Entity\Track;
+use App\Interfaces\SongInterface;
 use App\Manager\AlbumManager;
 use App\Manager\ArtistManager;
 use App\Manager\TrackManager;
@@ -49,9 +50,9 @@ class ListenLaterController extends AbstractController
             'jsConfig' => [
                 'urlAddSong' => $this->generateUrl('addListenLater'),
                 'text'       => [
-                    'addSuccess' => $translator->trans('listenlater_addSucess'),
-                    'feedbackError'              => $translator->trans('feedbackError'),
-                ]
+                    'addSuccess'    => $translator->trans('listenlater_addSucess'),
+                    'feedbackError' => $translator->trans('feedbackError'),
+                ],
             ],
         ]);
     }
@@ -59,9 +60,11 @@ class ListenLaterController extends AbstractController
     /**
      * @Route("/listenLaterConsult", name="listen_later_consult")
      * @param Security $security
+     * @param Request $request
+     * @param TranslatorInterface $translator
      * @return Response
      */
-    public function listenLaterConsult(Security $security, Request $request)
+    public function listenLaterConsult(Security $security, Request $request, TranslatorInterface $translator, TrackManager $trackManager)
     {
         if (!$security->isGranted('ROLE_SPOTIFY')) {
             return $this->redirectToRoute('listen_later_not_connected');
@@ -75,6 +78,11 @@ class ListenLaterController extends AbstractController
             'albums'  => $user->getAlbums(),
             'jsConfig' => [
                 'isFrench' => $request->getLocale() === 'fr',
+                'urlDeleteSong' => $this->generateUrl('delete_song'),
+                'text'       => [
+                    'deleteSuccess' => $translator->trans('listenlater_deleteSuccess'),
+                    'feedbackError' => $translator->trans('feedbackError'),
+                ],
             ]
         ]);
     }
@@ -138,6 +146,42 @@ class ListenLaterController extends AbstractController
                     $request->request->get('name'),
                     $request->request->get('image')
                 );
+                break;
+        }
+
+        $response = new Response();
+        $response->setContent(json_encode([
+            'success' => true,
+        ]));
+        $response->headers->set('Content-Type', 'application/json');
+        return $response;
+    }
+
+    /**
+     * @Route("/deleteSong", name="delete_song")
+     *
+     * @param SongInterface $song
+     * @param Request $request
+     * @param TrackManager $trackManager
+     * @param ArtistManager $artistManager
+     * @param AlbumManager $albumManager
+     */
+    public function deleteSongLater(Request $request, TrackManager $trackManager, ArtistManager $artistManager, AlbumManager $albumManager)
+    {
+        $songId = $request->request->get('id');
+
+        switch ($request->request->get('type')) {
+            case Track::TYPE:
+                $track = $trackManager->find($songId);
+                $trackManager->softDelete($track);
+                break;
+            case Artist::TYPE:
+                $artist = $artistManager->find($songId);
+                $artistManager->softDelete($artist);
+                break;
+            case Album::TYPE:
+                $album = $albumManager->find($songId);
+                $albumManager->softDelete($album);
                 break;
         }
 

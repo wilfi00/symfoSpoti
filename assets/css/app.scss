@@ -239,7 +239,7 @@ h1 {
 	    display: block;
 	    width: 60%;
 	    margin: 15px auto;
-		&:last {
+		&:last-child {
 			display: none;
 		}
 	}
@@ -380,7 +380,7 @@ hr {
 
 .genreResult {
 	height: 0;
-	overflow-y:: scroll;
+	overflow-y: scroll;
 	margin: 0;
 	padding: 0;
 	box-shadow: -8px 0 8px -10px rgba(0,0,0,0.75);
@@ -659,9 +659,9 @@ svg { color: $color2 };
 	}
 
 	.nav-tabs { margin-bottom: 20px; }
-	#songTable_filter input { padding: 8px; }
+	.dataTables_filter input { padding: 8px; }
 	div.dataTables_wrapper div.dataTables_info { padding-top: 0; }
-	#songTable_paginate a:not(#songTable_next) { margin-right: 8px; }
+	.dataTables_paginate a:not(#songTable_next) { margin-right: 8px; }
 }
 
 table.dataTable > thead .sorting {

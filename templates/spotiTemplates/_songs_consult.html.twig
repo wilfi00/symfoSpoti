@@ -1,4 +1,4 @@
-<table id="songTable" class="table">
+<table class="table songTable">
 	<thead>
 		<th></th>
 		<th>{% trans %}name{% endtrans %}</th>
@@ -13,7 +13,7 @@
 			<td>{{ song.getName() }}</td>
 			<td><a href="{{ song.getSpotifyUri() }}">{% trans %}listenlater_openinapp{% endtrans %} <i class="fas fa-external-link-alt"></i></a></td>
 			<td data-sort="{{ song.getCreatedAt().timestamp }}">{{ song.getCreatedAt()|localizeddate('medium', 'none') }}</td>
-			<td></td>
+			<td><a class="delete" data-id="{{ song.getId() }}" data-type="{{ song.getType() }}"><i class="far fa-trash-alt"></i></a></td>
 		</tr>
 		{% endfor %}
 	</tbody>

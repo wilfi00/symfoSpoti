@@ -2,9 +2,11 @@
 
 namespace App\Manager;
 
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\ORMException;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Class AbstractManager
@@ -161,19 +163,19 @@ abstract class AbstractManager
      * Soft delete an entity
      *
      * @param $entity
-     * @param string|null $username
+     * @param UserInterface|null $user
      * @param bool $flush
      */
-    public function softDelete($entity, string $username = null, bool $flush = true): void
+    public function softDelete($entity, UserInterface $user = null, bool $flush = true): void
     {
-        if (!method_exists($entity, 'setDtd')) {
+        if (!method_exists($entity, 'setDeletedAt')) {
             throw new \LogicException(sprintf('Entity %s is not soft deletable.', get_class($entity)));
         }
 
-        $entity->setDtd(new \DateTime());
+        $entity->setDeletedAt(new DateTime());
 
-        if (null !== $username && method_exists($entity, 'setDeleteuser')) {
-            $entity->setDeleteuser($username);
+        if (null !== $user && method_exists($entity, 'setDeleteuser')) {
+            $entity->setDeleteuser($user->getUsername());
         }
 
         if ($flush) {
@@ -192,7 +194,7 @@ abstract class AbstractManager
     public function softDeleteMany(array $objects, bool $flush = true)
     {
         foreach ($objects as $object) {
-            $this->softDelete($object, false);
+            $this->softDelete($object);
         }
 
         if ($flush) {

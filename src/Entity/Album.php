@@ -6,12 +6,14 @@ use App\Interfaces\SongInterface;
 use App\Traits\SongTrait;
 use App\Repository\AlbumRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass=AlbumRepository::class)
+ * @Gedmo\SoftDeleteable()
  */
 class Album implements SongInterface
 {

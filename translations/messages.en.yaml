@@ -72,6 +72,7 @@ listenlater_h1: To listen later
 listenlater_p1: Add songs, albums or artist to listen later !
 listenlater_searchPlaceholder: Search...
 listenlater_openinapp: Listen on Spotify
+listenlater_addSucess: Added !
 
 # Listen later consult
 listenlater_consult_h1: To listen later

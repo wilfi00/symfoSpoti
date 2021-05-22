@@ -73,5 +73,9 @@ listenlater_p1: Add songs, albums or artist to listen later !
 listenlater_searchPlaceholder: Search...
 listenlater_openinapp: Listen on Spotify
 
+# Listen later consult
+listenlater_consult_h1: To listen later
+listenlater_consult_p1: Songs, albums and artists saved to listen later
+
 #SEO
 seo_description: Discover new songs and save them in a Spotify playlist !

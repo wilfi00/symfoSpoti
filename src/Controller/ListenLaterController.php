@@ -61,7 +61,7 @@ class ListenLaterController extends AbstractController
      * @param Security $security
      * @return Response
      */
-    public function listenLaterConsult(Security $security)
+    public function listenLaterConsult(Security $security, Request $request)
     {
         if (!$security->isGranted('ROLE_SPOTIFY')) {
             return $this->redirectToRoute('listen_later_not_connected');
@@ -73,6 +73,9 @@ class ListenLaterController extends AbstractController
             'tracks'  => $user->getTracks(),
             'artists' => $user->getArtists(),
             'albums'  => $user->getAlbums(),
+            'jsConfig' => [
+                'isFrench' => $request->getLocale() === 'fr',
+            ]
         ]);
     }
 

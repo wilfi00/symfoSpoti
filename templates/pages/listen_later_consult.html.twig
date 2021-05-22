@@ -33,7 +33,7 @@
     {{ encore_entry_script_tags('listenLaterConsult') }}
     <script>
         $( document ).ready(function() {
-            listenLaterConsult();
+            listenLaterConsult({{ jsConfig|json_encode|raw }});
         });
     </script>
 {% endblock %}

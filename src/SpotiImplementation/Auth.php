@@ -3,16 +3,15 @@
 namespace App\SpotiImplementation;
 
 use Symfony\Component\HttpFoundation\Session\Session;
-use \App\SpotiImplementation\Request as SpotiRequest;
 use SpotifyWebAPI\Session as SpotiSession;
-use App\Entity\User;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class Auth
 {
-    const CALLBACK_URL  = 'callback_url';
-    const CALLBACK_DATA = 'callback_data';
+    public const CALLBACK_URL = 'callback_url';
+    public const CALLBACK_DATA = 'callback_data';
     
-    protected static function makeSpotiSession()
+    protected static function makeSpotiSession(): SpotiSession
     {
         return new SpotiSession(
             static::getClientId(),
@@ -29,7 +28,7 @@ class Auth
         return $session;
     }
     
-    public static function makeUserAuth(User $user): SpotiSession
+    public static function makeUserAuth(UserInterface $user): SpotiSession
     {
         $session = static::makeSpotiSession();
         $session->setAccessToken($user->getAccessToken());
@@ -38,7 +37,7 @@ class Auth
         return $session;
     }
     
-    public static function setUrlAfterAuth($url, Session $session = null)
+    public static function setUrlAfterAuth($url, Session $session = null): void
     {
         if ($session === null) {
             $session = new Session();
@@ -76,7 +75,7 @@ class Auth
         return $_ENV['SPOTIFY_REDIRECT_URI'];
     }
 
-    protected static function isSessionExpired($session)
+    protected static function isSessionExpired($session): bool
     {
         return $session->getTokenExpiration() <= time();
     }

@@ -72,5 +72,9 @@ listenlater_p1: Ajouter des chansons, album ou artistes à écouter plus tard !
 listenlater_searchPlaceholder: Rechercher...
 listenlater_openinapp: Écouter sur Spotify
 
+# Listen later consult
+listenlater_consult_h1: À écouter plus tard
+listenlater_consult_p1: Liste des chansons, albums et artistes enregistrés à écouter plus tard
+
 #SEO
 seo_description: Découvre de nouvelles musiques et enregistre les dans une playlist Spotify !

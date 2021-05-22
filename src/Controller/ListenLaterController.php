@@ -64,7 +64,7 @@ class ListenLaterController extends AbstractController
      * @param TranslatorInterface $translator
      * @return Response
      */
-    public function listenLaterConsult(Security $security, Request $request, TranslatorInterface $translator, TrackManager $trackManager)
+    public function listenLaterConsult(Security $security, Request $request, TranslatorInterface $translator)
     {
         if (!$security->isGranted('ROLE_SPOTIFY')) {
             return $this->redirectToRoute('listen_later_not_connected');

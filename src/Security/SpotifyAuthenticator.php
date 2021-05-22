@@ -40,9 +40,9 @@ class SpotifyAuthenticator extends OAuth2Authenticator
 
     public function authenticate(Request $request): PassportInterface
     {
-        $this->$credentials = $this->fetchAccessToken($this->clientRegistry->getClient('spotify'));
+        $this->credentials = $this->fetchAccessToken($this->clientRegistry->getClient('spotify'));
        
-        return new SelfValidatingPassport(new UserBadge($this->$credentials, function() {
+        return new SelfValidatingPassport(new UserBadge($this->credentials, function() {
             $spotifyUser = $this->clientRegistry->getClient('spotify')->fetchUserFromToken($this->credentials);
       
             // Update user

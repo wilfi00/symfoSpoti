@@ -7,8 +7,10 @@ php bin/console make:migration
  php bin/console doctrine:migrations:migrate
  => applique la mise à jour
 
-composer update
-yarn upgrade (il faut que yarn ne tourne pas !)
+composer update => update composer.lock avec nouvelles version paquets
+composer install => install les nouvelles dépendances depuis composer.lock
+yarn upgrade (il faut que yarn ne tourne pas !) => comme composer update
+yarn install => comme comspoer install
 
 yarn encore dev --watch
 

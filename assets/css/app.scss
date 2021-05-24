@@ -37,6 +37,8 @@ $color2: #fe7a03;
 $color3: #252525;
 $text-color: #fff;
 
+$disabled-color: #676767;
+
 // $color1:   #bc4a28;
 // $color2: #d755a4;
 // $color3: #fefcfc;
@@ -77,6 +79,8 @@ label {
 .form-check > * {
 	cursor: pointer;
 }
+
+input:disabled { background-color: $disabled-color; border-color: $disabled-color!important; }
 
 [v-cloak] { display: none; }
 

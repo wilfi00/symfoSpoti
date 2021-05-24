@@ -65,7 +65,7 @@ discover_fwa_filter_genres: I only wish these genres
 fwa_discover_song: song by artist
 fwa_discover_songs: songs by artist
 discover_fwa_select_all_artists: Select all artists
-discover_fwa_connexion_explain: To display this page and generate a playlist using your followed artists, you must connect to Spotify
+discover_fwa_connexion_explain: To display this page and generate a playlist using your followed artists, you must connect using your Spotify account
 
 # Listen later
 listenlater_h1: To listen later
@@ -78,6 +78,7 @@ listenlater_addSucess: Added !
 listenlater_consult_h1: To listen later
 listenlater_consult_p1: Songs, albums and artists saved to listen later
 listenlater_deleteSuccess: Deleted !
+listenlater_connexion_explain: To use to listen later, you must connect using your Spotify account
 
 #SEO
 seo_description: Discover new songs and save them in a Spotify playlist !

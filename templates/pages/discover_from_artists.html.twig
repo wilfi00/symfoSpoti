@@ -9,11 +9,7 @@
 	    <div class="col-lg-8">
 		    {{ form(form) }}
 			<div id="loader"></div>
-			<div class="search-result animate-bottom">
-			    {{ render(controller(
-		            'App\\Controller\\Display::displayArtists', {artists: artistsSearch }
-		        )) }}
-			</div>
+			<div class="search-result animate-bottom">{{ include('spotiTemplates/_artists.html.twig', {artists: artistsSearch}) }}</div>
 		</div>
 		<div class="col-lg-4">
 			<button class="btn btn-secondary removeAll">{% trans %}reset{% endtrans %}</button>
@@ -67,9 +63,7 @@
     				{% endif %}
                 </form>
 			</div>
-			<div class="artistSelection">{{ render(controller(
-				'App\\Controller\\Display::displayArtists', {artists: artistsInit }
-			)) }}</div>
+			<div class="artistSelection">{{ include('spotiTemplates/_artists.html.twig', {artists: artistsInit}) }}</div>
 		</div>
 	</div>
 	<div class="feedback">

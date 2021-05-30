@@ -2,7 +2,7 @@
     "type": "project",
     "license": "proprietary",
     "require": {
-        "php": "^7.4",
+        "php": "^8.0",
         "ext-ctype": "*",
         "ext-iconv": "*",
         "jwilsson/spotify-web-api-php": "^4.1",
@@ -29,7 +29,7 @@
         "symfony/security-bundle": "5.2.*",
         "symfony/serializer-pack": "*",
         "symfony/string": "5.2.*",
-        "symfony/translation": "5.1.*",
+        "symfony/translation": "*",
         "symfony/twig-pack": "^1.0",
         "symfony/web-link": "5.1.*",
         "symfony/webpack-encore-bundle": "^1.7",

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "24be659fed8c16c89bc1195857b71e49",
+    "content-hash": "f636aefe7b7d8fe4b2f2991e8d88a8f8",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -5752,24 +5752,40 @@
         },
         {
             "name": "symfony/notifier",
-            "version": "v5.1.11",
+            "version": "v5.2.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/notifier.git",
-                "reference": "c2ccb5b6f9b7a316b3bfefc5fec751540d620d3c"
+                "reference": "bafefffe9e1ac78d2aaa40fdaf578ef33f41fe72"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/notifier/zipball/c2ccb5b6f9b7a316b3bfefc5fec751540d620d3c",
-                "reference": "c2ccb5b6f9b7a316b3bfefc5fec751540d620d3c",
+                "url": "https://api.github.com/repos/symfony/notifier/zipball/bafefffe9e1ac78d2aaa40fdaf578ef33f41fe72",
+                "reference": "bafefffe9e1ac78d2aaa40fdaf578ef33f41fe72",
                 "shasum": ""
             },
             "require": {
                 "php": ">=7.2.5",
+                "psr/log": "~1.0",
                 "symfony/polyfill-php80": "^1.15"
             },
             "conflict": {
-                "symfony/http-kernel": "<4.4"
+                "symfony/firebase-notifier": "<5.2",
+                "symfony/free-mobile-notifier": "<5.2",
+                "symfony/http-kernel": "<4.4",
+                "symfony/mattermost-notifier": "<5.2",
+                "symfony/nexmo-notifier": "<5.2",
+                "symfony/ovh-cloud-notifier": "<5.2",
+                "symfony/rocket-chat-notifier": "<5.2",
+                "symfony/sinch-notifier": "<5.2",
+                "symfony/slack-notifier": "<5.2",
+                "symfony/telegram-notifier": "<5.2",
+                "symfony/twilio-notifier": "<5.2"
+            },
+            "require-dev": {
+                "symfony/event-dispatcher-contracts": "^2",
+                "symfony/http-client-contracts": "^2",
+                "symfony/messenger": "^4.4 || ^5.0"
             },
             "type": "library",
             "autoload": {
@@ -5801,7 +5817,7 @@
                 "notifier"
             ],
             "support": {
-                "source": "https://github.com/symfony/notifier/tree/v5.1.11"
+                "source": "https://github.com/symfony/notifier/tree/v5.2.8"
             },
             "funding": [
                 {
@@ -5817,7 +5833,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-01-13T10:32:36+00:00"
+            "time": "2021-05-07T07:31:51+00:00"
         },
         {
             "name": "symfony/options-resolver",

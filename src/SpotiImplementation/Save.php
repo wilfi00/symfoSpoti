@@ -3,6 +3,9 @@
 namespace App\SpotiImplementation;
 
 use \App\SpotiImplementation\Request as SpotiRequest;
+use Exception;
+use Psr\Log\LoggerInterface;
+use SpotifyWebAPI\SpotifyWebAPIException;
 
 class Save
 {
@@ -17,9 +20,21 @@ class Save
     protected const MODE_NEWPLAYLIST = 'createNewPlaylist';
     protected const MODE_EXISTINGPLAYLIST = 'existingPlaylist';
     protected const MODE_QUEUE = 'queue';
-    
-    public function __construct(SpotiRequest $spotiRequest, string $saveMode, array $tracks = [], string $playlistName = '', $playlistId = null)
-    {
+
+    /**
+     * @var LoggerInterface
+     */
+    protected LoggerInterface $logger;
+
+    public function __construct(
+        LoggerInterface $logger,
+        SpotiRequest $spotiRequest,
+        string $saveMode,
+        array $tracks = [],
+        string $playlistName = '',
+        $playlistId = null
+    ) {
+        $this->logger = $logger;
         $this->saveMode = $saveMode;
         $this->tracks = $tracks;
         $this->playlistName = $playlistName;
@@ -49,14 +64,18 @@ class Save
     protected function saveUsingNewPlaylist(): bool
     {
         $success = false;
-        
-        $playlistName = $this->playlistName;
-        $tracks       = $this->tracks;
-        if ($playlistName !== '' && !empty($tracks)) {
-            $playlist = $this->spotiRequest->createNewPlaylist($playlistName);
-            $this->spotiRequest->addTracksToPlaylist($tracks, $playlist->id);
-            // Succès de l'opération, feedback vert \o/
-            $success = true;
+
+        try {
+            $playlistName = $this->playlistName;
+            $tracks       = $this->tracks;
+            if ($playlistName !== '' && !empty($tracks)) {
+                $playlist = $this->spotiRequest->createNewPlaylist($playlistName);
+                $this->spotiRequest->addTracksToPlaylist($tracks, $playlist->id);
+                // Succès de l'opération, feedback vert \o/
+                $success = true;
+            }
+        } catch(Exception $exception) {
+            $this->logger->critical($exception->getMessage() . "\n" . $exception->getTraceAsString());
         }
         
        return $success;
@@ -64,12 +83,28 @@ class Save
     
     protected function saveUsingExistingPlaylist(): bool
     {
-        return $this->spotiRequest->addTracksToPlaylist($this->tracks, $this->playlistId);
+        $success = false;
+        try {
+            $success = $this->spotiRequest->addTracksToPlaylist($this->tracks, $this->playlistId);
+        } catch(Exception $exception) {
+            $this->logger->critical($exception->getMessage() . "\n" . $exception->getTraceAsString());
+        }
+
+        return $success;
     }
     
     protected function saveUsingQueue(): bool
     {
-        $successData = $this->spotiRequest->addTracksToQueue($this->tracks);
+        $successData = [
+            'failure' => 1,
+            'success' => 0,
+        ];
+
+        try {
+            $successData = $this->spotiRequest->addTracksToQueue($this->tracks);
+        } catch(Exception $exception) {
+            $this->logger->critical($exception->getMessage() . "\n" . $exception->getTraceAsString());
+        }
         
         return $successData['failure'] <= 0 && $successData['success'] > 0;
     }

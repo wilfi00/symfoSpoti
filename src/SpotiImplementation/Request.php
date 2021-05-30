@@ -344,10 +344,10 @@ class Request
     {
         $success  = 0;
         $failure  = 0;
-        
+
         if ($this->isThereOneAvailableDevice()) {
             foreach ($tracks as $trackUri) {
-                if ($this->api->queue($trackUri)) {
+                if ($this->api->queue($trackUri, $this->getActiveDevice())) {
                     $success++;
                 } else {
                     $failure++;

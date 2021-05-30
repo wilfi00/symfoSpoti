@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use Psr\Log\LoggerInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
@@ -255,9 +257,9 @@ class DiscoverController extends AbstractController
      * @param Request $request
      * @param SpotiRequest $spotiRequest
      * @param Security $security
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return RedirectResponse
      */
-    public function saveTracksFromGenres(Request $request, SpotiRequest $spotiRequest, Security $security)
+    public function saveTracksFromGenres(LoggerInterface $logger, Request $request, SpotiRequest $spotiRequest, Security $security)
     {
         // On part du principe que ça va échouer ;(
         $success = false;
@@ -283,6 +285,7 @@ class DiscoverController extends AbstractController
         }
         
         $spotiSave = new SpotiSave(
+            $logger,
             $spotiRequest,
             $data['saveOption'],
             $data['tracks'],

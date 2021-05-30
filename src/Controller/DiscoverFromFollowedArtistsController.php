@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -92,12 +93,13 @@ class DiscoverFromFollowedArtistsController extends AbstractController
 
     /**
      * @Route("/saveTracksFromFollowed", name="save_tracks_from_followed")
+     * @param LoggerInterface $logger
      * @param Request $request
      * @param SpotiRequest $spotiRequest
      * @param Security $security
      * @return RedirectResponse
      */
-    public function saveTracksFromFollowed(Request $request, SpotiRequest $spotiRequest, Security $security)
+    public function saveTracksFromFollowed(LoggerInterface $logger, Request $request, SpotiRequest $spotiRequest, Security $security)
     {
         // On part du principe que ça va échouer ;(
         $success = false;
@@ -134,6 +136,7 @@ class DiscoverFromFollowedArtistsController extends AbstractController
         );
         
         $spotiSave = new SpotiSave(
+            $logger,
             $spotiRequest,
             $data['saveOption'],
             array_keys($tracksRequest),

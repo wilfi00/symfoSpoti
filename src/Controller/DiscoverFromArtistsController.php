@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
@@ -154,14 +155,20 @@ class DiscoverFromArtistsController extends AbstractController
 
     /**
      * @Route("/saveTracksFromArtists", name="save_tracks_from_artists")
+     * @param LoggerInterface $logger
      * @param Request $request
      * @param Session $session
      * @param SpotiRequest $spotiRequest
      * @param Security $security
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return RedirectResponse
      */
-    public function saveTracksFromArtists(Request $request, Session $session, SpotiRequest $spotiRequest, Security $security)
-    {
+    public function saveTracksFromArtists(
+        LoggerInterface $logger,
+        Request $request,
+        Session $session,
+        SpotiRequest $spotiRequest,
+        Security $security
+    ) {
         $artists = SpotiTools::getArtistsSelectionInSession($session);
         if (empty($artists)) {
             return $this->redirect($this->generateUrl('artist_selection', ['success' => 0]));
@@ -200,6 +207,7 @@ class DiscoverFromArtistsController extends AbstractController
         );
         
         $spotiSave = new SpotiSave(
+            $logger,
             $spotiRequest,
             $data['saveOption'],
             array_keys($tracksRequest),

@@ -291,6 +291,10 @@ class DiscoverController extends AbstractController
         );
         $success = $spotiSave->save();
 
+        if ($success) {
+            SpotiTools::emptyTracksInSession();
+        }
+
         return $this->redirect($this->generateUrl('discover', ['success' => $success]));
     }
 

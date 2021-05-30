@@ -54,9 +54,9 @@ class Request
     {
         $cpt         = 0;
         $artists     = [];
-        $genre       = Tools::formatStringForSpotify($genre->getName());
+        $genreString = Tools::formatStringForSpotify($genre->getName());
         $tmpArtistId = []; // Permet de gérer le fait de récupérer des artistes uniques
-        $nbArtists   = Tools::addErrorProbability($nbArtists);
+        $nbArtistsProb   = Tools::addErrorProbability($nbArtists);
         $genreRepository = $this->getGenreRepository();
 
         while ((count($artists) < $nbArtists) && ($cpt <= $maxTry)) {
@@ -94,7 +94,7 @@ class Request
             }
 
             // Log
-            if (!empty($genreRepository)) {
+            if ($genreRepository !== null) {
                 $genreRepository->updateProgressOfPopularityGenres(Tools::formatInverseStringForSpotify($genreString), $cpt);
             }
         }

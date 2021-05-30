@@ -68,10 +68,10 @@ class Tools
         $session->remove(static::SESSION_ARTISTSELECTION);
     }
     
-    public static function saveTracksInSession(Session $session, array $tracks)
+    public static function saveTracksInSession(Session $session, array $tracks): void
     {
         static::emptyTracksInSession();
-        return $session->set(static::SESSION_DISCOVERSELECTION, $tracks);
+        $session->set(static::SESSION_DISCOVERSELECTION, $tracks);
     }
     
     public static function getTracksInSession(Session $session)
@@ -79,13 +79,13 @@ class Tools
         return $session->get(static::SESSION_DISCOVERSELECTION);
     }
     
-    public static function emptyTracksInSession()
+    public static function emptyTracksInSession(): void
     {
         $session = new Session();
         $session->remove(static::SESSION_DISCOVERSELECTION);
     }
 
-    public static function isCurrentUserOwnerOfPlaylist($userId, $playlist)
+    public static function isCurrentUserOwnerOfPlaylist($userId, $playlist): bool
     {
         return $playlist->owner->id === $userId;
     }

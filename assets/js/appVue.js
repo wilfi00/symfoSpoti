@@ -13,7 +13,7 @@ $( document ).ready(function() {
   	props: {
   	  genre: Object,
   	},
-  	template: `<li class="genre" v-bind:id="'genre' + genre.id" v-bind:data-id="genre.id">{{ genre.name }}<button @click="$emit('deletegenre', genre)" type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button></li>`,
+  	template: `<li class="genre" v-bind:id="'genre' + genre.id" v-bind:data-id="genre.id">{{ genre.name }}<button @click="$emit('deletegenre', genre)" type="button" class="btn-close btn-close-white" aria-label="Close"></button></li>`,
   })
   
   Vue.component('artist-item', {

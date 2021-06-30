@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "24be659fed8c16c89bc1195857b71e49",
+    "content-hash": "80d47c9c0d75f97d64f6eb1cea8f2053",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -8272,16 +8272,16 @@
         },
         {
             "name": "symfony/web-link",
-            "version": "v5.1.11",
+            "version": "v5.2.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/web-link.git",
-                "reference": "28e6bd9028740602c158f5c6ac8d5e2a2692812e"
+                "reference": "810a0a0542108a73d5f70558ec71d14146b40fab"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/web-link/zipball/28e6bd9028740602c158f5c6ac8d5e2a2692812e",
-                "reference": "28e6bd9028740602c158f5c6ac8d5e2a2692812e",
+                "url": "https://api.github.com/repos/symfony/web-link/zipball/810a0a0542108a73d5f70558ec71d14146b40fab",
+                "reference": "810a0a0542108a73d5f70558ec71d14146b40fab",
                 "shasum": ""
             },
             "require": {
@@ -8339,7 +8339,7 @@
                 "push"
             ],
             "support": {
-                "source": "https://github.com/symfony/web-link/tree/v5.1.11"
+                "source": "https://github.com/symfony/web-link/tree/v5.2.11"
             },
             "funding": [
                 {
@@ -8355,7 +8355,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-01-10T16:29:19+00:00"
+            "time": "2021-06-22T16:06:23+00:00"
         },
         {
             "name": "symfony/webpack-encore-bundle",
@@ -9522,5 +9522,5 @@
         "ext-json": "*"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.0.0"
+    "plugin-api-version": "2.1.0"
 }

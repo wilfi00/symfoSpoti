@@ -5,11 +5,14 @@ namespace App\Services;
 use App\Entity\Album;
 use App\Entity\Artist;
 use App\Entity\Track;
-use App\Interfaces\SongInterface;
 use App\SpotiImplementation\Request as SpotiRequest;
+use App\Traits\SongEntityCreatorTrait;
+use InvalidArgumentException;
 
 class SearchSongService
 {
+    use SongEntityCreatorTrait;
+
     protected SpotiRequest $spotiRequest;
 
     public function __construct(SpotiRequest $spotiRequest)
@@ -20,7 +23,7 @@ class SearchSongService
     public function search(string $type, string $query): array
     {
         if (!in_array($type, $this->getAvailableTypes(), true)) {
-            throw new \InvalidArgumentException('Le type ' . $type . "n'est pas implémenté");
+            throw new InvalidArgumentException('Le type ' . $type . "n'est pas implémenté");
         }
 
         $resultSearch = $this->spotiRequest->getDirectApi()->search($query, $type, ['limit' => 10]);
@@ -75,13 +78,6 @@ class SearchSongService
         return $artists;
     }
 
-    protected function setCommonDataToEntity(SongInterface $song, $item): void
-    {
-        $song->setSpotifyId($item->id);
-        $song->setName($item->name);
-        $song->setSpotifyUri($item->uri);
-    }
-
     protected function getAvailableTypes(): array
     {
         return [
@@ -89,14 +85,5 @@ class SearchSongService
             Artist::TYPE,
             Album::TYPE,
         ];
-    }
-
-    protected function getImageFromSpotiData($data): string
-    {
-        if (is_array($data) && isset($data[0])) {
-            return $data[0]->url;
-        }
-
-        return '';
     }
 }

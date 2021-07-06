@@ -5,6 +5,7 @@
         "php": "^8.0",
         "ext-ctype": "*",
         "ext-iconv": "*",
+        "ext-json": "*",
         "jwilsson/spotify-web-api-php": "^4.1",
         "kerox/oauth2-spotify": "^1.2",
         "knpuniversity/oauth2-client-bundle": "^2.8",
@@ -31,12 +32,12 @@
         "symfony/string": "5.2.*",
         "symfony/translation": "*",
         "symfony/twig-pack": "^1.0",
+        "symfony/validator": "5.2.*",
         "symfony/web-link": "5.1.*",
         "symfony/webpack-encore-bundle": "^1.7",
         "symfony/yaml": "5.2.*",
         "twig/extensions": "^1.5",
-        "twig/twig": "^2.0",
-        "ext-json": "*"
+        "twig/twig": "^2.0"
     },
     "require-dev": {
         "symfony/debug-pack": "*",

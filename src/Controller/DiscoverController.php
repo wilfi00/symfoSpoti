@@ -16,7 +16,7 @@ use App\Repository\GenreRepository;
 use Sonata\SeoBundle\Seo\SeoPageInterface as Seo;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use App\Manager\GenreManager as GenreManager;
+use App\Manager\GenreManager;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\HttpFoundation\Session\Session;
 

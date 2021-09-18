@@ -14,16 +14,21 @@ global.recommendations = function() {
 	ajaxInput(seedForm, input);
 	formAjaxSubmit(seedForm, $('.seeds-result'), seedEvent);
 	formAjaxSubmit(recommendationForm, $('.recommendation-result'));
-
+	initValuesFromStorage();
 
 	function addEvents()
 	{
 		input.on('focusout', function() {
 			$('.seeds-result').css('height', '0');
-			// $('.selection').show();
 		});
 		input.on('click keyup', function () {
 			$('.seeds-result').css('height', '300px');
+		});
+		$('.recommendation-result').off('DOMSubtreeModified.storage').on('DOMSubtreeModified.storage', function() {
+			sessionStorage.setItem('recommendationsTracks', $(this).html());
+		});
+		$('.seeds-added').off('DOMSubtreeModified.storage').on('DOMSubtreeModified.storage', function() {
+			setTimeout(() => { sessionStorage.setItem('recommendationsSeeds', $(this).html());	 }, 100);
 		});
 		
 		seedEvent();
@@ -99,7 +104,6 @@ global.recommendations = function() {
 			$('.seeds').empty();
 			$('.seeds-added .seed-added').each(function(index) {
 				$('.seeds').append(createInputSeedHtml($(this).data('id'), $(this).data('type'), index));
-
 			});
 		});
 
@@ -108,14 +112,21 @@ global.recommendations = function() {
 		})
 
 		$('#recommendations input').on('change', function() {
+			// Submit du form si on a au moins un seed
 			if ($('.seeds-added').children().length !== 0) {
 				$('#recommendations').submit();
 			}
+			// Sauvegarde des inputs
+			let inputValues = $('#recommendations input[type="range"]').map(function(idx, input) {
+				return $(input).val();
+			}).get();
+			sessionStorage.setItem('recommendationsInputs', JSON.stringify(inputValues));
 		});
 
 		$('button[type="reset"]').click(function() {
 			if ($('.seeds-added').children().length !== 0) {
 				$('#recommendations').submit();
+				sessionStorage.removeItem('recommendationsInputs');
 			}
 		});
 	}
@@ -139,6 +150,27 @@ global.recommendations = function() {
 	function emptySeedInputSearch()
 	{
 		$('#seed-search').val('');
+	}
+
+	function initValuesFromStorage()
+	{
+		// Tracks
+		let tracks = sessionStorage.getItem('recommendationsTracks');
+		if (tracks !== null) {
+			$('.recommendation-result').html(tracks);
+		}
+		// Seeds
+		let seeds = sessionStorage.getItem('recommendationsSeeds');
+		if (seeds !== null) {
+			$('.seeds-added').html(seeds);
+		}
+		// Inputs
+		let inputsValues = JSON.parse(sessionStorage.getItem('recommendationsInputs'));
+		if (inputsValues !== null) {
+			$('#recommendations input').each(function(index) {
+				$(this).val(inputsValues[index]);
+			});
+		}
 	}
 };
 

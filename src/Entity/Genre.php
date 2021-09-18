@@ -9,6 +9,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Genre
 {
+    public const TYPE = 'genre';
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()

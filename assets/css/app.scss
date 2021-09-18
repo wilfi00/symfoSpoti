@@ -215,6 +215,8 @@ h1 {
 	}
 }
 
+.loader-parent { position: relative; }
+
 // Discover from artists
 .saveFromArtists {
 	width: 200px;
@@ -382,7 +384,7 @@ hr {
 	position : relative;
 }
 
-.genreResult {
+.genreResult, .seeds-result {
 	height: 0;
 	overflow-y: scroll;
 	margin: 0;
@@ -394,7 +396,8 @@ hr {
 	background-color: #252525;
     width: 100%;
     z-index : 100;
-
+}
+.genreResult {
 	.genre {
 		padding: 8px 0 8px 44px;
 		cursor: pointer;
@@ -405,7 +408,7 @@ hr {
 		}
 	}
 }
-input:not(.form-check-input) {
+input:not(.form-check-input, .form-range) {
 	width: 100%;
 	font-weight: normal;
 	color: $color3;
@@ -421,7 +424,37 @@ input:not(.form-check-input) {
 		border-color: darken($color2, 20%);
 		box-shadow: 0 0 5px darken($color3, 10%);
 	}
+}
 
+input[type=range]::-webkit-slider-runnable-track {
+	background: #dee2e6!important;
+}
+input[type=range]::-ms-track {
+	color: transparent;             /* supprime les graduations pour IE */
+	background: #dee2e6!important;
+}
+
+input[type=range]::-webkit-slider-thumb {
+	-webkit-appearance: none;       /* également nécessaire sur le curseur */
+	border: none;
+	background-color: $color2!important;
+	box-shadow: none!important;
+}
+input[type=range]::-moz-range-thumb {
+	border: none;
+	background-color: $color2!important;
+	box-shadow: none!important;
+}
+input[type=range]::-ms-thumb {
+	border: none;
+	background-color: $color2!important;
+	box-shadow: none!important;
+}
+input[type=range]::-ms-fill-lower {
+	background: #dee2e6!important;
+}
+input[type=range]::-ms-tooltip {
+	display: none; /* supprime l'affichage de la valeur au survol */
 }
 
 input::placeholder, .nice-select {
@@ -681,5 +714,93 @@ table.dataTable > thead .sorting {
 		display: inline!important;
 		bottom: auto!important;
 		right: auto!important;
+	}
+}
+
+// Page recommendations
+.recommendations {
+	#seed-search-form { position: relative; }
+	.seeds-result {
+		.important {
+			margin: 15px;
+		}
+		img {
+			width: 40px;
+			height: 40px;
+		}
+		img, svg {
+			margin-right: 20px;
+		}
+		.block-element {
+			display: flex;
+			align-items: center;
+			cursor: pointer;
+			margin: 10px 0 10px 30px;
+		}
+	}
+	.seeds-added {
+		display: flex;
+		flex-wrap: wrap;
+
+		.seed-added {
+			display: flex;
+			align-items: center;
+			width: 200px;
+			margin: 10px 10px 0 0;
+			border: 1px solid $color2;
+			border-radius: 4px;
+
+			button {
+				margin-left: auto;
+				margin-right: 5px;
+			}
+			svg {
+				margin: 12px 4px 12px 0;
+			}
+			img {
+				width: 40px;
+				height: 40px;
+				margin: 4px;
+				border-radius: 4px;
+			}
+			.name {
+				display: inline-block;
+				overflow: hidden;
+				white-space: nowrap;
+				text-overflow: ellipsis;
+				max-width: 125px;
+			}
+		}
+	}
+	.recommendation-result {
+		margin-top: 20px;
+
+		.songBlock {
+			display: flex;
+			align-items: center;
+
+			img { width: 50px; }
+			.informations { margin-left: 20px; }
+		}
+		hr { margin: 0.5rem 0; }
+		svg {
+			width: 50px;
+			height: 50px;
+		}
+	}
+
+	.save {
+		margin-top: 0;
+	}
+
+	.sliders {
+		margin-top: 20px;
+		border: 1px solid $color2;
+		padding: 10px;
+	}
+
+	.resetContainer {
+		text-align: right;
+		.btn-secondary { height: 42px; }
 	}
 }

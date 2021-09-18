@@ -43,8 +43,8 @@ global.genreManager = function(config) {
 				generatePlaylist();
 			});
 
-			$('#saveAction').off('submit').on('submit', function(event) {
-				saveAction(event);
+			$('#saveAction').off('submit').on('submit', function() {
+				saveAction();
 			});
 
 			// Popover sur le bouton de génération de playlist
@@ -110,7 +110,7 @@ global.genreManager = function(config) {
 			return genres;
 		}
 
-		function saveAction(event) {
+		function saveAction() {
 			var tracks = [];
 			$('.playlistResult .trackBlock').each(function() {
 				tracks.push($(this).data('id'));

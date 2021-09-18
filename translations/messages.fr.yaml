@@ -10,6 +10,9 @@ logout: Se déconnecter
 add: Ajouter
 track: Chanson
 artist: Artiste
+tracks: Chansons
+artists: Artistes
+genres: Genres
 album: Album
 consult: Consulter
 name: Nom
@@ -21,6 +24,7 @@ save_songs: Enregistrer les chansons
 create_new_playlist: Créer une nouvelle playlist
 existing_playlist: Ajouter dans une playlist existante
 adding_to_queue: Ajouter à la file d'attente
+
 
 # Base
 brand_name: Discover New Music
@@ -79,6 +83,14 @@ listenlater_consult_p1: Liste des chansons, albums et artistes enregistrés à �
 listenlater_deleteSuccess: Supprimé !
 listenlater_connexion_explain: Pour créer une sélection à ajouter plus tard, il faut se connecter en utilisant Spotify
 
+# Recommendations
+acousticness: Acoustique
+danceability: Dansable
+energy: Énergique
+instrumentalness: Instrumental
+liveness: Live
+speechiness: Chant
+valence: Positivité
 
 #SEO
 seo_description: Découvre de nouvelles musiques et enregistre les dans une playlist Spotify !

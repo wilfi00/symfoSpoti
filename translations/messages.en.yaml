@@ -10,6 +10,9 @@ logout: Log out
 add: Add
 track: Track
 artist: Artist
+tracks: Tracks
+artists: Artists
+genres: Genres
 album: Album
 consult: Consult
 name: Name
@@ -79,6 +82,15 @@ listenlater_consult_h1: To listen later
 listenlater_consult_p1: Songs, albums and artists saved to listen later
 listenlater_deleteSuccess: Deleted !
 listenlater_connexion_explain: To use to listen later, you must connect using your Spotify account
+
+# Recommendations
+acousticness: Acousticness
+danceability: Danceability
+energy: Energy
+instrumentalness: Instrumentalness
+liveness: Liveness
+speechiness: Speechiness
+valence: Valence
 
 #SEO
 seo_description: Discover new songs and save them in a Spotify playlist !

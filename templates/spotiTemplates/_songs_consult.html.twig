@@ -1,10 +1,12 @@
 <table class="table songTable">
 	<thead>
-		<th></th>
-		<th>{% trans %}name{% endtrans %}</th>
-		<th>{% trans %}link{% endtrans %}</th>
-		<th>{% trans %}date_add{% endtrans %}</th>
-		<th>{% trans %}delete{% endtrans %}</th>
+		<tr>
+			<th></th>
+			<th>{% trans %}name{% endtrans %}</th>
+			<th>{% trans %}link{% endtrans %}</th>
+			<th>{% trans %}date_add{% endtrans %}</th>
+			<th>{% trans %}delete{% endtrans %}</th>
+		</tr>
 	</thead>
 	<tbody>
 		{% for song in songs %}

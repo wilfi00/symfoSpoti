@@ -7,6 +7,8 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 class Recommendation
 {
+    public const GENRE_TYPE = 'genre';
+
     private const MIN_SEEDS = 1;
     private const MAX_SEEDS = 5;
     private ?int $id;

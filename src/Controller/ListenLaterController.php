@@ -5,7 +5,6 @@ namespace App\Controller;
 use App\Entity\Album;
 use App\Entity\Artist;
 use App\Entity\Track;
-use App\Interfaces\SongInterface;
 use App\Manager\AlbumManager;
 use App\Manager\ArtistManager;
 use App\Manager\TrackManager;
@@ -16,6 +15,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Security;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ListenLaterController extends AbstractController
@@ -39,7 +39,7 @@ class ListenLaterController extends AbstractController
      * @param TranslatorInterface $translator
      * @return Response
      */
-    public function listenLater(Security $security, TranslatorInterface $translator)
+    public function listenLater(Security $security, TranslatorInterface $translator): Response
     {
         if (!$security->isGranted('ROLE_SPOTIFY')) {
             return $this->redirectToRoute('listen_later_not_connected');
@@ -64,13 +64,16 @@ class ListenLaterController extends AbstractController
      * @param TranslatorInterface $translator
      * @return Response
      */
-    public function listenLaterConsult(Security $security, Request $request, TranslatorInterface $translator)
+    public function listenLaterConsult(Security $security, Request $request, TranslatorInterface $translator): Response
     {
         if (!$security->isGranted('ROLE_SPOTIFY')) {
             return $this->redirectToRoute('listen_later_not_connected');
         }
 
         $user = $this->getUser();
+        if (!$user instanceof UserInterface) {
+            return $this->redirectToRoute('listen_later_not_connected');
+        }
 
         return $this->render('pages/listen_later_consult.html.twig', [
             'tracks'  => $user->getTracks(),
@@ -114,8 +117,9 @@ class ListenLaterController extends AbstractController
      * @param TrackManager $trackManager
      * @param ArtistManager $artistManager
      * @param AlbumManager $albumManager
+     * @return Response
      */
-    public function addListenLater(Request $request, TrackManager $trackManager, ArtistManager $artistManager, AlbumManager $albumManager)
+    public function addListenLater(Request $request, TrackManager $trackManager, ArtistManager $artistManager, AlbumManager $albumManager): Response
     {
         $currentUser = $this->getUser();
 
@@ -160,13 +164,13 @@ class ListenLaterController extends AbstractController
     /**
      * @Route("/deleteSong", name="delete_song")
      *
-     * @param SongInterface $song
      * @param Request $request
      * @param TrackManager $trackManager
      * @param ArtistManager $artistManager
      * @param AlbumManager $albumManager
+     * @return Response
      */
-    public function deleteSongLater(Request $request, TrackManager $trackManager, ArtistManager $artistManager, AlbumManager $albumManager)
+    public function deleteSongLater(Request $request, TrackManager $trackManager, ArtistManager $artistManager, AlbumManager $albumManager): Response
     {
         $songId = $request->request->get('id');
 

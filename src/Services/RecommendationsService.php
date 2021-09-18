@@ -88,7 +88,7 @@ class RecommendationsService
             'target_liveness' => $recommendation->getLiveness(), // 1 => c'est du live
 //            'target_loudness' => $loudness, // -60 à 0 si le son est fort sur toute la track  (Loudness is the quality of a sound that is the primary psychological correlate of physical strength (amplitude))
 //            'target_mode' => $mode, // major 1 minor 0 (Mode indicates the modality (major or minor) of a track, the type of scale from which its melodic content is derived.)
-//            'target_popularity' => $popularity, // 0 à 100 mais pas sur du tout
+            'target_popularity' => $popularity, // 0 à 100 mais pas sur du tout
             // 0.66 describe tracks that are probably made entirely of spoken words.
             // Values between 0.33 and 0.66 describe tracks that may contain both music and speech, either in sections or layered, including such cases as rap music
             // Values below 0.33 most likely represent music and other non-speech-like tracks.
@@ -102,9 +102,20 @@ class RecommendationsService
             $this->setCommonDataToEntity($track, $song);
             $track->setPreviewUrl($song->preview_url);
             $track->setImage($this->getImageFromSpotiData($song->album->images));
+            $track->setArtists($this->getArtistsFromSong($song));
             $recommendationsTracks[] = $track;
         }
 
         return $recommendationsTracks;
+    }
+
+    protected function getArtistsFromSong($song): string
+    {
+        $artists = '';
+        foreach ($song->artists as $artist) {
+            $artists .= $artist->name . ', ';
+        }
+
+        return substr($artists, 0, -2);
     }
 }

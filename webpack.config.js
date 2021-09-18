@@ -37,6 +37,7 @@ Encore
      * and one CSS file (e.g. app.css) if your JavaScript imports CSS.
      */
     .addEntry('app', './assets/js/app.js')
+    .addEntry('recommendation', './assets/js/discoverFromRecommendations.js')
     .addEntry('discoverFromGenres', './assets/js/discoverFromGenres.js')
     .addEntry('discoverFromSelectedArtist', './assets/js/discoverFromSelectedArtist.js')
     .addEntry('discoverFromFollowedArtist', './assets/js/discoverFromFollowedArtist.js')

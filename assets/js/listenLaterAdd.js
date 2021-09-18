@@ -14,42 +14,9 @@ global.listenLaterAdd = function(config) {
 
 	function init()
 	{
-		$('#searchAction').submit(function(event) {
-			let result = $('.search-result');
-			result.hide();
-			showLoader();
-			event.preventDefault(); //prevent default action
-			let url           = $(this).attr("action"); //get form action url
-			let requestMethod = $(this).attr("method"); //get form GET/POST method
-			let data          = $(this).serialize(); //Encode form elements for submission
-
-			$.ajax({
-				url : url,
-				type: requestMethod,
-				data : data
-			}).done(function(response) {
-				result.html(response);
-				hideLoader();
-				result.show();
-				addEvents();
-			});
-		});
-
-		var typingTimer; // Timer
-		var doneTypingInterval = 100;  // On laisse une seconde
-		let input = $('#addListenLater');
-		input.on('keyup', function () {
-			if (input.val() === '') {
-				return;
-			}
-			clearTimeout(typingTimer);
-			typingTimer = setTimeout(function() {
-				$('#searchAction').submit();
-			}, doneTypingInterval);
-		});
-		input.on('keydown', function () {
-			clearTimeout(typingTimer);
-		});
+		let input = $('#searchAction');
+		ajaxInput(input, $('#addListenLater'));
+		formAjaxSubmit(input, $('.search-result'), addEvents);
 	}
 
 	function addListenAfter(song)

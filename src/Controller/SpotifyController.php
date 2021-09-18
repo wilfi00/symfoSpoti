@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use KnpU\OAuth2ClientBundle\Client\ClientRegistry;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -14,9 +15,9 @@ class SpotifyController extends AbstractController
      * @Route("/spotiAuth", name="spoti_auth")
      * @param Request $request
      * @param ClientRegistry $clientRegistry
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return RedirectResponse
      */
-    public function connectAction(Request $request, ClientRegistry $clientRegistry)
+    public function connectAction(Request $request, ClientRegistry $clientRegistry): RedirectResponse
     {
         SpotiAuth::setUrlAfterAuth($request->headers->get('referer'));
         return $clientRegistry
@@ -34,7 +35,7 @@ class SpotifyController extends AbstractController
      * @Route("/spotiCallback", name="spoti_callback")
      * @param ClientRegistry $clientRegistry
      */
-    public function spotiCallback(ClientRegistry $clientRegistry)
+    public function spotiCallback(ClientRegistry $clientRegistry): void
     {
         // Toute la logique se trouve dans SpotifyAuthenticator
     }

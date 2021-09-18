@@ -72,6 +72,9 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 {% set path = app.request.attributes.get('_route') %}
                 <ul class="navbar-nav mr-auto">
+                    <li class="nav-item {% if path == 'recommendations' %}active{% endif %}">
+                        <a class="nav-link" href="{{ path('recommendations') }}">{% trans %}recommendations{% endtrans %}</a>
+                    </li>
                     <li class="nav-item {% if path == 'discover' %}active{% endif %}">
                         <a class="nav-link" href="{{ path('discover') }}">{% trans %}from_genre{% endtrans %}</a>
                     </li>

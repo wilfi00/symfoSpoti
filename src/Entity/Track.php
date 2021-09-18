@@ -33,6 +33,8 @@ class Track implements SongInterface
      */
     protected UserInterface $user;
 
+    protected ?string $artists;
+
     public function getPreviewUrl(): ?string
     {
         return $this->preview_url;
@@ -48,5 +50,17 @@ class Track implements SongInterface
     public function getType(): string
     {
         return static::TYPE;
+    }
+
+    public function setArtists(string $artists): self
+    {
+        $this->artists = $artists;
+
+        return $this;
+    }
+
+    public function getArtists(): ?string
+    {
+        return $this->artists;
     }
 }

@@ -48,8 +48,8 @@ global.feedbackError = function(msg)
 
 function showFeedback(msg, classname, size = 220)
 {
-	var feedback      = $('.feedback');
-	var feedbackAlert = feedback.find('.alert');
+	let feedback      = $('.feedback');
+	let feedbackAlert = feedback.find('.alert');
 
 	feedbackAlert.attr('class', 'alert ' + classname);
 	feedbackAlert.html(msg);
@@ -78,9 +78,9 @@ global.manageFeedback = function(success, msgSuccess, msgError)
 }
 
 Array.prototype.unique = function() {
-    var a = this.concat();
-    for(var i=0; i<a.length; ++i) {
-        for(var j=i+1; j<a.length; ++j) {
+	let a = this.concat();
+    for(let i=0; i<a.length; ++i) {
+        for(let j=i+1; j<a.length; ++j) {
             if(a[i] === a[j])
                 a.splice(j--, 1);
         }
@@ -90,7 +90,7 @@ Array.prototype.unique = function() {
 };
 
 Array.prototype.remove = function() {
-    var what, a = arguments, L = a.length, ax;
+	let what, a = arguments, L = a.length, ax;
     while (L && this.length) {
         what = a[--L];
         while ((ax = this.indexOf(what)) !== -1) {
@@ -106,9 +106,9 @@ global.searchGenres = function(genres, searchGenreUsingJs = false) {
 	
 	function addInputSearchEvent(genres)
 	{
-		var typingTimer; // Timer
-		var doneTypingInterval = 10;
-		var input = $('.inputSearchGenre');
+		let typingTimer; // Timer
+		let doneTypingInterval = 10;
+		let input = $('.inputSearchGenre');
 		input.off('focusout').on('focusout', function() {
 			$('.genreResult').css('height', '0');
 			$('.selection').show();
@@ -121,28 +121,26 @@ global.searchGenres = function(genres, searchGenreUsingJs = false) {
 			if (searchGenreUsingJs) {
 				clearTimeout(typingTimer);
 				typingTimer = setTimeout(function() {
-					textSearch = input.val().trim().toLowerCase();
-					
-					var genres0 = genres.filter(genre => genre.name == textSearch);
+					let textSearch = input.val().trim().toLowerCase();
+
+					let genres0 = genres.filter(genre => genre.name == textSearch);
 					
 					// Recherche exact (uk metalcore matchera uk metalcore)
-					var regex = '';
-					regex +=  '\\b(\\w*' +  textSearch + '\\w*)\\b';
-					var genres1 = genres.filter(genre => genre.name.search(regex) >= 0);
+					let regex = '\\b(\\w*' +  textSearch + '\\w*)\\b';
+					let genres1 = genres.filter(genre => genre.name.search(regex) >= 0);
 		
 					// Recherche inversée exact (exemple, uk metalcore matchera metalcore uk)
-					var regex = '';
-					regex +=  '\\b(\\w*' +  $.trim(textSearch.split(' ').reverse().join(' ')) + '\\w*)\\b';
-					var genres2 = genres.filter(genre => genre.name.search(regex) >= 0);
+					regex = '\\b(\\w*' +  $.trim(textSearch.split(' ').reverse().join(' ')) + '\\w*)\\b';
+					let genres2 = genres.filter(genre => genre.name.search(regex) >= 0);
 		
 					// Recherche très générale en mode OU (uk metalcore renverra tous les uk et tous les metalcore)
-					var regex = '';
+					regex = '';
 					textSearch.split(' ').forEach(function(value) {
 					   regex += '\\b(\\w*' + value + '\\w*)\\b|';
 					});
 					// Supression du dernier caractère de la chaine pour enlever le ou |
 					regex = regex.substring(0, regex.length - 1);
-					var genres3 = genres.filter(genre => genre.name.search(regex) >= 0);
+					let genres3 = genres.filter(genre => genre.name.search(regex) >= 0);
 	
 					// On concatène tout et on enlève les genres dupliqués
 					app.vueGenres = genres0.concat(genres1).concat(genres2).concat(genres3).unique();
@@ -165,13 +163,13 @@ global.changeLanguage = function(defaultLanguage)
 	// Langage courant
 	if (defaultLanguage === 'en') {
 		// Html select
-		var option = select.find('option[data-lang="en"]');
+		let option = select.find('option[data-lang="en"]');
 		option.attr('selected', true);
 		// Nice select
 		$('#changeLanguage').find('.nice-select .current').html(option.html());
 	} else {
 		// Html select
-		var option = select.find('option[data-lang="fr"]');
+		let option = select.find('option[data-lang="fr"]');
 		option.attr('selected', true);
 		// Nice select
 		$('#changeLanguage').find('.nice-select .current').html(option.html());
@@ -252,4 +250,47 @@ global.array_column = function(array, columnName)
     return array.map(function(value,index) {
         return value[columnName];
     })
+}
+
+global.ajaxInput = function(formElementToSubmit, inputElement)
+{
+	let typingTimer; // Timer
+	let doneTypingInterval = 300;  // On laisse une seconde
+	inputElement.on('keyup', function () {
+		if (inputElement.val() === '') {
+			return;
+		}
+		clearTimeout(typingTimer);
+		typingTimer = setTimeout(function() {
+			formElementToSubmit.submit();
+		}, doneTypingInterval);
+	});
+	inputElement.on('keydown', function () {
+		clearTimeout(typingTimer);
+	});
+}
+
+global.formAjaxSubmit = function(formElement, resultDomElement, callback = null)
+{
+	formElement.submit(function(event) {
+		resultDomElement.hide();
+		showLoader();
+		event.preventDefault(); //prevent default action
+		let url           = $(this).attr("action"); //get form action url
+		let requestMethod = $(this).attr("method"); //get form GET/POST method
+		let data          = $(this).serialize(); //Encode form elements for submission
+
+		$.ajax({
+			url : url,
+			type: requestMethod,
+			data : data
+		}).done(function(response) {
+			resultDomElement.html(response);
+			hideLoader();
+			resultDomElement.show();
+			if (callback !== null) {
+				callback();
+			}
+		});
+	});
 }

@@ -1,6 +1,6 @@
 // Selection artists
 global.artistManager = function(config) {
-	var sidebarSelection = $('.artistSelection');
+	let sidebarSelection = $('.artistSelection');
 	init();
 
 	function init()
@@ -74,45 +74,10 @@ global.artistManager = function(config) {
 		updateNbArtists();
 	}
 
-	$('#search-form').submit(function(event) {
-		var result = $('.search-result');
-		result.hide();
-		showLoader();
-		event.preventDefault(); //prevent default action
-		var url           = $(this).attr("action"); //get form action url
-		var requestMethod = $(this).attr("method"); //get form GET/POST method
-		var data          = $(this).serialize(); //Encode form elements for submission
+	let searchForm = $('#search-form');
+	ajaxInput(searchForm, $('#search-form input'));
+	formAjaxSubmit(searchForm, $('.search-result'), addEvents);
 
-		$.ajax({
-			url : url,
-			type: requestMethod,
-			data : data
-		}).done(function(response) {
-			result.html(response);
-			hideLoader();
-			result.show();
-			addEvents();
-		});
-	});
-
-	var typingTimer; // Timer
-	var doneTypingInterval = 100;  // On laisse une seconde
-	$('#search-form :input').each(function() {
-	    var input = $("#" + this.id);
-	    input.on('keyup', function () {
-	    	if (input.val() == '') {
-	    		return;
-	    	}
-	        clearTimeout(typingTimer);
-	        typingTimer = setTimeout(function() {
-				$('#search-form').submit();
-			}, doneTypingInterval);
-	    });
-	    input.on('keydown', function () {
-			clearTimeout(typingTimer);
-	    });
-	});
-	
 	function saveAction()
 	{
 		$('#saveAction').append('<input type="hidden" name="nbTracks" value="' + $('#nbTracks').val() + '">');

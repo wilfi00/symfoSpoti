@@ -5,61 +5,89 @@
 {% block content %}
     <p>{% trans %}recommendations_p1{% endtrans %}</p>
     <hr>
-    <form action="{{ path('makeRecommendation') }}" id="recommendations" method="POST">
-        <button type="submit" class="btn btn-primary">
-            {% trans %}validate{% endtrans %}
-        </button>
-        <br>
-        <hr>
-        <input type="hidden" name="artists">
-        <input type="hidden" name="songs">
-        <input type="hidden" name="genres">
-
-        <label for="name">acousticness</label>
-        <input id="acousticness" type="text" name="acousticness">
-        <label for="danceability">danceability</label>
-        <input id="danceability" type="text" name="danceability">
-        <label for="duration">duration</label>
-        <input id="duration" type="text" name="duration">
-        <label for="energy">energy</label>
-        <input id="energy" type="text" name="energy">
-        <label for="instrumentalness">instrumentalness</label>
-        <input id="instrumentalness" type="text" name="instrumentalness">
-        <label for="key">key</label>
-        <input id="key" type="text" name="key">
-        <label for="liveness">liveness</label>
-        <input id="liveness" type="text" name="liveness">
-        <label for="loudness">loudness</label>
-        <input id="loudness" type="text" name="loudness">
-        <label for="mode">mode</label>
-        <input id="mode" type="text" name="mode">
-        <label for="popularity">popularity</label>
-        <input id="popularity" type="text" name="popularity">
-        <label for="speechiness">speechiness</label>
-        <input id="speechiness" type="text" name="speechiness">
-        <label for="tempo">tempo</label>
-        <input id="tempo" type="text" name="tempo">
-        <label for="timesignature">timesignature</label>
-        <input id="timesignature" type="text" name="timesignature">
-        <label for="valence">valence</label>
-        <input id="valence" type="text" name="valence">
-
-
-    </form>
-
-    <div class="result">
-        {% include 'spotiTemplates/_songs.html.twig' %}
+    <div class="row">
+        <div class="col-lg-8 loader-parent">
+            <form action="{{ path('searchForSeeds') }}" id="seed-search-form" method="POST">
+                <input type="text" placeholder="Ajouter un artiste, une chanson, un genre de musique..." name="seed-search" id="seed-search">
+                <div class="seeds-added"></div>
+                <div class="seeds-result"></div>
+            </form>
+            <div id="loader"></div>
+            <div class="recommendation-result">
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="save">
+                <h3>{% trans %}save_songs{% endtrans %}</h3>
+                <form action="{{ path('save_tracks_from_recommendtaions') }}" id="saveAction" method="POST">
+                    <select {{ isConnected() ? '' : 'disabled' }} class="saveOption" name="saveOption">
+                        <option value="createNewPlaylist">{% trans %}create_new_playlist{% endtrans %}</option>
+                        <option {{ isConnected() ? '' : 'disabled' }} value="existingPlaylist">{% trans %}existing_playlist{% endtrans %}</option>
+                        <option {{ isConnected() and isOneDeviceActive() ? '' : 'disabled' }} value="queue">{% trans %}adding_to_queue{% endtrans %}</option>
+                    </select>
+                    <input {{ isConnected() ? '' : 'disabled' }} name="playlistName" type="text" class="playlistName" placeholder="{% trans %}discover_playlistName{% endtrans %}" required>
+                    <select class="existingPlaylist" name="existingPlaylist">
+                        {% for name, id in playlists %}
+                            <option value="{{ id }}">{{ name }}</option>
+                        {% endfor %}
+                    </select>
+                    {% if isConnected() %}
+                        <button type="submit" class="btn btn-primary saveAction" data-content="{% trans %}discover_playlistSaveToolTip{% endtrans %}">
+                            <img src="{{ asset('build/images/Spotify_Icon_RGB_Black.png') }}" alt="Spotify logo">{% trans %}validate{% endtrans %}
+                        </button>
+                    {% endif %}
+                </form>
+                {% if not isConnected() %}
+                    <p class="importantSecondary">{% trans %}discover_connexion_explain{% endtrans %}</p>
+                    <form action="{{ path('spoti_auth') }}">
+                        <button type="submit" class="btn btn-primary login"><img class="mr-1" src="{{ asset('build/images/Spotify_Icon_RGB_Black.png') }}" alt="Spotify logo">{% trans %}login{% endtrans %}</button>
+                    </form>
+                {% endif %}
+            </div>
+            <form action="{{ path('makeRecommendations') }}" id="recommendations" class="sliders" method="POST">
+                <div class="resetContainer"><button class="btn btn-secondary" type="reset">{% trans %}reset{% endtrans %}</button></div>
+                <label for="acousticness">{% trans %}acousticness{% endtrans %}</label>
+                <input type="range" class="form-range" min="0" max="100" id="acousticness" name="acousticness">
+                <label for="danceability">{% trans %}danceability{% endtrans %}</label>
+                <input type="range" class="form-range" min="0" max="100" id="danceability" name="danceability">
+                <label for="energy">{% trans %}energy{% endtrans %}</label>
+                <input type="range" class="form-range" min="0" max="100" id="energy" name="energy">
+                <label for="instrumentalness">{% trans %}instrumentalness{% endtrans %}</label>
+                <input type="range" class="form-range" min="0" max="100" id="instrumentalness" name="instrumentalness">
+                <label for="liveness">{% trans %}liveness{% endtrans %}</label>
+                <input type="range" class="form-range" min="0" max="100" id="liveness" name="liveness">
+        {#        <label for="popularity">popularity</label>#}
+        {#        <input type="range" class="form-range" min="0" max="100" id="acousticness" name="acousticness">#}
+                <label for="speechiness">{% trans %}speechiness{% endtrans %}</label>
+                <input type="range" class="form-range" min="0" max="100" id="speechiness" name="speechiness">
+                <label for="valence">{% trans %}valence{% endtrans %}</label>
+                <input type="range" class="form-range" min="0" max="100" id="valence" name="valence">
+                <div class="hide seeds"></div>
+            </form>
+        </div>
     </div>
 
     <div class="feedback">
         <div class="alert alert-success"></div>
     </div>
+    <script id="hidden-seed-template" type="text/x-custom-template">
+        <div class="seed-added" data-type="{type}" data-id="{id}">
+            {img}
+            {svg}
+            <span class="name">{name}</span>
+            <button type="button" aria-label="Close" class="btn-close btn-close-white"></button>
+        </div>
+    </script>
+    <script id="hidden-inputseed-template" type="text/x-custom-template">
+        <input type="hidden" name="seeds{index}[]" value="{id}"/>
+        <input type="hidden" name="seeds{index}[]" value="{type}"/>
+    </script>
 {% endblock %}
 {% block footer %}
-{#    {{ encore_entry_script_tags('listenLaterAdd') }}#}
-{#    <script>#}
-{#        $( document ).ready(function() {#}
-{#            listenLaterAdd({{ jsConfig|json_encode|raw }});#}
-{#        });#}
-{#    </script>#}
+    {{ encore_entry_script_tags('recommendation') }}
+    <script>
+        $( document ).ready(function() {
+            recommendations();
+        });
+    </script>
 {% endblock %}

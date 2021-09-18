@@ -254,6 +254,7 @@ class DiscoverController extends AbstractController
 
     /**
      * @Route("/saveTracksFromGenres", name="save_tracks_from_genres")
+     * @param LoggerInterface $logger
      * @param Request $request
      * @param SpotiRequest $spotiRequest
      * @param Security $security
@@ -261,9 +262,6 @@ class DiscoverController extends AbstractController
      */
     public function saveTracksFromGenres(LoggerInterface $logger, Request $request, SpotiRequest $spotiRequest, Security $security)
     {
-        // On part du principe que ça va échouer ;(
-        $success = false;
-        
         $data = [
             'saveOption'       => $request->request->get('saveOption'),
             'tracks'           => json_decode($request->request->get('tracks'), true),
@@ -272,7 +270,6 @@ class DiscoverController extends AbstractController
         ];
 
         // Si l'utilisateur n'est pas logé sur spotify, on le fait
-        // Sert plus à grand chose car maintenant si on est là on est normalement connnecté :)
         $session = $request->getSession();
         if (!$security->isGranted('ROLE_SPOTIFY')) {
             // On sauvegarde les datas post avant la redirection pour se connecter

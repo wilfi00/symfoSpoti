@@ -103,7 +103,6 @@ class DiscoverFromArtistsController extends AbstractController
             'playlists'     => $playlists,
             'saveUrl'       => $this->generateUrl('save_tracks_from_artists'),
             'form'          => $form->createView(),
-            'artistsSearch' => $artists,
             'artistsInit'   => $this->initArtists($session),
             'jsConfig'      => [
                'addArtistToSelectionUrl'    => $this->generateUrl('addArtist'),

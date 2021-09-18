@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Entity\Album;
 use App\Entity\Artist;
+use App\Entity\Recommendation;
 use App\Entity\Track;
 use App\SpotiImplementation\Request as SpotiRequest;
 use App\Traits\SongEntityCreatorTrait;
@@ -23,10 +24,15 @@ class SearchSongService
     public function search(string $type, string $query): array
     {
         if (!in_array($type, $this->getAvailableTypes(), true)) {
-            throw new InvalidArgumentException('Le type ' . $type . "n'est pas implémenté");
+            throw new InvalidArgumentException('Le type ' . $type . " n'est pas implémenté");
         }
 
-        $resultSearch = $this->spotiRequest->getDirectApi()->search($query, $type, ['limit' => 10]);
+        if ($type === Recommendation::GENRE_TYPE) {
+            $resultSearch = $this->spotiRequest->getDirectApi()->getGenreSeeds();
+        } else {
+            $resultSearch = $this->spotiRequest->getDirectApi()->search($query, $type, ['limit' => 10]);
+        }
+
 
         switch($type) {
             case Track::TYPE:
@@ -35,6 +41,8 @@ class SearchSongService
                 return $this->getNewArtists($resultSearch->artists->items);
             case Album::TYPE:
                 return $this->getNewAlbums($resultSearch->albums->items);
+            case Recommendation::GENRE_TYPE:
+                return $this->searchGenre($query, $resultSearch->genres);
         }
     }
 
@@ -84,6 +92,13 @@ class SearchSongService
             Track::TYPE,
             Artist::TYPE,
             Album::TYPE,
+            Recommendation::GENRE_TYPE,
         ];
+    }
+
+    protected function searchGenre(string $query, array $genres): array
+    {
+        $input = preg_quote($query, '~');
+        return preg_grep('~' . $input . '~i', $genres);
     }
 }

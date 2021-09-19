@@ -103,6 +103,7 @@
     </div>
 {% endblock %}
 {% block footer %}
+	{% set text = text|merge({'genres_artist': 'genres_artist'|trans}) %}
 	{{ encore_entry_script_tags('discoverFromFollowedArtist') }}
     {{ encore_entry_script_tags('appVue') }}
 	<script>

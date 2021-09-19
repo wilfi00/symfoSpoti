@@ -19,6 +19,7 @@ name: Name
 link: Link
 delete: Delete
 date_add: Date added
+genres_artist: Artist genres
 # Select save
 save_songs: Save songs
 create_new_playlist: Create new playlist

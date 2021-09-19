@@ -19,6 +19,7 @@ name: Nom
 link: Lien
 delete: Supprimer
 date_add: Date d'ajout
+genres_artist: Genres de l'artiste
 # Select save
 save_songs: Enregistrer les chansons
 create_new_playlist: Créer une nouvelle playlist

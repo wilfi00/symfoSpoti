@@ -265,8 +265,7 @@ h1 {
         position: absolute;
         right: 0;
     }
-    &:not(.artistFollowedBloc) { cursor: pointer; } 
-    &.artistFollowedBloc { 
+    &.artistFollowedBloc {
     	margin-bottom: 20px; 
     	img, span {
     		transition: opacity 0.2s ease-out;
@@ -275,8 +274,10 @@ h1 {
     .picto-info { 
     	position: absolute;
     	right: 0;
+		cursor: auto;
     }
 }
+.artistBloc:not(.artistFollowedBloc) .artistBlocClick { cursor: pointer; }
 .artistsFollowed {
 	display: flex;
 	flex-wrap: wrap;

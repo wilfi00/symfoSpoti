@@ -14,9 +14,9 @@ global.artistManager = function(config) {
 	function addEvents()
 	{
 		// Ajout d'un artiste à la sélection
-		$('.search-result .artistBloc').each(function() {
+		$('.search-result .artistBlocClick').each(function() {
 			$(this).off('click').on('click', function() {
-				addArtistToSelection($(this));
+				addArtistToSelection($(this).parent());
 			});
 		});
 
@@ -44,7 +44,7 @@ global.artistManager = function(config) {
 	{
 		artist.clone().prependTo(sidebarSelection);
 		addEvents();
-		artist.css('pointer-events', 'none');
+		artist.children('.artistBlocClick').css('pointer-events', 'none');
 		$.post(config.addArtistToSelectionUrl, JSON.stringify(artist.data().information));
 		
 		$('.saveAction').prop('disabled', false);
@@ -53,7 +53,12 @@ global.artistManager = function(config) {
 
 	function removeArtistToSelection(artist)
 	{
-	
+		let idArtist = artist.data('information').id
+		$('.search-result .artistBloc').each(function() {
+			if ($(this).data('information').id === idArtist) {
+				$(this).css('pointer-events', 'auto');
+			}
+		});
 		artist.remove();
 		$.post(config.removeArtistToSelectionUrl, artist.data().information.id);
 		

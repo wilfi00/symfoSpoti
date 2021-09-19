@@ -30,6 +30,9 @@ class DiscoverFromArtistsController extends AbstractController
         }
 
         foreach ($artistsSelection as $artist) {
+            if (!is_array($artist)) {
+                continue;
+            }
             $artistsTmp['name'] = $artist['name'];
 
             if (isset($artist['image'])) {

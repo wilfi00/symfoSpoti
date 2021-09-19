@@ -22,7 +22,7 @@ class Tools
         return $string[$randomIndex];
     }
 
-    public static function saveArtistSelectionInSession($artist)
+    public static function saveArtistSelectionInSession(array $artist): void
     {
         $session = new Session();
 
@@ -32,21 +32,24 @@ class Tools
         }
 
         array_unshift($artists, $artist);
-
+dump('unshift');
+        dump($artists);
         $session->set(static::SESSION_ARTISTSELECTION, $artists);
     }
 
-    public static function deleteArtistSelectionInSession($artistId)
+    public static function deleteArtistSelectionInSession($artistId): void
     {
         $selection = static::getArtistsSelectionInSession();
-
+dump($selection);
         foreach ($selection as $key => $artist) {
             if ($artist['id'] === $artistId) {
                 unset($selection[$key]);
                 static::emptyArtistSelectionInSession();
 
-                foreach ($selection as $artist) {
-                    static::saveArtistSelectionInSession($artist);
+                foreach ($selection as $artistSelected) {
+                    if (is_array($artistSelected)) {
+                        static::saveArtistSelectionInSession($artistSelected);
+                    }
                 }
                 return;
             }
@@ -62,7 +65,7 @@ class Tools
         return $session->get(static::SESSION_ARTISTSELECTION);
     }
 
-    public static function emptyArtistSelectionInSession()
+    public static function emptyArtistSelectionInSession(): void
     {
         $session = new Session();
         $session->remove(static::SESSION_ARTISTSELECTION);

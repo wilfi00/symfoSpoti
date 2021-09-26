@@ -3,8 +3,8 @@
 		<tr>
 			<th></th>
 			<th>{% trans %}name{% endtrans %}</th>
-			<th>{% trans %}link{% endtrans %}</th>
 			<th>{% trans %}date_add{% endtrans %}</th>
+			<th>{% trans %}link{% endtrans %}</th>
 			<th>{% trans %}delete{% endtrans %}</th>
 		</tr>
 	</thead>
@@ -13,8 +13,8 @@
 		<tr>
 			<td><img src="{{ song.getImage() }}" alt="Song image" /></td>
 			<td>{{ song.getName() }}</td>
-			<td><a href="{{ song.getSpotifyUri() }}">{% trans %}listenlater_openinapp{% endtrans %} <i class="fas fa-external-link-alt"></i></a></td>
 			<td data-sort="{{ song.getCreatedAt().timestamp }}">{{ song.getCreatedAt()|localizeddate('medium', 'none') }}</td>
+			<td><a href="{{ song.getSpotifyUri() }}">{% trans %}listenlater_openinapp{% endtrans %} <i class="fas fa-external-link-alt"></i></a></td>
 			<td><a class="delete" data-id="{{ song.getId() }}" data-type="{{ song.getType() }}"><i class="far fa-trash-alt"></i></a></td>
 		</tr>
 		{% endfor %}

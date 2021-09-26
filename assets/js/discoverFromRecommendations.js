@@ -15,6 +15,9 @@ global.recommendations = function() {
 	formAjaxSubmit(seedForm, $('.seeds-result'), seedEvent);
 	formAjaxSubmit(recommendationForm, $('.recommendation-result'));
 	initValuesFromStorage();
+	$('#recommendations .picto-info').each(function() {
+		addPopover($(this));
+	})
 
 	function addEvents()
 	{
@@ -26,6 +29,7 @@ global.recommendations = function() {
 		});
 		$('.recommendation-result').off('DOMSubtreeModified.storage').on('DOMSubtreeModified.storage', function() {
 			sessionStorage.setItem('recommendationsTracks', $(this).html());
+			manageActivationSaveAction($(this).children('.songBlock').length);
 		});
 		$('.seeds-added').off('DOMSubtreeModified.storage').on('DOMSubtreeModified.storage', function() {
 			setTimeout(() => { sessionStorage.setItem('recommendationsSeeds', $(this).html());	 }, 100);
@@ -170,6 +174,16 @@ global.recommendations = function() {
 			$('#recommendations input').each(function(index) {
 				$(this).val(inputsValues[index]);
 			});
+		}
+	}
+
+	function manageActivationSaveAction(length)
+	{
+		let btnSave = $('#saveAction .saveAction:submit');
+		if (length > 0) {
+			btnSave.prop('disabled', false);
+		} else {
+			btnSave.prop('disabled', true);
 		}
 	}
 };

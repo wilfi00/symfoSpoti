@@ -14,7 +14,7 @@ require('../css/nice-select.scss');
 jQuery = $ = require('jquery');
 require('popper.js');
 require('../js/jquery.nice-select.min.js');
-require('bootstrap');
+window.bootstrap = require('bootstrap');
 require( 'datatables.net' )( window, $ );
 
 require('../img/discovernewmusic.png');

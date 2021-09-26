@@ -1,47 +1,49 @@
-{% if tracks is empty and artists is empty and genres is empty %}
-    TODO
-{% endif %}
-
 <div class="tracks">
-    {% for track in tracks %}
-        {% if loop.first %}
-            <span class="important">{% trans %}tracks{% endtrans %}</span>
-        {% endif %}
-        <div class="block-element" data-type="track" data-id="{{ track.getSpotifyId() }}">
-            <img src="{{ track.getImage() }}" alt="Song image" />
-            <div class="informations">
-                <div class="name">{{ track.getName() }}</div>
+    <span class="important">{% trans %}tracks{% endtrans %}</span>
+    {% if tracks is defined and tracks is not empty %}
+        {% for track in tracks %}
+            <div class="block-element" data-type="track" data-id="{{ track.getSpotifyId() }}">
+                <img src="{{ track.getImage() }}" alt="Song image" />
+                <div class="informations">
+                    <div class="name">{{ track.getName() }}</div>
+                </div>
             </div>
-        </div>
-    {% endfor %}
+        {% endfor %}
+    {% else %}
+        <div class="seed-noresult">{% trans %}no_result{% endtrans %}</div>
+    {% endif %}
 </div>
 <div class="artists">
-    {% for artist in artists %}
-        {% if loop.first %}
-            <span class="important">{% trans %}artists{% endtrans %}</span>
-        {% endif %}
-        <div class="block-element" data-type="artist" data-id="{{ artist.getSpotifyId() }}">
-            <img src="{{ artist.getImage() }}" alt="Song image" />
-            <div class="informations">
-                <div class="name"><span class="songName">{{ artist.getName() }}</span></div>
+    <span class="important">{% trans %}tracks{% endtrans %}</span>
+    {% if artists is defined and artists is not empty %}
+        {% for artist in artists %}
+            <div class="block-element" data-type="artist" data-id="{{ artist.getSpotifyId() }}">
+                <img src="{{ artist.getImage() }}" alt="Song image" />
+                <div class="informations">
+                    <div class="name"><span class="songName">{{ artist.getName() }}</span></div>
+                </div>
             </div>
-        </div>
-    {% endfor %}
+        {% endfor %}
+    {% else %}
+        <div class="seed-noresult">{% trans %}no_result{% endtrans %}</div>
+    {% endif %}
 </div>
 <div class="genre-seeds">
-    {% for genre in genres %}
-        {% if loop.first %}
-            <span class="important">{% trans %}genres{% endtrans %}</span>
-        {% endif %}
-        <div class="block-element" data-type="genre" data-id="{{ genre }}">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-music-note" viewBox="0 0 16 16">
-                <path d="M9 13c0 1.105-1.12 2-2.5 2S4 14.105 4 13s1.12-2 2.5-2 2.5.895 2.5 2z"/>
-                <path fill-rule="evenodd" d="M9 3v10H8V3h1z"/>
-                <path d="M8 2.82a1 1 0 0 1 .804-.98l3-.6A1 1 0 0 1 13 2.22V4L8 5V2.82z"/>
-            </svg>
-            <div class="informations">
-                <div class="name"><span class="songName">{{ genre }}</span></div>
+    <span class="important">{% trans %}genres{% endtrans %}</span>
+    {% if genres is defined and genres is not empty %}
+        {% for genre in genres %}
+            <div class="block-element" data-type="genre" data-id="{{ genre }}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-music-note" viewBox="0 0 16 16">
+                    <path d="M9 13c0 1.105-1.12 2-2.5 2S4 14.105 4 13s1.12-2 2.5-2 2.5.895 2.5 2z"/>
+                    <path fill-rule="evenodd" d="M9 3v10H8V3h1z"/>
+                    <path d="M8 2.82a1 1 0 0 1 .804-.98l3-.6A1 1 0 0 1 13 2.22V4L8 5V2.82z"/>
+                </svg>
+                <div class="informations">
+                    <div class="name"><span class="songName">{{ genre }}</span></div>
+                </div>
             </div>
-        </div>
-    {% endfor %}
+        {% endfor %}
+    {% else %}
+        <div class="seed-noresult">{% trans %}no_result{% endtrans %}</div>
+    {% endif %}
 </div>

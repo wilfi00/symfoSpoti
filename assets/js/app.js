@@ -41,8 +41,11 @@ global.feedbackSuccess = function(msg = '')
 {
 	showFeedback(msg, 'alert-success');
 };
-global.feedbackError = function(msg)
+global.feedbackError = function(msg = '')
 {
+	if (msg === '') {
+		msg = traductions.default_error_msg;
+	}
 	showFeedback(msg, 'alert-danger');
 };
 
@@ -286,11 +289,14 @@ global.formAjaxSubmit = function(formElement, resultDomElement, callback = null)
 			data : data
 		}).done(function(response) {
 			resultDomElement.html(response);
-			hideLoader();
 			resultDomElement.show();
 			if (callback !== null) {
 				callback();
 			}
+		}).fail(function() {
+			feedbackError();
+		}).always(function() {
+			hideLoader();
 		});
 	});
 }

@@ -32,15 +32,14 @@ class Tools
         }
 
         array_unshift($artists, $artist);
-dump('unshift');
-        dump($artists);
+
         $session->set(static::SESSION_ARTISTSELECTION, $artists);
     }
 
     public static function deleteArtistSelectionInSession($artistId): void
     {
         $selection = static::getArtistsSelectionInSession();
-dump($selection);
+
         foreach ($selection as $key => $artist) {
             if ($artist['id'] === $artistId) {
                 unset($selection[$key]);

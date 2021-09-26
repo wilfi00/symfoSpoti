@@ -88,6 +88,8 @@ listenlater_connexion_explain: Pour créer une sélection à ajouter plus tard, 
 # Recommendations
 recommendations_h1: Découvre de nouvelles musiques
 recommendations_p1: Ajoute jusqu'à 5 genres de musique, artistes ou chansons pour générer une playlist personnalisée
+recommendations_searchseeds: Ajouter un artiste, une chanson, un genre de musique...
+recommendations_disabledsearchseeds: Il est impossible d'ajouter plus de 5 artistes, chansons ou genres
 acousticness: Acoustique
 danceability: Dansable
 energy: Énergique

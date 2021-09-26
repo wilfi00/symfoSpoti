@@ -114,7 +114,12 @@
 </svg></a>
             {{ encore_entry_script_tags('app') }}
             {% block footer %}{% endblock %}
-            <script>changeLanguage("{{ app.request.locale }}");</script>
+            <script>
+                changeLanguage("{{ app.request.locale }}");
+                traductions = {
+                    'default_error_msg' : '{{ 'feedbackError'|trans }}'
+                };
+            </script>
         </footer>
     </body>
 </html>

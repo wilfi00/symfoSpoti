@@ -736,7 +736,10 @@ table.dataTable > thead .sorting {
 			display: flex;
 			align-items: center;
 			cursor: pointer;
-			margin: 10px 0 10px 30px;
+			padding: 5px 0 5px 30px;
+			&:hover {
+				background-color: $color2;
+			}
 		}
 		.seed-noresult {
 			margin-left: 50px;

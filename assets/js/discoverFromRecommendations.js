@@ -7,6 +7,7 @@
 
 // Recommendations
 global.recommendations = function() {
+	const MAX_SEEDS = 5;
 	let seedForm = $('#seed-search-form');
 	let recommendationForm = $('#recommendations');
 	let input = $('#seed-search');
@@ -27,12 +28,34 @@ global.recommendations = function() {
 		input.on('click keyup', function () {
 			$('.seeds-result').css('height', '300px');
 		});
+		$('.seeds-result').off('DOMSubtreeModified.disableseed').on('DOMSubtreeModified.disableseed', function() {
+			$(this).find('.block-element').each(function() {
+				setTimeout(() => {
+					if (isAlreadyAdded($(this))) {
+						$(this).css('pointer-events', 'none');
+					} else {
+						$(this).css('pointer-events', 'auto');
+					}
+				}, 100);
+			})
+
+		});
 		$('.recommendation-result').off('DOMSubtreeModified.storage').on('DOMSubtreeModified.storage', function() {
 			sessionStorage.setItem('recommendationsTracks', $(this).html());
 			manageActivationSaveAction($(this).children('.songBlock').length);
 		});
 		$('.seeds-added').off('DOMSubtreeModified.storage').on('DOMSubtreeModified.storage', function() {
-			setTimeout(() => { sessionStorage.setItem('recommendationsSeeds', $(this).html());	 }, 100);
+			setTimeout(() => {
+				sessionStorage.setItem('recommendationsSeeds', $(this).html());
+
+				if ($(this).children('.seed-added').length >= MAX_SEEDS) {
+					input.prop('disabled', true);
+					$('#seed-search').attr('placeholder', input.data('disabledplaceholder'));
+				} else {
+					input.prop('disabled', false);
+					$('#seed-search').attr('placeholder', input.data('defaultplaceholder'));
+				}
+			}, 100);
 		});
 		
 		seedEvent();
@@ -185,6 +208,15 @@ global.recommendations = function() {
 		} else {
 			btnSave.prop('disabled', true);
 		}
+	}
+
+	function isAlreadyAdded(seed)
+	{
+		let seedsAdded = new Map();
+		$('.seeds-added .seed-added').each(function() {
+			seedsAdded.set($(this).data('id'), $(this).data('type'));
+		})
+		return seedsAdded.has(seed.data('id')) && seedsAdded.get(seed.data('id')) === seed.data('type');
 	}
 };
 

@@ -88,6 +88,8 @@ listenlater_connexion_explain: To use to listen later, you must connect using yo
 # Recommendations
 recommendations_h1: Discover new music
 recommendations_p1: Add up to 5 genres of music, artists or songs to generate your personalized playlist
+recommendations_searchseeds: Add an artist, a song or a genre of music...
+recommendations_disabledsearchseeds: It's impossible to add more than 5 artists, songs or genres
 acousticness: Acousticness
 danceability: Danceability
 energy: Energy

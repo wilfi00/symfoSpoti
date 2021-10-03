@@ -6,7 +6,7 @@
  */
 
 // Recommendations
-global.recommendations = function() {
+global.recommendations = function(success, text) {
 	const MAX_SEEDS = 5;
 	let seedForm = $('#seed-search-form');
 	let recommendationForm = $('#recommendations');
@@ -18,7 +18,8 @@ global.recommendations = function() {
 	initValuesFromStorage();
 	$('#recommendations .picto-info').each(function() {
 		addPopover($(this));
-	})
+	});
+	manageSuccess(success, text);
 
 	function addEvents()
 	{
@@ -217,6 +218,11 @@ global.recommendations = function() {
 			seedsAdded.set($(this).data('id'), $(this).data('type'));
 		})
 		return seedsAdded.has(seed.data('id')) && seedsAdded.get(seed.data('id')) === seed.data('type');
+	}
+
+	function manageSuccess(success, text)
+	{
+		manageFeedback(success, text.playlistSaveSucessFeedback, text.feedbackError);
 	}
 };
 

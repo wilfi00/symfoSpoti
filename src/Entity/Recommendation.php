@@ -79,6 +79,15 @@ class Recommendation
      */
     private ?float $valence;
 
+    /**
+     * @Assert\Range(
+     *      min = 0,
+     *      max = 100,
+     *      notInRangeMessage = "You must be between {{ min }} and {{ max }}",
+     * )
+     */
+    private ?int $popularity;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -89,7 +98,7 @@ class Recommendation
         return $this->artists;
     }
 
-    public function setArtists(?array $artists): self
+    public function setArtists(array $artists = []): self
     {
         if (is_array($artists)) {
             $this->artists = $artists;
@@ -103,7 +112,7 @@ class Recommendation
         return $this->genres;
     }
 
-    public function setGenres(?array $genres): self
+    public function setGenres(array $genres = []): self
     {
         if (is_array($genres)) {
             $this->genres = $genres;
@@ -117,7 +126,7 @@ class Recommendation
         return $this->tracks;
     }
 
-    public function setTracks(?array $tracks): self
+    public function setTracks(array $tracks = []): self
     {
         if (is_array($tracks)) {
             $this->tracks = $tracks;
@@ -206,6 +215,25 @@ class Recommendation
     public function setValence(?float $valence): self
     {
         $this->valence = $valence;
+
+        return $this;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getPopularity(): ?int
+    {
+        return $this->popularity;
+    }
+
+    /**
+     * @param int|null $popularity
+     * @return Recommendation
+     */
+    public function setPopularity(?int $popularity): self
+    {
+        $this->popularity = $popularity;
 
         return $this;
     }

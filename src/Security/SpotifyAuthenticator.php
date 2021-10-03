@@ -69,7 +69,7 @@ class SpotifyAuthenticator extends OAuth2Authenticator
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey): Response
     {
         // change "app_homepage" to some route in your app
-        $targetUrl = $this->router->generate('discover');
+        $targetUrl = $this->router->generate('recommendations');
 
         return new RedirectResponse(SpotiAuth::getUrlAfterAuth($targetUrl));
     

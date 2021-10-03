@@ -12,24 +12,35 @@ use App\SpotiImplementation\Request as SpotiRequest;
 use App\SpotiImplementation\Save as SpotiSave;
 use Exception;
 use Psr\Log\LoggerInterface;
+use Sonata\SeoBundle\Seo\SeoPageInterface as Seo;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Security;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class RecommendationsController extends AbstractController
 {
     /**
-     * @Route("/recommendations", name="recommendations")
+     * @Route("/", name="recommendations")
      * @param Security $security
      * @param SpotiRequest $spotiRequest
+     * @param Request $request
+     * @param Seo $seo
+     * @param TranslatorInterface $translator
      * @return Response
      */
-    public function displayRecommendations(Security $security, SpotiRequest $spotiRequest): Response
+    public function displayRecommendations(Security $security, SpotiRequest $spotiRequest, Request $request, Seo $seo, TranslatorInterface $translator): Response
     {
+        $seo->addMeta('property', 'og:url',  $this->generateUrl('recommendations', [], UrlGeneratorInterface::ABSOLUTE_URL));
+        if ($request->getLocale() !== 'fr') {
+            $seo->addMeta('name', 'description',    $translator->trans('seo_description'));
+            $seo->addMeta('property', 'og:description', $translator->trans('seo_description'));
+        }
         $playlists = [];
         if ($security->isGranted('ROLE_SPOTIFY')) {
             $playlists = $spotiRequest->getUserPlaylistsForModaleSelection();
@@ -37,6 +48,7 @@ class RecommendationsController extends AbstractController
 
         return $this->render('pages/recommendations.html.twig', [
             'playlists' => $playlists,
+            'success' => $request->query->get('success'),
         ]);
     }
 
@@ -88,7 +100,7 @@ class RecommendationsController extends AbstractController
             (float) $request->get('liveness') / 100,
 //            (float) $request->get('loudness'),
 //            (int) $request->get('mode'),
-//            (int) $request->get('popularity'),
+            (int) $request->get('popularity'),
             (float) $request->get('speechiness') / 100,
 //            (float) $request->get('tempo'),
             (float) $request->get('valence') / 100
@@ -115,7 +127,7 @@ class RecommendationsController extends AbstractController
         return $this->render('spotiTemplates/_search_result.html.twig', [
             'tracks' => array_slice($tracks, 0, 4),
             'artists' => array_slice($artists, 0, 4),
-            'genres' => array_slice($genres, 0, 4),
+            'genres' => $genres,
         ]);
     }
 

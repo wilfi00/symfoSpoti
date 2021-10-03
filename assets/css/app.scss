@@ -811,4 +811,8 @@ table.dataTable > thead .sorting {
 		text-align: right;
 		.btn-secondary { height: 42px; }
 	}
+
+	@include media-breakpoint-down(lg) {
+		.save { margin-top: 20px; }
+	}
 }

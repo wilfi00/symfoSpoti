@@ -39,7 +39,7 @@
     <body class="{{app.request.attributes.get('_route')}}">
         <header>
         <div class="banner d-flex flex-column-reverse flex-md-row">
-            <a class="navbar-brand d-flex" href="{{ path('discover') }}"><img class="logo" src="{{ asset('build/images/logo.png') }}"/><h1>{% trans %}brand_name{% endtrans %}</h1></a>
+            <a class="navbar-brand d-flex" href="{{ path('recommendations') }}"><img class="logo" src="{{ asset('build/images/logo.png') }}"/><h1>{% trans %}brand_name{% endtrans %}</h1></a>
             <div class="navbar-right">
                 {% if isConnected() %}
                     <div class="dropdown">

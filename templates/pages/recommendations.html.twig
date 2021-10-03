@@ -88,8 +88,13 @@
                     </svg>
                 </label>
                 <input type="range" class="form-range" min="0" max="100" id="liveness" name="liveness">
-        {#        <label for="popularity">popularity</label>#}
-        {#        <input type="range" class="form-range" min="0" max="100" id="acousticness" name="acousticness">#}
+                <label for="popularity">
+                    {% trans %}popularity{% endtrans %}
+                    <svg data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="{% trans %}popularity_explanation{% endtrans %}" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="picto-info bi bi-info-circle-fill" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412l-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM8 5.5a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"></path>
+                    </svg>
+                </label>
+                <input type="range" class="form-range" min="0" max="100" id="popularity" name="popularity">
                 <label for="speechiness">
                     {% trans %}speechiness{% endtrans %}
                     <svg data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="{% trans %}speechiness_explanation{% endtrans %}" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="picto-info bi bi-info-circle-fill" viewBox="0 0 16 16">
@@ -126,10 +131,14 @@
     </script>
 {% endblock %}
 {% block footer %}
+    {% set text = {
+        "playlistSaveSucessFeedback": 'discover_playlistSaveSucessFeedback'|trans,
+        "feedbackError": 'feedbackError'|trans
+    } %}
     {{ encore_entry_script_tags('recommendation') }}
     <script>
         $( document ).ready(function() {
-            recommendations();
+            recommendations({{ success|json_encode|raw }}, {{ text|json_encode|raw }});
         });
     </script>
 {% endblock %}

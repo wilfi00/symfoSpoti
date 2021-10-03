@@ -23,7 +23,7 @@ use Symfony\Component\HttpFoundation\Session\Session;
 class DiscoverController extends AbstractController
 {
     /**
-     * @Route("/", name="discover")
+     * @Route("/fromGenres", name="discover")
      * @param Request $request
      * @param GenreRepository $genreRepository
      * @param Seo $seo

@@ -34,6 +34,7 @@ class Track implements SongInterface
     protected UserInterface $user;
 
     protected ?string $artists;
+    private $popularity;
 
     public function getPreviewUrl(): ?string
     {
@@ -62,5 +63,17 @@ class Track implements SongInterface
     public function getArtists(): ?string
     {
         return $this->artists;
+    }
+
+    public function setPopularity($popularity)
+    {
+        $this->popularity = $popularity;
+        
+        return $this;
+    }
+    
+    public function getPopularity()
+    {
+        return $this->popularity;
     }
 }

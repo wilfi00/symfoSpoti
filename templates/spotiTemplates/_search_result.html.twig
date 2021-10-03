@@ -14,7 +14,7 @@
     {% endif %}
 </div>
 <div class="artists">
-    <span class="important">{% trans %}tracks{% endtrans %}</span>
+    <span class="important">{% trans %}artists{% endtrans %}</span>
     {% if artists is defined and artists is not empty %}
         {% for artist in artists %}
             <div class="block-element" data-type="artist" data-id="{{ artist.getSpotifyId() }}">

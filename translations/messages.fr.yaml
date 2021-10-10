@@ -95,19 +95,36 @@ danceability: Dansable
 energy: Énergique
 instrumentalness: Instrumental
 liveness: Live
-speechiness: Chant
+speechiness: Parole
 valence: Positivité
 popularity: Popularité
 # Recommendations spotify
-acousticness_explanation: A confidence measure from 0.0 to 1.0 of whether the track is acoustic. 1.0 represents high confidence the track is acoustic.
-danceability_explanation: Danceability describes how suitable a track is for dancing based on a combination of musical elements including tempo, rhythm stability, beat strength, and overall regularity. A value of 0.0 is least danceable and 1.0 is most danceable.
-energy_explanation: Energy is a measure from 0.0 to 1.0 and represents a perceptual measure of intensity and activity. Typically, energetic tracks feel fast, loud, and noisy. For example, death metal has high energy, while a Bach prelude scores low on the scale. Perceptual features contributing to this attribute include dynamic range, perceived loudness, timbre, onset rate, and general entropy.
-instrumentalness_explanation: Predicts whether a track contains no vocals. “Ooh” and “aah” sounds are treated as instrumental in this context. Rap or spoken word tracks are clearly “vocal”. The closer the instrumentalness value is to 1.0, the greater likelihood the track contains no vocal content. Values above 0.5 are intended to represent instrumental tracks, but confidence is higher as the value approaches 1.0.
-liveness_explanation: Detects the presence of an audience in the recording. Higher liveness values represent an increased probability that the track was performed live. A value above 0.8 provides strong likelihood that the track is live.
-speechiness_explanation: Speechiness detects the presence of spoken words in a track. The more exclusively speech-like the recording (e.g. talk show, audio book, poetry), the closer to 1.0 the attribute value. Values above 0.66 describe tracks that are probably made entirely of spoken words. Values between 0.33 and 0.66 describe tracks that may contain both music and speech, either in sections or layered, including such cases as rap music. Values below 0.33 most likely represent music and other non-speech-like tracks.
-valence_explanation: A measure from 0.0 to 1.0 describing the musical positiveness conveyed by a track. Tracks with high valence sound more positive (e.g. happy, cheerful, euphoric), while tracks with low valence sound more negative (e.g. sad, depressed, angry).
-popularity_explanation: "The popularity of a track is a value between 0 and 100, with 100 being the most popular. The popularity is calculated by algorithm and is based, in the most part, on the total number of plays the track has had and how recent those plays are.
-  Generally speaking, songs that are being played a lot now will have a higher popularity than songs that were played a lot in the past. Duplicate tracks (e.g. the same track from a single and an album) are rated independently. Artist and album popularity is derived mathematically from track popularity. Note that the popularity value may lag actual popularity by a few days: the value is not updated in real time."
+acousticness_explanation: Une mesure indiquant si la piste est acoustique. Très acoustique indique une confiance élevée que la piste est acoustique.
+acousticness_rangelow: Peu acoustique
+acousticness_rangehigh: Très acoustique
+danceability_explanation: La dansabilité décrit à quel point une chanson est adaptée à la danse en fonction d'une combinaison d'éléments musicaux, notamment le tempo, la stabilité du rythme, la force des battements et la régularité globale.
+danceability_rangelow: Peu dansable
+danceability_rangehigh: Très dansable
+energy_explanation: L'énergie est une mesure représentant l'intensité et l'activité d'une chanson. En règle générale, les chansons énergiques sont rapides, fortes et bruyantes. Par exemple, le death metal a une énergie élevée, tandis qu'un prélude de Bach obtient un score bas. Les caractéristiques perceptives contribuant à cet attribut comprennent la dynamique, l'intensité sonore perçue, le timbre, la vitesse d'apparition et l'entropie générale.
+energy_rangelow: Peu énergique
+energy_rangehigh: Très énergique
+instrumentalness_explanation: Prédit si une piste ne contient pas de voix. Les sons « Ooh » et « aah » sont traités comme instrumentaux. Les morceaux de rap ou de créations orales sont clairement «vocaux». Plus la valeur d'instrumentalité est haute, plus il est probable que la piste ne contienne aucun contenu vocal. Les valeurs supérieures à la moyenne sont destinées à représenter les pistes instrumentales, mais la confiance est plus élevée à mesure que la valeur est haute.
+instrumentalness_rangelow: Beaucoup de chant
+instrumentalness_rangehigh: Peu de chant
+liveness_explanation: Détecte la présence d'un public dans l'enregistrement et que la chanson est jouée en direct.
+liveness_rangelow: Studio
+liveness_rangehigh: Live
+speechiness_explanation: Détecte la présence de mots prononcés dans une chanson. Plus l'enregistrement est exclusivement vocal (par exemple, talk-show, livre audio, poésie), plus la valeur est élevée. Les valeurs supérieures à 0,66 décrivent des pistes qui sont probablement entièrement composées de mots parlés. Les valeurs comprises entre 0,33 et 0,66 décrivent des pistes pouvant contenir à la fois de la musique et de la parole, soit en sections, soit en couches, y compris des cas tels que la musique rap. Les valeurs inférieures à 0,33 représentent très probablement de la musique et d'autres pistes non vocales.
+speechiness_rangelow: Très peu
+speechiness_rangehigh: Beaucoup
+valence_explanation: Une mesure décrivant la positivité musicale véhiculée par une chanson. Les pistes avec une positivité élevée sonnent plus positivement (joyeux, euphorique...), tandis que les pistes avec une faible positivité sonnent plus négativement (par exemple, triste, déprimé, en colère).
+valence_rangelow: Peu positif
+valence_rangehigh: Très positif
+popularity_explanation: "La popularité est calculée par algorithme et est basée, en grande partie, sur le nombre total de lectures de la piste et sur la date de ces lectures.
+  De manière générale, les chansons qui sont beaucoup jouées maintenant auront une plus grande popularité que les chansons qui ont été beaucoup jouées dans le passé. Les pistes en double (par exemple, la même piste d'un single et d'un album) sont évaluées indépendamment. La popularité des artistes et des albums est dérivée mathématiquement de la popularité des morceaux. Notez que la valeur de popularité peut retarder la popularité réelle de quelques jours : la valeur n'est pas mise à jour en temps réel."
+popularity_rangelow: Peu populaire
+popularity_rangehigh: Très populaire
+
 
 #SEO
 seo_description: Découvre de nouvelles musiques et enregistre les dans une playlist Spotify !

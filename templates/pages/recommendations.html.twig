@@ -58,8 +58,10 @@
                     <svg data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="{% trans %}acousticness_explanation{% endtrans %}" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="picto-info bi bi-info-circle-fill" viewBox="0 0 16 16">
                         <path fill-rule="evenodd" d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412l-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM8 5.5a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"></path>
                     </svg>
-                    </label>
+                </label>
                 <input type="range" class="form-range" min="0" max="100" id="acousticness" name="acousticness">
+                <div class="recommendation-range"><span>{% trans %}acousticness_rangelow{% endtrans %}</span><span>{% trans %}acousticness_rangehigh{% endtrans %}</span></div>
+                <hr>
                 <label for="danceability">
                     {% trans %}danceability{% endtrans %}
                     <svg data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="{% trans %}danceability_explanation{% endtrans %}" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="picto-info bi bi-info-circle-fill" viewBox="0 0 16 16">
@@ -67,6 +69,8 @@
                     </svg>
                 </label>
                 <input type="range" class="form-range" min="0" max="100" id="danceability" name="danceability">
+                <div class="recommendation-range"><span>{% trans %}danceability_rangelow{% endtrans %}</span><span>{% trans %}danceability_rangehigh{% endtrans %}</span></div>
+                <hr>
                 <label for="energy">
                     {% trans %}energy{% endtrans %}
                     <svg data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="{% trans %}energy_explanation{% endtrans %}" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="picto-info bi bi-info-circle-fill" viewBox="0 0 16 16">
@@ -74,6 +78,8 @@
                     </svg>
                 </label>
                 <input type="range" class="form-range" min="0" max="100" id="energy" name="energy">
+                <div class="recommendation-range"><span>{% trans %}energy_rangelow{% endtrans %}</span><span>{% trans %}energy_rangehigh{% endtrans %}</span></div>
+                <hr>
                 <label for="instrumentalness">
                     {% trans %}instrumentalness{% endtrans %}
                     <svg data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="{% trans %}instrumentalness_explanation{% endtrans %}" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="picto-info bi bi-info-circle-fill" viewBox="0 0 16 16">
@@ -81,6 +87,8 @@
                     </svg>
                 </label>
                 <input type="range" class="form-range" min="0" max="100" id="instrumentalness" name="instrumentalness">
+                <div class="recommendation-range"><span>{% trans %}instrumentalness_rangelow{% endtrans %}</span><span>{% trans %}instrumentalness_rangehigh{% endtrans %}</span></div>
+                <hr>
                 <label for="liveness">
                     {% trans %}liveness{% endtrans %}
                     <svg data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="{% trans %}liveness_explanation{% endtrans %}" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="picto-info bi bi-info-circle-fill" viewBox="0 0 16 16">
@@ -88,6 +96,8 @@
                     </svg>
                 </label>
                 <input type="range" class="form-range" min="0" max="100" id="liveness" name="liveness">
+                <div class="recommendation-range"><span>{% trans %}liveness_rangelow{% endtrans %}</span><span>{% trans %}liveness_rangehigh{% endtrans %}</span></div>
+                <hr>
                 <label for="popularity">
                     {% trans %}popularity{% endtrans %}
                     <svg data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="{% trans %}popularity_explanation{% endtrans %}" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="picto-info bi bi-info-circle-fill" viewBox="0 0 16 16">
@@ -95,6 +105,8 @@
                     </svg>
                 </label>
                 <input type="range" class="form-range" min="0" max="100" id="popularity" name="popularity">
+                <div class="recommendation-range"><span>{% trans %}popularity_rangelow{% endtrans %}</span><span>{% trans %}popularity_rangehigh{% endtrans %}</span></div>
+                <hr>
                 <label for="speechiness">
                     {% trans %}speechiness{% endtrans %}
                     <svg data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="{% trans %}speechiness_explanation{% endtrans %}" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="picto-info bi bi-info-circle-fill" viewBox="0 0 16 16">
@@ -102,6 +114,8 @@
                     </svg>
                 </label>
                 <input type="range" class="form-range" min="0" max="100" id="speechiness" name="speechiness">
+                <div class="recommendation-range"><span>{% trans %}speechiness_rangelow{% endtrans %}</span><span>{% trans %}speechiness_rangehigh{% endtrans %}</span></div>
+                <hr>
                 <label for="valence">
                     {% trans %}valence{% endtrans %}
                     <svg data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="{% trans %}valence_explanation{% endtrans %}" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="picto-info bi bi-info-circle-fill" viewBox="0 0 16 16">
@@ -109,6 +123,7 @@
                     </svg>
                 </label>
                 <input type="range" class="form-range" min="0" max="100" id="valence" name="valence">
+                <div class="recommendation-range"><span>{% trans %}valence_rangelow{% endtrans %}</span><span>{% trans %}valence_rangehigh{% endtrans %}</span></div>
                 <div class="hide seeds"></div>
             </form>
         </div>

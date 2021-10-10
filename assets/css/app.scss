@@ -812,6 +812,14 @@ table.dataTable > thead .sorting {
 		.btn-secondary { height: 42px; }
 	}
 
+	.recommendation-range {
+		display: flex;
+		justify-content: space-between;
+		margin-top: -10px;
+		span { font-size: 14px; }
+		hr { margin: 10px 0; }
+	}
+
 	@include media-breakpoint-down(lg) {
 		.save { margin-top: 20px; }
 	}

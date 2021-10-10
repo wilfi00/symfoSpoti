@@ -6,7 +6,7 @@
         "ext-ctype": "*",
         "ext-iconv": "*",
         "ext-json": "*",
-        "jwilsson/spotify-web-api-php": "^4.1",
+        "jwilsson/spotify-web-api-php": "^5.0",
         "kerox/oauth2-spotify": "^1.2",
         "knpuniversity/oauth2-client-bundle": "^2.8",
         "paragonie/sodium_compat": "^1.12",

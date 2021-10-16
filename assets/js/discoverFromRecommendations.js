@@ -11,6 +11,7 @@ global.recommendations = function(success, text) {
 	let seedForm = $('#seed-search-form');
 	let recommendationForm = $('#recommendations');
 	let input = $('#seed-search');
+	manageSaveChoice();
 	addEvents();
 	ajaxInput(seedForm, input);
 	formAjaxSubmit(seedForm, $('.seeds-result'), seedEvent);

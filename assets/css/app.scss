@@ -824,3 +824,9 @@ table.dataTable > thead .sorting {
 		.save { margin-top: 20px; }
 	}
 }
+
+@include media-breakpoint-down(md) {
+	body {
+		margin-top: 20px;
+	}
+}

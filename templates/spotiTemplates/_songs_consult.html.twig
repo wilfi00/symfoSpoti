@@ -13,7 +13,7 @@
 		<tr>
 			<td><img src="{{ song.getImage() }}" alt="Song image" /></td>
 			<td>{{ song.getName() }}</td>
-			<td data-sort="{{ song.getCreatedAt().timestamp }}">{{ song.getCreatedAt()|localizeddate('medium', 'none') }}</td>
+			<td data-sort="{{ song.getCreatedAt().timestamp }}">{{ song.getCreatedAt()|localizeddate('medium', 'none', app.request.locale) }}</td>
 			<td><a href="{{ song.getSpotifyUri() }}">{% trans %}listenlater_openinapp{% endtrans %} <i class="fas fa-external-link-alt"></i></a></td>
 			<td><a class="delete" data-id="{{ song.getId() }}" data-type="{{ song.getType() }}"><i class="far fa-trash-alt"></i></a></td>
 		</tr>

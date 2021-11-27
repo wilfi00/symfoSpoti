@@ -5,7 +5,7 @@
         {% set route = app.request.attributes.get('_route') %}
         {% set route_params = app.request.attributes.get('_route_params') %}
         {% set params = route_params|merge(app.request.query.all) %}
-        
+
         {% block stylesheets %}
             {{ encore_entry_link_tags('app') }}
             <link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/dataTables.bootstrap5.min.css">
@@ -16,7 +16,8 @@
         
         <link rel="icon" href="{{ asset('build/images/favicon.ico') }}" />
         <link rel="icon" type="image/png" href="{{ asset('build/images/favicon.png') }}" />
-        
+        <link rel="manifest" href="{{ asset('build/manifest.webmanifest') }}">
+
         {% for locale in locales %}
           {% if locale != app.request.locale %}
             <link rel="alternate" hreflang="{{ locale}} " href="{{ path(route, params|merge({ _locale: locale })) }}" />

@@ -4,7 +4,7 @@
         "@symfony/webpack-encore": "^0.31.0",
         "bootstrap": "^5.0.1",
         "core-js": "^3.0.0",
-        "node-sass": "^4.13.0",
+        "node-sass": "^7.0.0",
         "regenerator-runtime": "^0.13.2",
         "sass-loader": "9.0.1",
         "vue-loader": "^15.9.3",

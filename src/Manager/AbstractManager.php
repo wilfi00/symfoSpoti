@@ -17,10 +17,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 abstract class AbstractManager
 {
-    /**
-     * @var EntityRepository $repository
-     */
-    private $repository;
+    private ?EntityRepository $repository = null;
 
     /**
      * @var string $entity
@@ -34,8 +31,6 @@ abstract class AbstractManager
 
     /**
      * AbstractManager constructor.
-     *
-     * @param EntityManagerInterface $entityManager
      */
     public function __construct(EntityManagerInterface $entityManager)
     {
@@ -49,22 +44,19 @@ abstract class AbstractManager
     }
 
     /**
-     * @param int $id
      * @return null|object
      */
     public function getReference(int $id)
     {
         try {
             return $this->entityManager->getReference($this->entityClassName, $id);
-        } catch (ORMException $exception) {
+        } catch (ORMException) {
             return $this->find($id);
         }
     }
 
     /**
      * Allows entity manager overrideing
-     *
-     * @param EntityManagerInterface $entityManager
      */
     public function setEntityManager(EntityManagerInterface $entityManager): void
     {
@@ -101,10 +93,9 @@ abstract class AbstractManager
     /**
      * Finds an object by its primary key / identifier
      *
-     * @param int|array $id
      * @return null|object
      */
-    public function find($id)
+    public function find(array|int $id)
     {
         return $this->repository->find($id);
     }
@@ -112,8 +103,6 @@ abstract class AbstractManager
     /**
      * Finds a single entity by a set of criteria
      *
-     * @param array $criteria
-     * @param array $orderBy
      * @return null|object
      */
     public function findOneBy(array $criteria, array $orderBy = null)
@@ -128,8 +117,6 @@ abstract class AbstractManager
      * @param array|null $orderBy
      * @param int|null $limit
      * @param int|null $offset
-     *
-     * @return array
      */
     public function findBy(array $criteria, array $orderBy = null, int $limit = null, int $offset = null): array
     {
@@ -138,8 +125,6 @@ abstract class AbstractManager
 
     /**
      * Finds all entities in the repository
-     *
-     * @return array
      */
     public function findAll(): array
     {
@@ -148,8 +133,6 @@ abstract class AbstractManager
     
     /**
      * Finds all entities in the repository in array format
-     *
-     * @return array
      */
     public function findAllInArray(): array
     {
@@ -164,18 +147,17 @@ abstract class AbstractManager
      *
      * @param $entity
      * @param UserInterface|null $user
-     * @param bool $flush
      */
     public function softDelete($entity, UserInterface $user = null, bool $flush = true): void
     {
         if (!method_exists($entity, 'setDeletedAt')) {
-            throw new \LogicException(sprintf('Entity %s is not soft deletable.', get_class($entity)));
+            throw new \LogicException(sprintf('Entity %s is not soft deletable.', $entity::class));
         }
 
         $entity->setDeletedAt(new DateTime());
 
         if (null !== $user && method_exists($entity, 'setDeleteuser')) {
-            $entity->setDeleteuser($user->getUsername());
+            $entity->setDeleteuser($user->getUserIdentifier());
         }
 
         if ($flush) {
@@ -186,8 +168,6 @@ abstract class AbstractManager
     /**
      * Soft delete an array of object instances
      *
-     * @param array $objects
-     * @param bool $flush
      *
      * @todo replace array by iterable from php 7.1
      */
@@ -208,7 +188,6 @@ abstract class AbstractManager
      * @todo: extends all entities from one interface
      *
      * @param mixed  $entity
-     * @param bool $flush
      */
     public function delete($entity, bool $flush = true): void
     {
@@ -222,8 +201,6 @@ abstract class AbstractManager
     /**
      * Removes an array of object instances
      *
-     * @param array $objects
-     * @param bool $flush
      *
      * @todo replace array by iterable from php 7.1
      */
@@ -244,7 +221,6 @@ abstract class AbstractManager
      * @todo: extends all entities from one interface
      *
      * @param mixed $object
-     * @param bool $flush
      */
     public function save($object, bool $flush = true): void
     {
@@ -258,8 +234,6 @@ abstract class AbstractManager
     /**
      * Persists an array of object instances
      *
-     * @param array $objects
-     * @param bool $flush
      * @todo replace array by iterable from php 7.1
      */
     public function saveMany(array $objects, bool $flush = true)

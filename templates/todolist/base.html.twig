@@ -1,0 +1,24 @@
+{% extends "base.html.twig" %}
+{% block menu %}
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <span class="nav-link">Gestion todolist : </span>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        {% set path = app.request.attributes.get('_route') %}
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item {% if path == 'displayTodolist' %}active{% endif %}">
+                <a class="nav-link" href="{{ path('displayTodolist') }}">{% trans %}Afficher la todolist{% endtrans %}</a>
+            </li>
+            <li class="nav-item {% if path == 'addTask' %}active{% endif %}">
+                <a class="nav-link" href="{{ path('addTask') }}">{% trans %}Gestion des taches{% endtrans %}</a>
+            </li>
+            <li class="nav-item {% if path == 'manageMatiere' %}active{% endif %}">
+                <a class="nav-link" href="{{ path('manageMatiere') }}">{% trans %}Gestion des matières{% endtrans %}</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+{% endblock %}

@@ -6,7 +6,6 @@ use App\Entity\Recommendation;
 use App\Entity\Track;
 use App\Traits\SongEntityCreatorTrait;
 use App\SpotiImplementation\Request as SpotiRequest;
-use Exception;
 use RuntimeException;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -17,27 +16,11 @@ class RecommendationsService
     protected const DEFAULT_FLOATVALUE = 0.5;
     protected const DEFAULT_INTVALUE = 50;
 
-    protected SpotiRequest $spotiRequest;
-    protected ValidatorInterface $validator;
-
-    public function __construct(ValidatorInterface $validator, SpotiRequest $spotiRequest)
+    public function __construct(protected ValidatorInterface $validator, protected SpotiRequest $spotiRequest)
     {
-        $this->spotiRequest = $spotiRequest;
-        $this->validator = $validator;
     }
 
     /**
-     * @param array $artists
-     * @param array $genres
-     * @param array $tracks
-     * @param float $acousticness
-     * @param float $danceability
-     * @param float $energy
-     * @param float $instrumentalness
-     * @param float $liveness
-     * @param int $popularity
-     * @param float $speechiness
-     * @param float $valence
      * @return array|object
      */
     public function getRecommendations(

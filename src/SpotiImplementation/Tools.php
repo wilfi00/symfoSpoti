@@ -6,8 +6,8 @@ use Symfony\Component\HttpFoundation\Session\Session;
 
 class Tools
 {
-    const SESSION_ARTISTSELECTION = 'artist_selection';
-    const SESSION_DISCOVERSELECTION = 'discover_selection';
+    final const SESSION_ARTISTSELECTION = 'artist_selection';
+    final const SESSION_DISCOVERSELECTION = 'discover_selection';
 
     public static function generateRandomCharacter()
     {
@@ -17,7 +17,7 @@ class Tools
         $stringLength = strlen($string);
 
         //Generate a random index based on the string in question.
-        $randomIndex = mt_rand(0, $stringLength - 1);
+        $randomIndex = random_int(0, $stringLength - 1);
 
         return $string[$randomIndex];
     }

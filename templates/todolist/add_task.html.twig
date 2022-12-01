@@ -1,0 +1,20 @@
+{% extends "todolist/base.html.twig" %}
+{% block title %}
+<h2>Ajouter une tache</h2>
+{% endblock %}
+{% block content %}
+<form method="POST">
+	<select name="matiere" required>
+		{% for matiere in matieres %}
+			<option style="color: {{ matiere.couleur }}" value="{{ matiere.id }}">{{ matiere.name }}</option>
+		{% endfor %}
+	</select>
+	<input type="text" name="name" required placeholder="Nom de la tache"/>
+	<input type="date" name="date_de_rendu" required placeholder="Date de rendu"/>
+	<button type="submit" class="btn btn-primary saveAction">Enregistrer</button>
+</form>
+{% endblock %}
+{% block footer %}
+	<script>
+	</script>
+{% endblock %}

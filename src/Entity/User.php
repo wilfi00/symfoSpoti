@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use App\Entity\Todolist\Matiere;
+use App\Entity\Todolist\Task;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -47,7 +49,7 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="json")
      */
-    private $roles = [];
+    private array $roles = [];
     
     /**
      * @ORM\Column(type="string", length=512, nullable=true)
@@ -80,11 +82,23 @@ class User implements UserInterface
      */
     private $tracks;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Task::class, mappedBy="user")
+     */
+    private $tasks;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Matiere::class, mappedBy="user")
+     */
+    private $matieres;
+
     public function __construct()
     {
         $this->artists = new ArrayCollection();
         $this->albums = new ArrayCollection();
         $this->tracks = new ArrayCollection();
+        $this->tasks = new ArrayCollection();
+        $this->matieres = new ArrayCollection();
     }
 
 
@@ -104,10 +118,13 @@ class User implements UserInterface
 
         return $this;
     }
-    
-    public function getUsername(): ?string
+
+    /**
+				 * @deprecated
+				 */
+				public function getUsername(): ?string
     {
-        return $this->username;
+        return $this->getUserIdentifier();
     }
 
     public function setUsername(string $username): self
@@ -321,5 +338,70 @@ class User implements UserInterface
         }
 
         return $this;
+    }
+
+    /**
+     * @return Collection|Task[]
+     */
+    public function getTask(): Collection
+    {
+        return $this->tasks;
+    }
+
+    public function addTask(Task $task): self
+    {
+        if (!$this->tasks->contains($task)) {
+            $this->tasks[] = $task;
+            $task->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTask(Task $task): self
+    {
+        if ($this->tasks->removeElement($task)) {
+            // set the owning side to null (unless already changed)
+            if ($task->getUser() === $this) {
+                $task->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Task[]
+     */
+    public function getMatieres(): Collection
+    {
+        return $this->matieres;
+    }
+
+    public function addMatiere(Matiere $matiere): self
+    {
+        if (!$this->matieres->contains($matiere)) {
+            $this->matieres[] = $matiere;
+            $matiere->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMatiere(Matiere $matiere): self
+    {
+        if ($this->matieres->removeElement($matiere)) {
+            // set the owning side to null (unless already changed)
+            if ($matiere->getUser() === $this) {
+                $matiere->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getUserIdentifier(): string
+    {
+        return $this->username;
     }
 }

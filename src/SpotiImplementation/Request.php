@@ -12,11 +12,9 @@ class Request
 {
     protected SpotifyWebAPI $api;
     protected GenreRepository $genreRepository;
-    protected Security $security;
 
-    public function __construct(Security $security)
+    public function __construct(protected Security $security)
     {
-        $this->security = $security;
         $this->api = new SpotifyWebAPI(['auto_retry' => true, 'auto_refresh' => true]);
         
         $user = $this->security->getUser();
@@ -145,7 +143,7 @@ class Request
             }
 
             $offset += $maxLimit;
-        } while(count($tmpPlaylistsRequest) >= $maxLimit);
+        } while((is_countable($tmpPlaylistsRequest) ? count($tmpPlaylistsRequest) : 0) >= $maxLimit);
 
         return $playlists;
     }
@@ -278,7 +276,7 @@ class Request
         foreach ($seeds as $seed) {
             foreach ($genresEntities as $genre) {
                 $name = strtolower($genre->getName());
-                if ((stripos($name, $seed) !== false)
+                if ((stripos($name, (string) $seed) !== false)
                     || (stripos($seed, $name) !== false)) {
                         
                     if ($seed == $name) {

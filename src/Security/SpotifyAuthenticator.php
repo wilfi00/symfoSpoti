@@ -13,23 +13,17 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
-use Symfony\Component\Security\Http\Authenticator\Passport\PassportInterface;
+use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPassport;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
 use App\SpotiImplementation\Auth as SpotiAuth;
 
 class SpotifyAuthenticator extends OAuth2Authenticator
 {
-    private $clientRegistry;
-    private $entityManager;
-    private $router;
     private $credentials;
 
-    public function __construct(ClientRegistry $clientRegistry, EntityManagerInterface $entityManager, RouterInterface $router)
+    public function __construct(private readonly ClientRegistry $clientRegistry, private readonly EntityManagerInterface $entityManager, private readonly RouterInterface $router)
     {
-        $this->clientRegistry = $clientRegistry;
-        $this->entityManager = $entityManager;
-	    $this->router = $router;
     }
 
     public function supports(Request $request): ?bool
@@ -38,7 +32,7 @@ class SpotifyAuthenticator extends OAuth2Authenticator
         return $request->attributes->get('_route') === 'spoti_callback';
     }
 
-    public function authenticate(Request $request): PassportInterface
+    public function authenticate(Request $request): Passport
     {
         $this->credentials = $this->fetchAccessToken($this->clientRegistry->getClient('spotify'));
        

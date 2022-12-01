@@ -9,13 +9,8 @@ use Symfony\Component\Security\Core\Security;
 
 class AppExtension extends AbstractExtension
 {
-    protected $spotiRequest;
-    protected $security;
-    
-    public function __construct(SpotiRequest $spotiRequest, Security $security) 
+    public function __construct(protected SpotiRequest $spotiRequest, protected Security $security)
     {
-        $this->spotiRequest = $spotiRequest;
-        $this->security = $security;
     }
     
     public function getFunctions()

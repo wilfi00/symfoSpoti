@@ -9,37 +9,13 @@ use SpotifyWebAPI\SpotifyWebAPIException;
 
 class Save
 {
-    protected string $saveMode;
-    protected array $tracks;
-    protected string $playlistName;
-    protected $playlistId;
-
-    protected Request $spotiRequest;
-    
     // Les modes de sauvegardes
     protected const MODE_NEWPLAYLIST = 'createNewPlaylist';
     protected const MODE_EXISTINGPLAYLIST = 'existingPlaylist';
     protected const MODE_QUEUE = 'queue';
 
-    /**
-     * @var LoggerInterface
-     */
-    protected LoggerInterface $logger;
-
-    public function __construct(
-        LoggerInterface $logger,
-        SpotiRequest $spotiRequest,
-        string $saveMode,
-        array $tracks = [],
-        string $playlistName = '',
-        $playlistId = null
-    ) {
-        $this->logger = $logger;
-        $this->saveMode = $saveMode;
-        $this->tracks = $tracks;
-        $this->playlistName = $playlistName;
-        $this->playlistId = $playlistId;
-        $this->spotiRequest  = $spotiRequest;
+    public function __construct(protected LoggerInterface $logger, protected SpotiRequest $spotiRequest, protected string $saveMode, protected array $tracks = [], protected string $playlistName = '', protected $playlistId = null)
+    {
     }
     
     public function save(): bool

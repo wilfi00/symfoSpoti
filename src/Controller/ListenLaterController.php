@@ -22,10 +22,9 @@ class ListenLaterController extends AbstractController
 {
     /**
      * @Route("/listenLaterNotConnected", name="listen_later_not_connected")
-     * @param Security $security
      * @return RedirectResponse|Response
      */
-    public function isNotConnected(Security $security)
+    public function isNotConnected(Security $security): RedirectResponse|Response
     {
         if ($security->isGranted('ROLE_SPOTIFY')) {
             return $this->redirectToRoute('listen_later');
@@ -35,9 +34,6 @@ class ListenLaterController extends AbstractController
 
     /**
      * @Route("/listenLater", name="listen_later")
-     * @param Security $security
-     * @param TranslatorInterface $translator
-     * @return Response
      */
     public function listenLater(Security $security, TranslatorInterface $translator): Response
     {
@@ -59,10 +55,6 @@ class ListenLaterController extends AbstractController
 
     /**
      * @Route("/listenLaterConsult", name="listen_later_consult")
-     * @param Security $security
-     * @param Request $request
-     * @param TranslatorInterface $translator
-     * @return Response
      */
     public function listenLaterConsult(Security $security, Request $request, TranslatorInterface $translator): Response
     {
@@ -92,9 +84,6 @@ class ListenLaterController extends AbstractController
 
     /**
      * @Route("/searchSongType", name="searchSongType")
-     * @param Request $request
-     * @param SearchSongService $searchSongService
-     * @param Security $security
      * @return Response|void
      */
     public function searchSongType(Request $request, SearchSongService $searchSongService, Security $security)
@@ -113,11 +102,6 @@ class ListenLaterController extends AbstractController
 
     /**
      * @Route("/addListenLater", name="addListenLater")
-     * @param Request $request
-     * @param TrackManager $trackManager
-     * @param ArtistManager $artistManager
-     * @param AlbumManager $albumManager
-     * @return Response
      */
     public function addListenLater(Request $request, TrackManager $trackManager, ArtistManager $artistManager, AlbumManager $albumManager): Response
     {
@@ -163,12 +147,6 @@ class ListenLaterController extends AbstractController
 
     /**
      * @Route("/deleteSong", name="delete_song")
-     *
-     * @param Request $request
-     * @param TrackManager $trackManager
-     * @param ArtistManager $artistManager
-     * @param AlbumManager $albumManager
-     * @return Response
      */
     public function deleteSongLater(Request $request, TrackManager $trackManager, ArtistManager $artistManager, AlbumManager $albumManager): Response
     {

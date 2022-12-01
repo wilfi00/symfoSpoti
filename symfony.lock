@@ -2,6 +2,9 @@
     "behat/transliterator": {
         "version": "v1.3.0"
     },
+    "composer/package-versions-deprecated": {
+        "version": "1.11.99.4"
+    },
     "doctrine/annotations": {
         "version": "1.0",
         "recipe": {
@@ -99,6 +102,12 @@
     "guzzlehttp/psr7": {
         "version": "1.8.1"
     },
+    "jms/metadata": {
+        "version": "2.6.1"
+    },
+    "jms/serializer": {
+        "version": "3.17.1"
+    },
     "jwilsson/spotify-web-api-php": {
         "version": "3.3.0"
     },
@@ -120,12 +129,6 @@
     "laminas/laminas-code": {
         "version": "4.1.0"
     },
-    "laminas/laminas-eventmanager": {
-        "version": "3.3.1"
-    },
-    "laminas/laminas-zendframework-bridge": {
-        "version": "1.2.0"
-    },
     "league/oauth2-client": {
         "version": "2.6.0"
     },
@@ -135,17 +138,8 @@
     "nikic/php-parser": {
         "version": "v4.3.0"
     },
-    "ocramius/package-versions": {
-        "version": "1.5.1"
-    },
-    "ocramius/proxy-manager": {
-        "version": "2.2.3"
-    },
     "paragonie/sodium_compat": {
         "version": "v1.12.2"
-    },
-    "php": {
-        "version": "7.4"
     },
     "phpdocumentor/reflection-common": {
         "version": "2.0.0"
@@ -155,6 +149,12 @@
     },
     "phpdocumentor/type-resolver": {
         "version": "1.0.1"
+    },
+    "phpstan/phpdoc-parser": {
+        "version": "1.2.0"
+    },
+    "phpstan/phpstan": {
+        "version": "1.4.10"
     },
     "psr/cache": {
         "version": "1.0.1"
@@ -183,6 +183,9 @@
     "ralouphie/getallheaders": {
         "version": "3.0.3"
     },
+    "rector/rector": {
+        "version": "0.12.19"
+    },
     "sensio/framework-extra-bundle": {
         "version": "5.2",
         "recipe": {
@@ -195,11 +198,35 @@
             "./config/packages/sensio_framework_extra.yaml"
         ]
     },
+    "sonata-project/block-bundle": {
+        "version": "4.11.0"
+    },
+    "sonata-project/cache": {
+        "version": "2.2.0"
+    },
+    "sonata-project/doctrine-extensions": {
+        "version": "1.16.0"
+    },
     "sonata-project/exporter": {
         "version": "2.1.0"
     },
+    "sonata-project/form-extensions": {
+        "version": "1.13",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "master",
+            "version": "1.4",
+            "ref": "9c8a1e8ce2b1f215015ed16652c4ed18eb5867fd"
+        },
+        "files": [
+            "./config/packages/sonata_form.yaml"
+        ]
+    },
     "sonata-project/seo-bundle": {
         "version": "2.10.0"
+    },
+    "sonata-project/twig-extensions": {
+        "version": "1.9.1"
     },
     "stof/doctrine-extensions-bundle": {
         "version": "1.2",
@@ -336,7 +363,7 @@
         "version": "v5.0.2"
     },
     "symfony/intl": {
-        "version": "v5.0.2"
+        "version": "v6.0.5"
     },
     "symfony/mailer": {
         "version": "4.3",
@@ -428,9 +455,6 @@
     "symfony/polyfill-mbstring": {
         "version": "v1.13.1"
     },
-    "symfony/polyfill-php73": {
-        "version": "v1.13.1"
-    },
     "symfony/polyfill-php80": {
         "version": "v1.18.1"
     },
@@ -479,9 +503,6 @@
         "version": "v5.0.2"
     },
     "symfony/security-csrf": {
-        "version": "v5.0.2"
-    },
-    "symfony/security-guard": {
         "version": "v5.0.2"
     },
     "symfony/security-http": {
@@ -590,31 +611,16 @@
     "symfony/yaml": {
         "version": "v5.0.2"
     },
-    "twig/extensions": {
-        "version": "1.0",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "master",
-            "version": "1.0",
-            "ref": "a86723ee8d8b2f9437c8ce60a5546a1c267da5ed"
-        },
-        "files": [
-            "./config/packages/twig_extensions.yaml"
-        ]
-    },
     "twig/extra-bundle": {
         "version": "v3.0.1"
+    },
+    "twig/intl-extra": {
+        "version": "v3.3.5"
     },
     "twig/twig": {
         "version": "v3.0.1"
     },
     "webmozart/assert": {
         "version": "1.6.0"
-    },
-    "zendframework/zend-code": {
-        "version": "3.4.1"
-    },
-    "zendframework/zend-eventmanager": {
-        "version": "3.2.1"
     }
 }

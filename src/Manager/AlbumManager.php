@@ -13,7 +13,6 @@ class AlbumManager extends AbstractManager
 
     /**
      * FacturationDetailsManager constructor.
-     * @param EntityManagerInterface $entityManager
      */
     public function __construct(EntityManagerInterface $entityManager)
     {

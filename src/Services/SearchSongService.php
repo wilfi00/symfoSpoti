@@ -14,11 +14,8 @@ class SearchSongService
 {
     use SongEntityCreatorTrait;
 
-    protected SpotiRequest $spotiRequest;
-
-    public function __construct(SpotiRequest $spotiRequest)
+    public function __construct(protected SpotiRequest $spotiRequest)
     {
-        $this->spotiRequest = $spotiRequest;
     }
 
     public function search(string $type, string $query): array

@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Genre
 {
-    public const TYPE = 'genre';
+    public final const TYPE = 'genre';
 
     /**
      * @ORM\Id()

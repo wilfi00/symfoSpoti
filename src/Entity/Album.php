@@ -21,7 +21,7 @@ class Album implements SongInterface
     use TimestampableEntity;
     use SoftDeleteableEntity;
 
-    public const TYPE = 'album';
+    public final const TYPE = 'album';
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="albums")

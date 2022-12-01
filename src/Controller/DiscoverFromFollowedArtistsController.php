@@ -8,13 +8,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use App\SpotiImplementation\Request as SpotiRequest;
 use App\SpotiImplementation\Auth as SpotiAuth;
-use App\SpotiImplementation\Tools as SpotiTools;
 use App\SpotiImplementation\Save as SpotiSave;
-use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Component\Security\Core\Security;
 
@@ -22,10 +18,9 @@ class DiscoverFromFollowedArtistsController extends AbstractController
 {
     /**
      * @Route("/followedArtistsNotConnected", name="artists_followed_not_connected")
-     * @param Security $security
      * @return RedirectResponse|Response
      */
-    public function isNotConnected(Security $security)
+    public function isNotConnected(Security $security): RedirectResponse|Response
     {
         if ($security->isGranted('ROLE_SPOTIFY')) {
             return $this->redirectToRoute('artists_followed');
@@ -35,13 +30,9 @@ class DiscoverFromFollowedArtistsController extends AbstractController
 
     /**
      * @Route("/followedArtists", name="artists_followed")
-     * @param Request $request
-     * @param TranslatorInterface $translator
-     * @param SpotiRequest $spotiRequest
-     * @param Security $security
      * @return RedirectResponse|Response
      */
-    public function index(Request $request, TranslatorInterface $translator, SpotiRequest $spotiRequest, Security $security)
+    public function index(Request $request, TranslatorInterface $translator, SpotiRequest $spotiRequest, Security $security): RedirectResponse|Response
     {
         $session = $request->getSession();
 
@@ -51,9 +42,7 @@ class DiscoverFromFollowedArtistsController extends AbstractController
         
         $artists      = $spotiRequest->getAllFollowedArtists();
         
-        usort($artists, function($a, $b) {
-            return strtolower($a->name) > strtolower($b->name);
-        });
+        usort($artists, fn($a, $b) => strtolower($a->name) > strtolower($b->name));
         
         $genres    = [];
         $tmpGenres = [];
@@ -93,10 +82,6 @@ class DiscoverFromFollowedArtistsController extends AbstractController
 
     /**
      * @Route("/saveTracksFromFollowed", name="save_tracks_from_followed")
-     * @param LoggerInterface $logger
-     * @param Request $request
-     * @param SpotiRequest $spotiRequest
-     * @param Security $security
      * @return RedirectResponse
      */
     public function saveTracksFromFollowed(LoggerInterface $logger, Request $request, SpotiRequest $spotiRequest, Security $security)
@@ -108,7 +93,7 @@ class DiscoverFromFollowedArtistsController extends AbstractController
             'saveOption'       => $request->request->get('saveOption'),
             'playlistName'     => $request->request->get('playlistName'),
             'existingPlaylist' => $request->request->get('existingPlaylist'),
-            'artists'          => json_decode($request->request->get('artists'), true),
+            'artists'          => json_decode($request->request->get('artists'), true, 512, JSON_THROW_ON_ERROR),
             'nbTracks'         => $request->request->get('nbTracks'),
         ];
 
@@ -150,13 +135,11 @@ class DiscoverFromFollowedArtistsController extends AbstractController
 
     /**
      * @Route("/saveTracksFromFollowed2", name="save_tracks_from_followed2")
-     * @param Request $request
-     * @param SpotiRequest $spotiRequest
      * @return Response
      */
     public function saveTracksFromFollowed2(Request $request, SpotiRequest $spotiRequest)
     {
-        $requestContent = json_decode($request->getContent(), true);
+        $requestContent = json_decode($request->getContent(), true, 512, JSON_THROW_ON_ERROR);
         $tracksRequest = $spotiRequest->getTopsTracksFromArtists(
             $requestContent['artists'], 
             $requestContent['nbTracks']

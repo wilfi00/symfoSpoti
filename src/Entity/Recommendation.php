@@ -7,11 +7,11 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 class Recommendation
 {
-    public const GENRE_TYPE = 'genre';
+    public final const GENRE_TYPE = 'genre';
 
     private const MIN_SEEDS = 1;
     private const MAX_SEEDS = 5;
-    private ?int $id;
+    private readonly ?int $id;
     private array $artists = [];
     private array $genres = [];
     private array $tracks = [];
@@ -23,7 +23,7 @@ class Recommendation
      *      notInRangeMessage = "You must be between {{ min }} and {{ max }}",
      * )
      */
-    private ?float $acousticness;
+    private ?float $acousticness = null;
 
     /**
      * @Assert\Range(
@@ -32,7 +32,7 @@ class Recommendation
      *      notInRangeMessage = "You must be between {{ min }} and {{ max }}",
      * )
      */
-    private ?float $danceability;
+    private ?float $danceability = null;
 
     /**
      * @Assert\Range(
@@ -41,7 +41,7 @@ class Recommendation
      *      notInRangeMessage = "You must be between {{ min }} and {{ max }}",
      * )
      */
-    private ?float $energy;
+    private ?float $energy = null;
 
     /**
      * @Assert\Range(
@@ -50,7 +50,7 @@ class Recommendation
      *      notInRangeMessage = "You must be between {{ min }} and {{ max }}",
      * )
      */
-    private ?float $instrumentalness;
+    private ?float $instrumentalness = null;
 
     /**
      * @Assert\Range(
@@ -59,7 +59,7 @@ class Recommendation
      *      notInRangeMessage = "You must be between {{ min }} and {{ max }}",
      * )
      */
-    private ?float $liveness;
+    private ?float $liveness = null;
 
     /**
      * @Assert\Range(
@@ -68,7 +68,7 @@ class Recommendation
      *      notInRangeMessage = "You must be between {{ min }} and {{ max }}",
      * )
      */
-    private ?float $speechiness;
+    private ?float $speechiness = null;
 
     /**
      * @Assert\Range(
@@ -77,7 +77,7 @@ class Recommendation
      *      notInRangeMessage = "You must be between {{ min }} and {{ max }}",
      * )
      */
-    private ?float $valence;
+    private ?float $valence = null;
 
     /**
      * @Assert\Range(
@@ -86,7 +86,7 @@ class Recommendation
      *      notInRangeMessage = "You must be between {{ min }} and {{ max }}",
      * )
      */
-    private ?int $popularity;
+    private ?int $popularity = null;
 
     public function getId(): ?int
     {
@@ -219,18 +219,11 @@ class Recommendation
         return $this;
     }
 
-    /**
-     * @return int|null
-     */
     public function getPopularity(): ?int
     {
         return $this->popularity;
     }
 
-    /**
-     * @param int|null $popularity
-     * @return Recommendation
-     */
     public function setPopularity(?int $popularity): self
     {
         $this->popularity = $popularity;
@@ -240,11 +233,10 @@ class Recommendation
 
     /**
      * @Assert\Callback
-     * @param ExecutionContextInterface $context
      */
     public function validate(ExecutionContextInterface $context): void
     {
-        $seeds = count($this->getTracks()) + count($this->getGenres()) + count($this->getArtists());
+        $seeds = count((array) $this->getTracks()) + count((array) $this->getGenres()) + count((array) $this->getArtists());
         if ($seeds < static::MIN_SEEDS || $seeds > static::MAX_SEEDS) {
             $context->buildViolation(sprintf('Le nombre de seeds doit être entre %s et %s', static::MIN_SEEDS, static::MAX_SEEDS))
                 ->atPath('artists')

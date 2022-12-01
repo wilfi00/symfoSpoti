@@ -13,9 +13,6 @@ class SpotifyController extends AbstractController
 {
     /**
      * @Route("/spotiAuth", name="spoti_auth")
-     * @param Request $request
-     * @param ClientRegistry $clientRegistry
-     * @return RedirectResponse
      */
     public function connectAction(Request $request, ClientRegistry $clientRegistry): RedirectResponse
     {
@@ -33,7 +30,6 @@ class SpotifyController extends AbstractController
 
     /**
      * @Route("/spotiCallback", name="spoti_callback")
-     * @param ClientRegistry $clientRegistry
      */
     public function spotiCallback(ClientRegistry $clientRegistry): void
     {
@@ -44,7 +40,7 @@ class SpotifyController extends AbstractController
      * @Route("/logout", name="logout", methods={"GET"})
      * @throws \Exception
      */
-    public function logout(): void
+    public function logout(): never
     {
         // controller can be blank: it will never be executed!
         throw new \RuntimeException('Don\'t forget to activate logout in security.yaml');

@@ -6,12 +6,12 @@ use Monolog\Formatter\LineFormatter;
 
 class InfoFormatter extends LineFormatter
 {
-    public const KEYWORD = '[curious] ';
+    public final const KEYWORD = '[curious] ';
     
     // this method is called for each log record; optimize it to not hurt performance
     public function format(array $record): string
     {
-        if (!(strpos($record['message'], static::KEYWORD) !== false)) {
+        if (!(str_contains((string) $record['message'], (string) static::KEYWORD))) {
             return '';
         }
         

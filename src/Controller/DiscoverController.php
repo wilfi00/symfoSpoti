@@ -24,13 +24,6 @@ class DiscoverController extends AbstractController
 {
     /**
      * @Route("/fromGenres", name="discover")
-     * @param Request $request
-     * @param GenreRepository $genreRepository
-     * @param Seo $seo
-     * @param TranslatorInterface $translator
-     * @param SpotiRequest $spotiRequest
-     * @param Security $security
-     * @param Session $session
      * @return Response
      */
     public function displayDiscover(
@@ -81,22 +74,19 @@ class DiscoverController extends AbstractController
 
     /**
      * @Route("/searchGenres", name="searchGenres")
-     * @param Request $request
-     * @param GenreManager $genreManager
-     * @param Seo $seo
      * @return Response
      */
     public function searchGenres(Request $request, GenreManager $genreManager, Seo $seo)
     {
         $seo->addMeta('name', 'robots',  'noindex');
-        $search   = json_decode($request->getContent(), true)['search'];
+        $search   = json_decode($request->getContent(), true, 512, JSON_THROW_ON_ERROR)['search'];
         $genres   = array_slice($genreManager->findAllBySearch($search), 0, 60);
         foreach ($genres as &$genre) {
             $genre['active'] = true;
         }
         
         $response = new Response();
-        $response->setContent(json_encode($genres));
+        $response->setContent(json_encode($genres, JSON_THROW_ON_ERROR));
         $response->headers->set('Content-Type', 'application/json');
         return $response;
     }
@@ -105,12 +95,11 @@ class DiscoverController extends AbstractController
      * Vérification de la validité des données postées par le formulaire discovery
      *
      * @param $request
-     * @param GenreRepository $genreRepository
      * @return bool True si valid
      */
     protected function isValidDatasForDiscover($request, GenreRepository $genreRepository)
     {
-        $data = json_decode($request->getContent(), true);
+        $data = json_decode($request->getContent(), true, 512, JSON_THROW_ON_ERROR);
         // Vérification de la data sur le nombre de chanson
         if (!isset($data['nbSongs'])) {
             return false;
@@ -162,15 +151,12 @@ class DiscoverController extends AbstractController
     /**
      * @Route("/generatePlaylist", name="generatePlaylist")
      *
-     * @param Request $request
-     * @param GenreRepository $genreRepository
-     * @param SpotiRequest $spotiRequest
-     * @param Session $session
      * @return Response
      * @throws \Exception
      */
     public function generatePlaylist(Request $request, GenreRepository $genreRepository, SpotiRequest $spotiRequest, Session $session)
     {
+        $tracks = [];
         $data = $this->isValidDatasForDiscover($request, $genreRepository);
         if ($data === false) {
             throw new \RuntimeException('Something went wrong!');
@@ -180,7 +166,7 @@ class DiscoverController extends AbstractController
         $nbSongs           = $data['nbSongs'];
         $genreEntities     = $data['genres'];
         $nbSongsPerArtists = 2;
-        $nbArtists         = ceil($nbSongs / count($genreEntities) / $nbSongsPerArtists);
+        $nbArtists         = ceil($nbSongs / (is_countable($genreEntities) ? count($genreEntities) : 0) / $nbSongsPerArtists);
         $spotiRequest->setGenreRespository($genreRepository);
         $artists       = $spotiRequest->getRandomArtistsFromGenres($genreEntities, $nbArtists, true);
         $tracksRequest = $spotiRequest->getTopsTracksFromArtists($artists, $nbSongsPerArtists);
@@ -214,9 +200,6 @@ class DiscoverController extends AbstractController
     /**
      * @Route("/generateBetterPlaylist", name="generateBetterPlaylist")
      *
-     * @param Request $request
-     * @param GenreRepository $genreRepository
-     * @param SpotiRequest $spotiRequest
      * @return Response
      * @throws \Exception
      */
@@ -254,17 +237,13 @@ class DiscoverController extends AbstractController
 
     /**
      * @Route("/saveTracksFromGenres", name="save_tracks_from_genres")
-     * @param LoggerInterface $logger
-     * @param Request $request
-     * @param SpotiRequest $spotiRequest
-     * @param Security $security
      * @return RedirectResponse
      */
     public function saveTracksFromGenres(LoggerInterface $logger, Request $request, SpotiRequest $spotiRequest, Security $security)
     {
         $data = [
             'saveOption'       => $request->request->get('saveOption'),
-            'tracks'           => json_decode($request->request->get('tracks'), true),
+            'tracks'           => json_decode($request->request->get('tracks'), true, 512, JSON_THROW_ON_ERROR),
             'playlistName'     => $request->request->get('playlistName'),
             'existingPlaylist' => $request->request->get('existingPlaylist'),
         ];
@@ -300,8 +279,6 @@ class DiscoverController extends AbstractController
 
     /**
      * @Route("/setPopularityGenres", name="setPopularityGenres")
-     * @param GenreRepository $genreRepository
-     * @param SpotiRequest $spotiRequest
      */
     public function setPopularityGenres(GenreRepository $genreRepository, SpotiRequest $spotiRequest)
     {

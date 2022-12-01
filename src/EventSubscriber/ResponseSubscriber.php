@@ -49,7 +49,7 @@ class ResponseSubscriber implements EventSubscriberInterface
 		$imgPolicy     = 'img-src '     . $appUrl;
 		$framePolicy   = 'frame-src '   . $appUrl;
 
-		if ($staticUrl != $appUrl && strpos($staticUrl, $appUrl) === false) {
+		if ($staticUrl != $appUrl && !str_contains($staticUrl, $appUrl)) {
 			$defaultPolicy .= ' ' . $staticUrl;
 			$scriptPolicy  .= ' ' . $staticUrl;
 			$connectPolicy .= ' ' . $staticUrl;

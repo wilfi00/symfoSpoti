@@ -21,19 +21,19 @@ class Track implements SongInterface
     use TimestampableEntity;
     use SoftDeleteableEntity;
 
-    public const TYPE = 'track';
+    public final const TYPE = 'track';
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    protected ?string $preview_url;
+    protected ?string $preview_url = null;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="tracks")
      */
     protected UserInterface $user;
 
-    protected ?string $artists;
+    protected ?string $artists = null;
     private $popularity;
 
     public function getPreviewUrl(): ?string

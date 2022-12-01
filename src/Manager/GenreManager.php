@@ -7,13 +7,6 @@ use \App\Entity\Genre;
 
 class GenreManager extends AbstractManager
 {
-    protected $search;
-    protected $regex;
-    
-    /**
-     * FacturationDetailsManager constructor.
-     * @param EntityManagerInterface $entityManager
-     */
     public function __construct(EntityManagerInterface $entityManager)
     {
         $this->entityClassName = Genre::class;
@@ -32,19 +25,13 @@ class GenreManager extends AbstractManager
         }
       
         // Recherche exact
-        $genres0 = array_filter($genres, function($genre) {
-            return $this->search == $genre['name'];
-        });
+        $genres0 = array_filter($genres, fn($genre) => $this->search == $genre['name']);
       
         // Recherche exact (uk metalcore matchera uk metalcore)
-        $genres1 = array_filter($genres, function($genre) {
-            return preg_match('/\\b(\\w*' .  $this->search . '\\w*)\\b/', $genre['name']);
-        });
+        $genres1 = array_filter($genres, fn($genre) => preg_match('/\\b(\\w*' .  $this->search . '\\w*)\\b/', (string) $genre['name']));
         
         // Recherche inversée exact (exemple, uk metalcore matchera metalcore uk)
-        $genres2 = array_filter($genres, function($genre) {
-            return preg_match('/\\b(\\w*' . implode(' ', array_reverse(explode(' ', $this->search))) . '\\w*)\\b/', $genre['name']);
-        });
+        $genres2 = array_filter($genres, fn($genre) => preg_match('/\\b(\\w*' . implode(' ', array_reverse(explode(' ', (string) $this->search))) . '\\w*)\\b/', (string) $genre['name']));
 		
 	    // Recherche très générale en mode OU (uk metalcore renverra tous les uk et tous les metalcore)
 		$regex = '/';
@@ -53,9 +40,7 @@ class GenreManager extends AbstractManager
 		    $regex .= '\\b(\\w*' . $word . '\\w*)\\b|';
 		}
 		$this->regex = substr($regex, 0, -1) . '/'; // Supression du dernier caractère de la chaine pour enlever le ou |
-		$genres3 = array_filter($genres, function($genre) {
-		    return preg_match($this->regex, $genre['name']); 
-		});
+		$genres3 = array_filter($genres, fn($genre) => preg_match($this->regex, (string) $genre['name']));
 		
         return array_unique(array_merge_recursive($genres0, $genres1, $genres2, $genres3), SORT_REGULAR);
         

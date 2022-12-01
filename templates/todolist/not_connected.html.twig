@@ -1,0 +1,9 @@
+{% extends 'todolist/base.html.twig' %}
+
+{% block content %}
+    <div class="row"><div class="col-lg-12"><div class="followedArtistsNotConnected">
+        <form action="{{ path('spoti_auth') }}"><button type="submit" class="btn btn-primary login"><img src="{{ asset('build/images/Spotify_Icon_RGB_Black.png') }}" alt="Spotify logo">{% trans %}login{% endtrans %}</button></form>
+    </div></div></div>
+{% endblock %}
+
+

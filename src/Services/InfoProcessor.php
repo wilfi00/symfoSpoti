@@ -2,36 +2,36 @@
 
 namespace App\Services;
 
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\Exception\SessionNotFoundException;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 class InfoProcessor
 {
-    private $session;
-    private $requestStack;
-    
-    public function __construct(SessionInterface $session, RequestStack $requestStack)
+    public function __construct(private readonly RequestStack $requestStack)
     {
-        $this->session = $session;
-        $this->requestStack = $requestStack;
     }
-    
+
     /**
-     * @param  array $record
-     * @return array
+     * @return array|void
      */
     public function __invoke(array $record)
     {
-        $this->session->start();
-        if ($this->session->isStarted()) {
-            $sessionContent = $this->session->all();
-            // Nettoyage de la session des infos inutiles
-            
-            // Infos sur l'utilisateur spotify courant
-            $record['extra']['request'] = $this->addRequestInformations();
-            $record['extra']['session'] = $sessionContent;
+        try {
+            $session = $this->requestStack->getSession();
+        } catch (SessionNotFoundException) {
+            return $record;
         }
-        
+        if (!$session->isStarted()) {
+            return $record;
+        }
+
+        $sessionContent = $session->all();
+        // Nettoyage de la session des infos inutiles
+
+        // Infos sur l'utilisateur spotify courant
+        $record['extra']['request'] = $this->addRequestInformations();
+        $record['extra']['session'] = $sessionContent;
+
         return $record;
     }
     
@@ -44,7 +44,7 @@ class InfoProcessor
         
         $content = $request->getContent();
         if (Utils::isJson($content)) {
-            $content = json_decode($content, true);
+            $content = json_decode($content, true, 512, JSON_THROW_ON_ERROR);
         }
        
         return [

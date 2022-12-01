@@ -12,9 +12,8 @@ class UtilsController extends AbstractController
 {
     /**
      * @Route("/infoArtist", name="infoArtist")
-     * @param SpotiRequest $spotiRequest
      */
-    public function getInfoOfArtist(SpotiRequest $spotiRequest): void
+    public function getInfoOfArtist(SpotiRequest $spotiRequest): never
     {
         var_dump($spotiRequest->getArtist('1zjKozA82ritb32UljA7Yi'));
         var_dump($spotiRequest->getArtist('1I9Hqy4QnMyVhZwRM2r41B'));

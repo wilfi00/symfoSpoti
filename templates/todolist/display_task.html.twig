@@ -1,0 +1,71 @@
+{% extends "todolist/base.html.twig" %}
+{% block title %}
+<h2>Todolist</h2>
+{% endblock %}
+{% block content %}
+<hr>
+{% set todayDate = date("now 00:00:00") %}
+{% set tomorrow = date("tomorrow 00:00:00") %}
+{% set dates_already_displayed = [] %}
+{% for task in tasks %}
+	{% set dateTask = task.getDateDeRendu %}
+	{% set nbWeeksDiff = todayDate.diff(dateTask).days // 7 %}
+
+	{% if dateTask|date('U') < todayDate|date('U') %}
+		{% if -3 not in dates_already_displayed %}
+			<h3>En retard</h3>
+			{% set dates_already_displayed = dates_already_displayed|merge([-3]) %}
+		{% endif %}
+	{% elseif dateTask|date('U') == todayDate|date('U') %}
+		{% if -2 not in dates_already_displayed %}
+			<h3>Aujourd'hui</h3>
+			{% set dates_already_displayed = dates_already_displayed|merge([-2]) %}
+		{% endif %}
+	{% elseif dateTask|date('U') == tomorrow|date('U') %}
+		{% if -1 not in dates_already_displayed %}
+			<h3>Demain</h3>
+			{% set dates_already_displayed = dates_already_displayed|merge([-1]) %}
+		{% endif %}
+	{% elseif nbWeeksDiff == 0 %}
+		{% if nbWeeksDiff not in dates_already_displayed %}
+			<h3>Plus tard cette semaine</h3>
+			{% set dates_already_displayed = dates_already_displayed|merge([nbWeeksDiff]) %}
+		{% endif %}
+	{% else %}
+		{% if nbWeeksDiff not in dates_already_displayed %}
+			<h3>Dans {{ nbWeeksDiff }} semaines</h3>
+			{% set dates_already_displayed = dates_already_displayed|merge([nbWeeksDiff]) %}
+		{% endif %}
+	{% endif %}
+
+	<div style="color: {{ task.matiere.couleur }}">
+		<label><input
+			data-task-id="{{ task.id }}"
+			name="task_check"
+			class="form-check-input"
+			type="checkbox"
+			{{ task.done ? "checked" }}
+		/>
+		{{ task.matiere.name }} : {{ task.name }}</label>
+	</div>
+{% endfor %}
+
+{% endblock %}
+{% block footer %}
+	<script>
+		$( document ).ready(function() {
+			$('input[name="task_check"]').each(function () {
+				if ($(this).is(":checked")) {
+					var url = '{{ path("setTaskUnDone", {'id': 'task_id'}) }}';
+				} else {
+					console.log('not check');
+					var url = '{{ path("setTaskDone", {'id': 'task_id'}) }}';
+				}
+				url = url.replace("task_id", $(this).data('task-id'));
+				$(this).off('click').on('click', function () {
+					$.get(url);
+				});
+			});
+		});
+	</script>
+{% endblock %}

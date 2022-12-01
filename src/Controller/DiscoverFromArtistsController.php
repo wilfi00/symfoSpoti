@@ -51,11 +51,6 @@ class DiscoverFromArtistsController extends AbstractController
 
     /**
      * @Route("/artistsSelection", name="artist_selection")
-     * @param Request $request
-     * @param TranslatorInterface $translator
-     * @param LoggerInterface $logger
-     * @param SpotiRequest $spotiRequest
-     * @param Security $security
      * @return Response
      */
     public function artistSelection(Request $request, TranslatorInterface $translator, LoggerInterface $logger, SpotiRequest $spotiRequest, Security $security)
@@ -122,21 +117,18 @@ class DiscoverFromArtistsController extends AbstractController
 
     /**
      * @Route("/addArtistToSelection", name="addArtist")
-     * @param Request $request
-     * @param LoggerInterface $logger
      * @return Response
      */
     public function addArtistToSelection(Request $request, LoggerInterface $logger)
     {
         $logger->info(InfoFormatter::KEYWORD . 'petit message de log', ['test' => 'value']);
-        SpotiTools::saveArtistSelectionInSession(json_decode($request->getContent(), true));
+        SpotiTools::saveArtistSelectionInSession(json_decode($request->getContent(), true, 512, JSON_THROW_ON_ERROR));
 
         return new Response();
     }
 
     /**
      * @Route("/removeArtistToSelectionUrl", name="removeArtist")
-     * @param Request $request
      * @return Response
      */
     public function removeArtistToSelectionUrl(Request $request)
@@ -157,11 +149,6 @@ class DiscoverFromArtistsController extends AbstractController
 
     /**
      * @Route("/saveTracksFromArtists", name="save_tracks_from_artists")
-     * @param LoggerInterface $logger
-     * @param Request $request
-     * @param Session $session
-     * @param SpotiRequest $spotiRequest
-     * @param Security $security
      * @return RedirectResponse
      */
     public function saveTracksFromArtists(

@@ -32,7 +32,7 @@ trait SongTrait
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    protected ?string $image;
+    protected ?string $image = null;
 
     public function getId(): ?int
     {

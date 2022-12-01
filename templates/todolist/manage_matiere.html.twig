@@ -1,0 +1,83 @@
+{% extends "todolist/base.html.twig" %}
+{% block title %}
+<h2>Ajouter ou éditer une matière</h2>
+{% endblock %}
+{% block content %}
+<ul class="nav nav-pills nav-justified">
+	<li class="nav-item">
+		<a id="pills-add-tab" data-bs-toggle="pill" data-bs-target="#pills-add" class="nav-link active" aria-current="page" href="#">Ajouter une matière</a>
+	</li>
+	<li class="nav-item">
+		<a id="pills-edit-tab" data-bs-toggle="pill" data-bs-target="#pills-edit" class="nav-link" href="#">Editer une matière</a>
+	</li>
+	<li class="nav-item">
+		<a id="pills-delete-tab" data-bs-toggle="pill" data-bs-target="#pills-delete" class="nav-link" href="#">Supprimer une matière</a>
+	</li>
+</ul>
+
+<div class="tab-content" id="pills-tabContent">
+	<div class="tab-pane fade show active" id="pills-add" role="tabpanel" aria-labelledby="pills-add-tab">
+		<form method="POST">
+			<input type="hidden" name="mode" value="add"/>
+			<input type="text" name="name" required placeholder="Nom de la matiere"/>
+			<input type="text" name="couleur" required placeholder="Couleur de la matiere"/>
+			<button type="submit" class="btn btn-primary saveAction">Ajouter</button>
+		</form>
+	</div>
+	<div class="tab-pane fade" id="pills-edit" role="tabpanel" aria-labelledby="pills-edit-tab">
+		{% if matieres is empty %}
+			Aucune matière, rien à mettre à jour !
+		{% else %}
+			<form method="POST">
+				<input type="hidden" name="mode" value="edit"/>
+				<select name="matiere" id="update-matieres">
+					{% for matiere in matieres %}
+						{% set matiereEntity = matiere['matiere'] %}
+						<option value="{{ matiereEntity.id }}">{{ matiereEntity.name }}</option>
+					{% endfor %}
+				</select>
+				<input id="nameUpdate" value="{{ matieres[0]['matiere'].name }}" type="text" name="name" required placeholder="Nom de la matiere"/>
+				<input id="couleurUpdate" value="{{ matieres[0]['matiere'].couleur }}" type="text" name="couleur" required placeholder="Couleur de la matiere"/>
+				<button type="submit" class="btn btn-primary saveAction">Enregistrer</button>
+			</form>
+		{% endif %}
+	</div>
+	<div class="tab-pane fade" id="pills-delete" role="tabpanel" aria-labelledby="pills-edit-tab">
+		<form method="POST">
+			<input type="hidden" name="mode" value="delete"/>
+			<select class="js-matiere-delete" name="matiere">
+				{% for matiere in matieres %}
+					{% set matiereEntity = matiere['matiere'] %}
+					<option value="{{ matiereEntity.id }}" {{ not matiere['canBeDeleted'] ? 'disabled' }}>{{ matiereEntity.name }}</option>
+				{% endfor %}
+			</select>
+			<button type="submit" class="js-submit-delete btn btn-danger">Supprimer</button>
+		</form>
+	</div>
+</div>
+{% endblock %}
+{% block footer %}
+<script>
+	disableOrNotSubmitDelete($('.js-matiere-delete').val())
+	function disableOrNotSubmitDelete(valMatiereToDelete)
+	{
+		console.log('disableOrNotSubmitDelete');
+		console.log(valMatiereToDelete);
+		let btnSubmit = $('.js-submit-delete');
+		if (valMatiereToDelete === null) {
+			btnSubmit.addClass('disabled');
+		} else {
+			btnSubmit.removeClass('disabled');
+		}
+	}
+	$('#update-matieres').off('change.updatematieresdata').on('change.updatematieresdata', function() {
+		disableOrNotSubmitDelete($(this).val());
+		let url = '{{ path("getDataForMatiere", {'id': 'matiere_id'}) }}';
+		url = url.replace("matiere_id", $(this).val());
+		$.get(url, function(matiereData) {
+			$('#nameUpdate').val(matiereData.nom);
+			$('#couleurUpdate').val(matiereData.couleur);
+		});
+	});
+</script>
+{% endblock %}

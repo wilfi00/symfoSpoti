@@ -27,12 +27,6 @@ class RecommendationsController extends AbstractController
 {
     /**
      * @Route("/", name="recommendations")
-     * @param Security $security
-     * @param SpotiRequest $spotiRequest
-     * @param Request $request
-     * @param Seo $seo
-     * @param TranslatorInterface $translator
-     * @return Response
      */
     public function displayRecommendations(Security $security, SpotiRequest $spotiRequest, Request $request, Seo $seo, TranslatorInterface $translator): Response
     {
@@ -54,10 +48,6 @@ class RecommendationsController extends AbstractController
 
     /**
      * @Route("/makeRecommendations", name="makeRecommendations")
-     * @param Request $request
-     * @param SessionInterface $session
-     * @param RecommendationsService $recommendationsService
-     * @return Response
      * @throws Exception
      */
     public function makeRecommendations(Request $request, SessionInterface $session, RecommendationsService $recommendationsService): Response
@@ -66,9 +56,7 @@ class RecommendationsController extends AbstractController
         $genres = [];
         $tracks = [];
 
-        $seeds = array_filter($request->request->all(), function($key) {
-            return strpos($key, 'seeds') === 0;
-        }, ARRAY_FILTER_USE_KEY);
+        $seeds = array_filter($request->request->all(), fn($key) => str_starts_with($key, 'seeds'), ARRAY_FILTER_USE_KEY);
 
         foreach ($seeds as $seed) {
             if ($seed[1] === Artist::TYPE) {
@@ -113,9 +101,6 @@ class RecommendationsController extends AbstractController
 
     /**
      * @Route("/searchForSeeds", name="searchForSeeds")
-     * @param Request $request
-     * @param SearchSongService $searchSongService
-     * @return Response
      */
     public function searchForSeeds(Request $request, SearchSongService $searchSongService): Response
     {
@@ -133,17 +118,12 @@ class RecommendationsController extends AbstractController
 
     /**
      * @Route("/saveTracksFromRecommendations", name="save_tracks_from_recommendtaions")
-     * @param LoggerInterface $logger
-     * @param Request $request
-     * @param SpotiRequest $spotiRequest
-     * @param Security $security
-     * @return RedirectResponse
      */
     public function saveTracksFromRecommendations(LoggerInterface $logger, Request $request, SpotiRequest $spotiRequest, Security $security): RedirectResponse
     {
         $data = [
             'saveOption'       => $request->request->get('saveOption'),
-            'tracks'           => json_decode($request->request->get('tracks'), true),
+            'tracks'           => json_decode($request->request->get('tracks'), true, 512, JSON_THROW_ON_ERROR),
             'playlistName'     => $request->request->get('playlistName'),
             'existingPlaylist' => $request->request->get('existingPlaylist'),
         ];

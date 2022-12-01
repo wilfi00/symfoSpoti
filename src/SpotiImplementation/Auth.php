@@ -8,8 +8,8 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 class Auth
 {
-    public const CALLBACK_URL  = 'callback_url';
-    public const CALLBACK_DATA = 'callback_data';
+    public final const CALLBACK_URL  = 'callback_url';
+    public final const CALLBACK_DATA = 'callback_data';
     
     protected static function makeSpotiSession(): SpotiSession
     {

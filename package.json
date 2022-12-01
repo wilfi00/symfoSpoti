@@ -26,7 +26,7 @@
     "author": "Johan Martin <0johan.martin0@gmail.com>",
     "dependencies": {
         "@popperjs/core": "^2.9.2",
-        "axios": "^0.21.1",
+        "axios": "^0.21.2",
         "child_process": "^1.0.2",
         "datatables.net": "^1.11.3",
         "dgram": "^1.0.1",

@@ -45,7 +45,7 @@
         "symfony/yaml": "*",
         "twig/extra-bundle": "^2.12|^3.0",
         "twig/intl-extra": "^3.3",
-        "twig/twig": "^2.0"
+        "twig/twig": "^3.5"
     },
     "require-dev": {
         "rector/rector": "^0.12.19",
